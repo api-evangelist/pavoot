@@ -1,0 +1,14 @@
+# Pavoot · Your AI Event Organizer
+
+> Pavoot is the YC-backed AI agent for events. Source the right attendees, personalize every invite, and turn every event into pipeline, all in one workflow.
+
+This file is generated from the site's source content. It is a curated index for AI assistants, not a crawler permissions file. For crawler permissions, see `/robots.txt`.
+
+## Core Pages
+
+- [Home](https://pavoot.com/): Primary overview of the site.
+
+## Discovery
+
+- [Sitemap](https://pavoot.com/sitemap-index.xml): Complete search-engine sitemap, if available.
+- [Robots policy](https://pavoot.com/robots.txt): Crawler permissions for automated agents.

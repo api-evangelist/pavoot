@@ -1,7 +1,30 @@
 aid: pavoot
 name: Pavoot
-description: Pavoot is a company surfaced as a portfolio company of y-combinator and added to the API
-  Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Pavoot is a Y Combinator-backed AI event-management platform that operates as
+  an autonomous AI agent for running events end-to-end. It sources and matches
+  the right attendees, personalizes invitations, captures and checks in guests
+  on-site, automatically follows up with context from each interaction, tags
+  event media (photos, faces, and logos) with AI, and attributes the resulting
+  pipeline and ROI. The product targets field marketers, GTM leaders, sales
+  teams, CMO/VP Marketing roles, and founders who want to turn events into
+  pipeline. Pavoot exposes no public developer API surface at this time; its
+  api.pavoot.com host is an authenticated internal application backend rather
+  than a documented public API, and the company publishes no OpenAPI, SDKs, or
+  developer documentation. This profile was added to the API Evangelist network
+  as a Y Combinator portfolio lead and has been through one enrichment pass.
+accessModel:
+  pricing: unknown
+  onboarding: approval
+  trial: false
+  try_now: false
+  public: false
+  label: Requires approval
+  confidence: medium
+  source: []
+  generated: '2026-07-22'
+  method: derived
+image: https://pavoot.com/og/pavoot-home.jpg
 url: https://raw.githubusercontent.com/api-evangelist/pavoot/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -11,12 +34,36 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-20'
 tags:
 - Company
+- Events
+- Event Management
+- Marketing
+- AI Agent
+- Attendee Intelligence
+- GTM
+- Field Marketing
+- Pipeline
 apis: []
+common:
+- type: DomainSecurity
+  url: security/pavoot-domain-security.yml
+- type: Website
+  url: https://pavoot.com
+- type: PrivacyPolicy
+  url: https://pavoot.com/privacy
+- type: Support
+  url: mailto:hello@pavoot.com
+- type: LLMsTxt
+  url: llms/pavoot-llms.txt
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+x-enrichment:
+  date: '2026-07-20'
+  status: enriched
+  artifacts_added: 2
+  pass: local-v1
