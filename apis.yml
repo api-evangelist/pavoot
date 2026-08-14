@@ -8,11 +8,16 @@ description: >-
   event media (photos, faces, and logos) with AI, and attributes the resulting
   pipeline and ROI. The product targets field marketers, GTM leaders, sales
   teams, CMO/VP Marketing roles, and founders who want to turn events into
-  pipeline. Pavoot exposes no public developer API surface at this time; its
-  api.pavoot.com host is an authenticated internal application backend rather
-  than a documented public API, and the company publishes no OpenAPI, SDKs, or
-  developer documentation. This profile was added to the API Evangelist network
-  as a Y Combinator portfolio lead and has been through one enrichment pass.
+  pipeline. Pavoot runs no developer program — it issues no API keys, publishes
+  no developer documentation and ships no SDKs — but its application backend at
+  api.pavoot.com does serve a complete, publicly readable OpenAPI 3.1.0
+  describing 248 operations across event projects, media upload and AI tagging,
+  face and person identity resolution, sponsor brand and logo recognition,
+  attendee registration and follow-up email, gallery sharing, and organization
+  permissions, together with FastAPI Swagger UI and ReDoc. The API itself is
+  authenticated with Clerk-issued session tokens against Pavoot's own OAuth 2.0
+  / OpenID Connect authorization server at clerk.pavoot.com, so the contract is
+  observable but not consumable by third parties.
 accessModel:
   pricing: unknown
   onboarding: approval
@@ -34,7 +39,7 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-20'
+modified: '2026-08-13'
 tags:
 - Company
 - Events
@@ -45,10 +50,69 @@ tags:
 - GTM
 - Field Marketing
 - Pipeline
-apis: []
+apis:
+- name: Pavoot Application API
+  description: >-
+    The authenticated backend for the Pavoot AI event platform. A FastAPI service
+    publishing a complete OpenAPI 3.1.0 document at https://api.pavoot.com/openapi.json
+    covering 248 operations and 56 request schemas: event (project) management,
+    S3 presigned single-PUT and multipart media upload, a three-step asynchronous
+    AI tagging pipeline (general, AWS Rekognition, BDA), face detection and person
+    identity resolution with machine-proposed merge suggestions, sponsor brand and
+    logo training and recognition, attendee registration with mandatory face
+    capture, attendee follow-up email workflow, shareable galleries with review
+    and flagging, photographer and recipient access management, storage and upload
+    quotas, and a fine-grained organization permission system. Authenticated with
+    Clerk-issued session JWTs; the published spec declares no securitySchemes, no
+    servers, no tags and no typed responses, so the auth model, host and error
+    surface in this profile were established by probing the live API. Not a
+    developer product — there is no API key issuance, no plan, no rate limit, no
+    versioning and no changelog.
+  humanURL: https://api.pavoot.com/docs
+  baseURL: https://api.pavoot.com
+  tags:
+  - event-management
+  - event-media
+  - image-tagging
+  - face-recognition
+  - biometrics
+  - attendee-intelligence
+  - brand-detection
+  - digital-asset-management
+  - marketing
+  - ai
+  properties:
+  - type: OpenAPI
+    url: openapi/pavoot-api-openapi.json
+  - type: APIReference
+    url: https://api.pavoot.com/docs
+  - type: Authentication
+    url: authentication/pavoot-authentication.yml
+  - type: OAuthScopes
+    url: scopes/pavoot-scopes.yml
+  - type: Conventions
+    url: conventions/pavoot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pavoot-problem-types.yml
+  - type: DataModel
+    url: data-model/pavoot-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/pavoot-lifecycle.yml
+  - type: Conformance
+    url: conformance/pavoot-conformance.yml
+  - type: Overlay
+    url: overlays/pavoot-api-overlay.yaml
 common:
 - type: DomainSecurity
   url: security/pavoot-domain-security.yml
+- type: WellKnown
+  url: well-known/pavoot-well-known.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: TermsOfService
+  url: https://pavoot.com/client/gtc
+- type: Login
+  url: https://app.pavoot.com/
 - type: Website
   url: https://pavoot.com
 - type: PrivacyPolicy
@@ -63,7 +127,7 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 x-enrichment:
-  date: '2026-07-20'
+  date: '2026-08-13'
   status: enriched
-  artifacts_added: 2
+  artifacts_added: 15
   pass: local-v1
