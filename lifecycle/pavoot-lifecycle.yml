@@ -1,0 +1,96 @@
+generated: '2026-08-13'
+method: probed
+source: >-
+  Live probes of pavoot.com, api.pavoot.com and the common hosted status-page
+  vendors, plus openapi/_original/pavoot-openapi.json
+name: Pavoot Application API lifecycle
+summary: >-
+  Pavoot publishes no versioning policy, no deprecation policy, no changelog, no
+  SLA and no status page. This file records those absences with the probes that
+  established them — an honest zero, not an omission.
+versioning:
+  scheme: none
+  path_versioned: false
+  header_versioned: false
+  media_type_versioned: false
+  spec_info_version: '0.1.0'
+  spec_info_version_note: >-
+    The FastAPI framework default, left unchanged. It does not track releases and
+    cannot be used to pin a contract.
+  policy_url: null
+  detail: >-
+    All 248 paths are unversioned. There is no mechanism by which Pavoot could
+    ship a breaking change to a consumer without breaking them silently.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: 0
+  deprecated_operations_note: >-
+    Zero of 248 operations carry `deprecated: true` in the OpenAPI. The spec does
+    contain evidence of superseded behaviour described in prose — /regenerateThumbnails
+    exists to repair "thumbnail objects that were written by an older pipeline before
+    EXIF orientation was baked in" — but nothing is formally marked deprecated.
+status_page:
+  present: false
+  url: null
+  probes:
+  - url: https://status.pavoot.com
+    status: 0
+    result: NXDOMAIN
+  - url: https://pavoot.com/status
+    status: 404
+  - url: https://pavoot.statuspage.io
+    status: 200
+    result: >-
+      SOFT 404 — redirects to https://www.atlassian.com/software/statuspage, the
+      vendor marketing page. Not a Pavoot status page.
+  - url: https://pavoot.instatus.com
+    status: 200
+    result: SOFT 404 — redirects to https://instatus.com/. Not a Pavoot status page.
+  - url: https://pavoot.betteruptime.com
+    status: 200
+    result: SOFT 404 — redirects to https://betterstack.com/uptime. Not a Pavoot
+      status page.
+  note: >-
+    The three hosted-status vendors answer 200 on any unclaimed subdomain. Each
+    was followed to its final URL to confirm it is vendor marketing, not a
+    provider status page. No StatusPage pointer is emitted.
+changelog:
+  present: false
+  url: null
+  probes:
+  - url: https://pavoot.com/changelog
+    status: 404
+  detail: >-
+    No dated changelog, release notes page, or version history on the marketing
+    site, and none in the sitemap (17 URLs, all marketing/legal/product/draft
+    pages). No public GitHub organization exists either — api.github.com/orgs/pavoot
+    returns 404 — so there is no commit history standing in for a changelog.
+sla:
+  published: false
+  url: null
+  note: >-
+    No uptime commitment, support-response target or credit schedule is published.
+    The General Terms and Conditions (https://pavoot.com/client/gtc) and Data
+    Processing Agreement (https://pavoot.com/client/dpa) are the only contractual
+    documents Pavoot publishes.
+support:
+  channels:
+  - type: email
+    url: mailto:hello@pavoot.com
+  - type: meeting
+    url: https://cal.com/team/pavoot/30min
+  note: No developer support channel, forum, or community exists — support is sales
+    and general contact only.
+api_maturity:
+  stage: internal-first-party
+  detail: >-
+    api.pavoot.com is the authenticated backend for the Pavoot web application,
+    not a product. Its OpenAPI and Swagger UI are publicly reachable because
+    FastAPI serves them by default, not because Pavoot publishes a developer API.
+    There is no signup path to a credential, no plan, no rate limit and no
+    versioning — so the surface should be read as observable rather than
+    consumable.

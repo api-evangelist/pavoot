@@ -1,0 +1,381 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  openapi/_original/pavoot-openapi.json — 56 component schemas, 248 operations,
+  id-reference fields and path scoping parameters
+name: Pavoot Application API data model
+summary: >-
+  Entity-relationship graph derived from the Pavoot OpenAPI. The spec declares no
+  entity schemas for RESPONSES (every 200 is `schema: {}`), so entities below were
+  derived from request schemas, required id parameters, and operation descriptions
+  — not from a published object reference, which Pavoot does not have.
+derivation_caveat: >-
+  248 of 248 operations return an untyped 200 (`content.application/json.schema`
+  is an empty object). The 56 schemas in components are request bodies only. That
+  means field lists here are the fields Pavoot accepts, not the fields it returns;
+  a consumer cannot generate response types from this contract at all.
+identifier_conventions:
+  project: integer (projectId, project_id)
+  organization: string/uuid (organizationId, organization_id)
+  image: uuid string (imageId, image_id) — client-generated UUIDs registered via
+    /addImages
+  person: string (personId)
+  photographer: string (photographerId)
+  share: id in path (/shares/{id}) and shareId in bodies
+  token: opaque string for public registration and upload links
+entities:
+- name: Organization
+  description: >-
+    Top-level tenant. Owns brands, persons, photographers, an AWS Rekognition face
+    collection, storage limits, branding, managers and permission presets.
+  key: organizationId
+  operations:
+  - get_project_organization_info_endpoint_getProjectOrganizationInfo_get
+  - get_organization_limits_and_usage_endpoint_getOrganizationLimitsAndUsage_get
+  - admin_get_organizations
+  - org_branding
+  notable: >-
+    /admin/organizations/{organization_id}/create-rekognition-collection generates
+    the collection id as 'pavoot-{env}-{org-name-slug}'.
+- name: EventOrganizer
+  description: >-
+    A user role within an organization who runs events/projects. Assignable to
+    projects, with one designated primary organizer per project.
+  operations:
+  - get_event_organizer_name_endpoint_getEventOrganizerName_get
+  - admin_set_primary_organizer
+  - org_create_organizer
+  - org_assign_organizer
+- name: Project
+  description: >-
+    An event. The central scoping entity — 51 operations require projectId. Carries
+    its own personalized prompt, personalized tags, custom tag categories, locked
+    tags, filenaming config, attendee setup and email template.
+  key: projectId
+  operations:
+  - get_projects_endpoint_getProjects_get
+  - add_project_endpoint_addProject_post
+  - update_project_endpoint_updateProject_put
+  - delete_project_endpoint_deleteProject_delete
+- name: Image
+  description: >-
+    An uploaded event photo. Registered by UUID after direct-to-S3 upload, then
+    tagged asynchronously by three pipeline steps (general, rekognition, bda).
+    Supports thumbnails, trash/restore, folders, photographer credit and sharing.
+  key: imageId
+  operations:
+  - add_images_route_addImages_post
+  - get_images_endpoint_getImages_get
+  - search_images_endpoint_searchImages_post
+  - delete_images_endpoint_deleteImages_post
+  - restore_images_endpoint_restoreImages_post
+  - generate_thumbnail_endpoint_generateThumbnail__image_id__post
+- name: Folder
+  description: Organizational container for images within a project.
+  operations:
+  - create_folder_endpoint_createFolder_post
+  - get_project_folders_endpoint_getProjectFolders_get
+  - add_image_to_folder_endpoint_addImagesToFolder_post
+  - delete_folder_with_contents_endpoint_deleteFolderWithContents_post
+- name: Tag
+  description: >-
+    An AI- or human-applied label on an image, grouped into categories including
+    person, brand and custom project-defined categories. Can be locked against
+    pipeline overwrite.
+  operations:
+  - add_tag_endpoint_addTag_post
+  - get_all_tags_endpoint_getAllTags_get
+  - add_tag_bulk_endpoint_addTagBulk_post
+  - get_tags_from_prompt_ai_endpoint_getTagsFromPromptAI_post
+  notable: >-
+    /getTagsFromPromptAI resolves a natural-language prompt to tags using AWS
+    Bedrock (Claude).
+- name: Person
+  description: >-
+    An identified individual across a project or organization, backed by one or
+    more enrolled faces in AWS Rekognition. Supports unknown ('?') persons, merge,
+    duplicate detection and category assignment.
+  key: personId
+  operations:
+  - get_project_persons_endpoint_getProjectPersons_get
+  - get_org_persons_endpoint_getOrgPersons_get
+  - merge_persons_endpoint_mergePersons_post
+  - edit_person_endpoint_editPerson_post
+  - delete_persons_endpoint_deletePersons_post
+- name: Face
+  description: >-
+    A detected face occurrence on an image, with a bounding box (BBox schema),
+    assignable to a Person and enrolled into the organization's Rekognition
+    collection.
+  operations:
+  - insert_face_endpoint_insertFace_post
+  - get_faces_endpoint_getFaces_get
+  - assign_face_endpoint_assignFace_post
+  - delete_face_endpoint_deleteFace_delete
+  - get_person_faces_endpoint_getPersonFaces_get
+- name: FaceMatchSuggestion
+  description: >-
+    A machine-proposed merge of an unknown person into a named person, produced by
+    Rekognition scans and held for human approve/reject/ignore review.
+  operations:
+  - get_face_match_suggestions_endpoint_getFaceMatchSuggestions_get
+  - approve_face_match_suggestion_endpoint_approveFaceMatchSuggestion_post
+  - reject_face_match_suggestion_endpoint_rejectFaceMatchSuggestion_post
+  - ignore_face_match_suggestion_endpoint_ignoreFaceMatchSuggestion_post
+- name: Attendee
+  description: >-
+    A registered event guest, linked to a Person (and therefore to that person's
+    photos) and carrying a share-email workflow status.
+  operations:
+  - get_project_attendees_endpoint_getProjectAttendees_get
+  - upsert_project_attendee_endpoint_upsertProjectAttendee_post
+  - register_attendee_endpoint_register_attendee_post
+  - set_attendee_email_approval_endpoint_setAttendeeEmailApproval_post
+  - send_attendee_emails_endpoint_sendAttendeeEmails_post
+  states:
+  - pending
+  - approved
+  - approved-none
+  - approved-Pavoot
+  - sent
+  - auto-sent
+  - email-failed
+- name: Brand
+  description: >-
+    An organization-level sponsor/brand identity, detected from logos in event
+    media. Supports duplicate detection, merge and per-project assignment.
+  operations:
+  - add_brand_endpoint_addBrand_post
+  - get_org_brands_endpoint_getOrgBrands_get
+  - merge_brands_endpoint_mergeBrands_post
+  - add_brand_to_projects_endpoint_addBrandToProjects_post
+  - brand_deletion_impact_endpoint_brandDeletionImpact_get
+- name: Logo
+  description: >-
+    A trained logo instance belonging to a Brand, with optional transcriptions,
+    used for AI logo recognition in event photos.
+  key: logoId
+  operations:
+  - add_logo_endpoint_addLogo_post
+  - train_logo_endpoint_trainLogo_post
+  - get_project_logos_endpoint_getProjectLogos_get
+  - add_logo_transcription_endpoint_addLogoTranscription_post
+  - internal_logo_training_status_internal_logoTrainingStatus_get
+- name: Photographer
+  description: >-
+    A media contributor credited on images and granted per-project access.
+    Supports invite, merge (with preview), lock, and access revoke/restore.
+  key: photographerId
+  operations:
+  - invite_photographer_endpoint_invitePhotographer_post
+  - get_photographers_endpoint_getPhotographers_get
+  - merge_photographers
+  - revoke_photographer_project_access_endpoint_revokePhotographerProjectAccess_post
+- name: Recipient
+  description: >-
+    A party images are shared with, granted access per project and per image set.
+  operations:
+  - get_recipients_endpoint_getRecipients_get
+  - invite_recipient_endpoint_inviteRecipient_post
+  - share_images_with_recipient_endpoint_shareImagesWithRecipient_post
+  - get_recipient_images_endpoint_getRecipientImages_get
+- name: Share
+  description: >-
+    A shareable gallery link. Two flavours — scope-based (folders/people,
+    auto-updating) and explicit image selections — combinable via /shares/create.
+    Snapshot-able and previewable.
+  key: shareId
+  operations:
+  - create_share_link_createShareLink_post
+  - create_hybrid_share_shares_create_post
+  - get_shares_getShares_get
+  - update_share_updateShare_patch
+  - snapshot_share_shares__id__snapshot_post
+  - generate_share_links_shares_generate_post
+- name: Review
+  description: >-
+    A review/flagging cycle over shared images, with flags, clear, close and reopen
+    lifecycle operations.
+  operations:
+  - reviews
+  - reviews_flags
+  - reviews_close
+  - reviews_reopen
+- name: UploadLink
+  description: >-
+    A tokenized link that lets an external contributor upload into a project
+    without a Pavoot account.
+  operations:
+  - create_upload_link_endpoint_createUploadLink_post
+  - get_upload_links_endpoint_getUploadLinks_get
+  - project_by_upload_token
+  - upload_link_by_token
+- name: PermissionPreset
+  description: >-
+    A named bundle of task permissions applied to org members, with a settable
+    org default.
+  operations:
+  - org_permission_presets
+  - org_permission_presets_set_default
+  - org_permission_presets_apply
+relationships:
+- from: Organization
+  to: Project
+  type: has_many
+  via: organizationId
+- from: Organization
+  to: Brand
+  type: has_many
+  via: organizationId
+  evidence: /getOrgBrands, /bulkAddBrands
+- from: Organization
+  to: Person
+  type: has_many
+  via: organizationId
+  evidence: /getOrgPersons, /getOrgOrphanedPersons
+- from: Organization
+  to: PermissionPreset
+  type: has_many
+  via: organizationId
+- from: Organization
+  to: EventOrganizer
+  type: has_many
+  via: organizationId
+  evidence: /org/event-organizers, /admin/organizations/{organization_id}/add-organizer
+- from: Project
+  to: Organization
+  type: belongs_to
+  via: organizationId
+  evidence: /getProjectOrganizationInfo
+- from: Project
+  to: Image
+  type: has_many
+  via: projectId
+- from: Project
+  to: Folder
+  type: has_many
+  via: projectId
+  evidence: /getProjectFolders
+- from: Project
+  to: Attendee
+  type: has_many
+  via: projectId
+  evidence: /getProjectAttendees
+- from: Project
+  to: Person
+  type: has_many
+  via: projectId
+  evidence: /getProjectPersons
+- from: Project
+  to: UploadLink
+  type: has_many
+  via: projectId
+- from: Project
+  to: Photographer
+  type: has_many
+  via: projectId
+  note: many-to-many — access granted per project via /invitePhotographer and
+    revoked via /revokePhotographerProjectAccess
+- from: Project
+  to: Brand
+  type: has_many
+  via: projectIds[]
+  note: many-to-many via /addBrandToProjects and /removeBrandFromProject
+- from: Image
+  to: Project
+  type: belongs_to
+  via: projectId
+- from: Image
+  to: Folder
+  type: belongs_to
+  via: folderName
+  evidence: /addImagesToFolder, /removeImagesFromFolder
+- from: Image
+  to: Photographer
+  type: belongs_to
+  via: photographerId
+  evidence: /updateImagesPhotographer
+- from: Image
+  to: Tag
+  type: has_many
+  via: imageId
+- from: Image
+  to: Face
+  type: has_many
+  via: imageId
+  evidence: /getFaces, /insertFace with BBox
+- from: Face
+  to: Person
+  type: belongs_to
+  via: personId
+  evidence: /assignFace, /getPersonFaces
+- from: Person
+  to: Face
+  type: has_many
+  via: personId
+- from: Person
+  to: Attendee
+  type: has_one
+  via: personId
+  evidence: >-
+    /upsertProjectAttendee creates a share link for the person; /sendAttendeeEmails
+    sends that person's gallery to the attendee
+- from: FaceMatchSuggestion
+  to: Person
+  type: belongs_to
+  via: personId (candidate and reference)
+  evidence: /approveFaceMatchSuggestion merges candidate into reference
+- from: Brand
+  to: Logo
+  type: has_many
+  via: logoId
+  evidence: /getProjectLogos, /pushPersonToBrand
+- from: Logo
+  to: Brand
+  type: belongs_to
+  via: brandId
+- from: Share
+  to: Image
+  type: has_many
+  via: imageIds / includedImageIds / excludedImageIds
+- from: Share
+  to: Project
+  type: belongs_to
+  via: projectId
+  note: >-
+    Explicit-only shares may span projects; a representative project is stored.
+- from: Share
+  to: Review
+  type: has_many
+  via: shareId
+- from: Recipient
+  to: Image
+  type: has_many
+  via: imageIds
+  note: many-to-many via /shareImagesWithRecipient
+- from: UploadLink
+  to: Project
+  type: belongs_to
+  via: projectId
+external_systems:
+  note: >-
+    Named in the provider's own operation descriptions — these are not inferred.
+  systems:
+  - name: Clerk
+    role: authentication / session identity, shared across multiple Pavoot apps
+    evidence_operation: get_me_me_get
+  - name: AWS S3
+    role: image storage via presigned single-PUT and multipart uploads
+    evidence_operation: generate_presigned_urls_endpoint_generatePresignedUrls_post
+  - name: AWS Rekognition
+    role: face collection, enrollment and matching
+    evidence_operation: admin_create_org_rekognition_collection
+  - name: AWS SQS
+    role: asynchronous tagging pipeline queues
+    evidence_operation: add_images_route_addImages_post
+  - name: AWS Bedrock (Claude)
+    role: prompt-to-tag resolution
+    evidence_operation: get_tags_from_prompt_ai_endpoint_getTagsFromPromptAI_post
+  - name: BDA
+    role: one of the three tagging pipeline steps (general, rekognition, bda)
+    evidence_operation: get_tagging_failures_projects__project_id__images_tagging_failures_get

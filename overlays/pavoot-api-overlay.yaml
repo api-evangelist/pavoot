@@ -1,0 +1,3096 @@
+# OpenAPI Overlay 1.0.0 — API Evangelist enhancements over the Pavoot-published OpenAPI.
+# generated: '2026-08-13'
+# method: generated
+# source: https://api.pavoot.com/openapi.json
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Pavoot Application API
+  version: 1.0.0
+  description: 'Overlay of API Evangelist enhancements over the Pavoot-published OpenAPI, harvested verbatim
+    from https://api.pavoot.com/openapi.json on 2026-08-13. It adds ONLY what was established by probing
+    Pavoot''s own surfaces: the real API host, a meaningful product identity, the Clerk bearer scheme
+    the live API demonstrably enforces, the error responses it demonstrably returns, and domain tags over
+    an otherwise entirely untagged 248-operation surface. The original document is never mutated.'
+extends: openapi/_original/pavoot-openapi.json
+x-generated: '2026-08-13'
+x-method: generated
+x-source: https://api.pavoot.com/openapi.json
+actions:
+- target: $.info
+  description: Replace the FastAPI framework defaults with the real product identity.
+  update:
+    title: Pavoot Application API
+    description: 'Authenticated backend for the Pavoot AI event platform — event (project) management,
+      event media upload and AI tagging, face and person identity resolution, sponsor brand and logo recognition,
+      attendee registration and follow-up, gallery sharing, and organization permissions. This is a first-party
+      application backend, not a published developer API: the OpenAPI and Swagger UI are publicly readable
+      because FastAPI serves them by default, but Pavoot issues no API keys and documents no developer
+      program.'
+    contact:
+      name: Pavoot
+      email: hello@pavoot.com
+      url: https://pavoot.com
+    termsOfService: https://pavoot.com/client/gtc
+- target: $
+  description: Add the servers block the published document omits. Host confirmed by probe (HTTP 200 on
+    /openapi.json, 401 on /me).
+  update:
+    servers:
+    - url: https://api.pavoot.com
+      description: Production (AWS Lambda function URL, eu-central-1)
+- target: $.components
+  description: Declare the security scheme and shared error responses the published document omits. Every
+    operation except the token-scoped public ones returns 401 without a Clerk session JWT.
+  update:
+    securitySchemes:
+      clerkSessionJWT:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+        description: Clerk-issued session JWT. Issuer https://clerk.pavoot.com, RS256, JWKS at https://clerk.pavoot.com/.well-known/jwks.json.
+          Note that a valid Clerk session does not imply membership of this application — see GET /me.
+    responses:
+      Unauthorized:
+        description: Unauthorized — missing or invalid Clerk session token. No WWW-Authenticate challenge
+          is returned.
+        content:
+          application/json:
+            schema: &id001
+              type: object
+              properties:
+                detail:
+                  type: string
+              title: PavootError
+            example:
+              detail: 'Unauthorized: Authentication failed'
+      Forbidden:
+        description: Forbidden — authenticated but lacking permission for the requested project or organization.
+        content:
+          application/json:
+            schema: *id001
+      NotFound:
+        description: Not Found.
+        content:
+          application/json:
+            schema: *id001
+            example:
+              detail: Not Found
+- target: $
+  description: Apply the Clerk bearer requirement globally.
+  update:
+    security:
+    - clerkSessionJWT: []
+- target: $
+  description: Declare the domain tags applied to operations below.
+  update:
+    tags:
+    - name: Admin
+      description: Admin operations (31 of 248).
+    - name: Attendees
+      description: Attendees operations (15 of 248).
+    - name: Brands & Logos
+      description: Brands & Logos operations (21 of 248).
+    - name: Events
+      description: Events operations (1 of 248).
+    - name: Folders
+      description: Folders operations (7 of 248).
+    - name: General
+      description: General operations (7 of 248).
+    - name: Identity
+      description: Identity operations (5 of 248).
+    - name: Images
+      description: Images operations (11 of 248).
+    - name: Organizations
+      description: Organizations operations (31 of 248).
+    - name: Persons & Faces
+      description: Persons & Faces operations (38 of 248).
+    - name: Photographers
+      description: Photographers operations (15 of 248).
+    - name: Projects
+      description: Projects operations (8 of 248).
+    - name: Recipients
+      description: Recipients operations (9 of 248).
+    - name: Shares & Reviews
+      description: Shares & Reviews operations (19 of 248).
+    - name: Storage & Limits
+      description: Storage & Limits operations (1 of 248).
+    - name: Tags
+      description: Tags operations (17 of 248).
+    - name: Uploads
+      description: Uploads operations (12 of 248).
+- target: $.paths['/emit_counts'].post
+  description: Tag into the Events domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Events
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/emit_person_updated'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/emit_tagging_step'].post
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addImages'].post
+  description: Tag into the Images domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Images
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/projects/{project_id}/images/tagging-failures'].get
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/projects/{project_id}/images/retry-tagging'].post
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/deleteImages'].post
+  description: Tag into the Images domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Images
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getTrashImages'].get
+  description: Tag into the Images domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Images
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/restoreImages'].post
+  description: Tag into the Images domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Images
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/countTrashImages'].get
+  description: Tag into the Images domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Images
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/countImages'].get
+  description: Tag into the Images domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Images
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getImages'].get
+  description: Tag into the Images domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Images
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/searchImages'].post
+  description: Tag into the Images domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Images
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/generateThumbnail/{image_id}'].post
+  description: Tag into the Images domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Images
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/regenerateThumbnails'].post
+  description: Tag into the Images domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Images
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getImagesWithUnknownFaces'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/generateDownloadUrl'].post
+  description: Tag into the General domain and attach the undeclared error responses.
+  update:
+    tags:
+    - General
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/generatePresignedUrls'].post
+  description: Tag into the Uploads domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Uploads
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/createMultipartUpload'].post
+  description: Tag into the Uploads domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Uploads
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/completeMultipartUpload'].post
+  description: Tag into the Uploads domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Uploads
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/abortMultipartUpload'].post
+  description: Tag into the Uploads domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Uploads
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/createFolder'].post
+  description: Tag into the Folders domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Folders
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/deleteFolder'].post
+  description: Tag into the Folders domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Folders
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/deleteFolderWithContents'].post
+  description: Tag into the Folders domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Folders
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateFolderName'].put
+  description: Tag into the Folders domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Folders
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectFolders'].get
+  description: Tag into the Folders domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Folders
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addImagesToFolder'].post
+  description: Tag into the Folders domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Folders
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/removeImagesFromFolder'].post
+  description: Tag into the Folders domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Folders
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateImagesPhotographer'].post
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getPhotographers'].get
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getRecipients'].get
+  description: Tag into the Recipients domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Recipients
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addRecipientToProjects'].post
+  description: Tag into the Recipients domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Recipients
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/deletePhotographer'].post
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/revokePhotographerProjectAccess'].post
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/deleteRecipient'].post
+  description: Tag into the Recipients domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Recipients
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/editPhotographer'].post
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/editRecipient'].post
+  description: Tag into the Recipients domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Recipients
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/invitePhotographer'].post
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addPhotographer'].post
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addPhotographerToProjects'].post
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/inviteRecipient'].post
+  description: Tag into the Recipients domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Recipients
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/shareImagesWithRecipient'].post
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/unshareImagesWithRecipient'].post
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getRecipientImages'].get
+  description: Tag into the Recipients domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Recipients
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addRecipients'].post
+  description: Tag into the Recipients domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Recipients
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/sendToRecipient'].post
+  description: Tag into the Recipients domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Recipients
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getEffectivePermissions'].get
+  description: Tag into the Identity domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Identity
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getEffectiveOrgPermissions'].get
+  description: Tag into the Identity domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Identity
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/checkRouteAccess'].get
+  description: Tag into the Identity domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Identity
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/permission-presets'].get
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/permissions/role'].patch
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/permissions/user'].patch
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/permissions/tasks'].get
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/permissions/org'].get
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/permissions/org'].patch
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjects'].get
+  description: Tag into the Projects domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Projects
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/project-by-upload-token'].get
+  description: Tag into the Uploads domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Uploads
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/createUploadLink'].post
+  description: Tag into the Uploads domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Uploads
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getUploadLinks'].get
+  description: Tag into the Uploads domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Uploads
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateUploadLink'].patch
+  description: Tag into the Uploads domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Uploads
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/deleteUploadLink'].delete
+  description: Tag into the Uploads domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Uploads
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/upload-link-by-token'].get
+  description: Tag into the Uploads domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Uploads
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getRecipientProjects'].get
+  description: Tag into the Recipients domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Recipients
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addProject'].post
+  description: Tag into the Projects domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Projects
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateProject'].put
+  description: Tag into the Projects domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Projects
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/deleteProject'].delete
+  description: Tag into the Projects domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Projects
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateProjectPersonalizedPrompt'].put
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectPersonalizedPrompt'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateProjectFilenamingConfig'].put
+  description: Tag into the Projects domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Projects
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateAllProjectsFilenamingConfig'].put
+  description: Tag into the Projects domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Projects
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectFilenamingConfig'].get
+  description: Tag into the Projects domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Projects
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateProjectPersonalizedTags'].put
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectPersonalizedTags'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateProjectCustomTagCategories'].put
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/renameCustomTagOption'].post
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectCustomTagCategories'].get
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectLockedTags'].get
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateProjectLockedTags'].put
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/photographers/revokeAccess'].post
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/photographers/restoreAccess'].post
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/photographers'].delete
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/photographers/merge/preview'].post
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/photographers/merge'].post
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectLockedPhotographers'].get
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/setPhotographerLock'].post
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateProjectLockedPhotographers'].put
+  description: Tag into the Photographers domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Photographers
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectUploadLinkInfo'].get
+  description: Tag into the Uploads domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Uploads
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getAllTags'].get
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/deleteTag'].post
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/deleteTagBulk'].post
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addTag'].post
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateImageTitle'].post
+  description: Tag into the Images domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Images
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addTagBulk'].post
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateTag'].put
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateTagBulk'].put
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getTagsFromPrompt'].post
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getTagsFromPromptAI'].post
+  description: Tag into the Tags domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Tags
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addPersonFace'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/bulkAddPersonFaces'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/completeBulkFaceUpload'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/matchBulkFaceNames'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/commitBulkFaceUpload'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectPersons'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getOrgPersons'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectFaceCategories'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectAttendees'].get
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/downloadAttendeeFacesZip'].get
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/upsertProjectAttendee'].post
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/setAttendeeEmailApproval'].post
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectAttendeeEmailTemplate'].get
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/setProjectAttendeeEmailTemplate'].put
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectAttendeeSetup'].get
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/setProjectAttendeeSetup'].put
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/sendAttendeeEmails'].post
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/attendee-registration-info/{token}'].get
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getAttendeeRegistrationPageLayout'].get
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/setAttendeeRegistrationPageLayout'].put
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/attendee-registration-presign-face'].post
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/register-attendee'].post
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getAttendeeRegistrationLink'].get
+  description: Tag into the Attendees domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Attendees
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/deletePersons'].delete
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/editPerson'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addLogo'].post
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addBrand'].post
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectLogos'].get
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getOrgBrands'].get
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addBrandToProjects'].post
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/removeBrandFromProject'].post
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/bulkAddBrands'].post
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getOrgPotentialBrandDuplicates'].get
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/mergeBrands'].post
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/rejectBrandDuplicateGroup'].post
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/ignoreBrandDuplicateGroup'].post
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/pushPersonToBrand'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/editLogo'].post
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/deleteLogo'].delete
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/brandDeletionImpact'].get
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/generateBrandFolders'].post
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addLogoTranscription'].post
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/deleteLogoTranscription'].delete
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateLogoTranscription'].put
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/trainLogo'].post
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/internal/logoTrainingStatus'].post
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/internal/logoInfo'].get
+  description: Tag into the Brands & Logos domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Brands & Logos
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/changePersonCategory'].put
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getStorage'].get
+  description: Tag into the Storage & Limits domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Storage & Limits
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectStorage'].get
+  description: Tag into the Projects domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Projects
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getProjectOrganizationInfo'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getOrganizationLimitsAndUsage'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getEventOrganizerImageTagging'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/checkUploadLimit'].get
+  description: Tag into the Uploads domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Uploads
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getEventOrganizerName'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/isUserActive'].get
+  description: Tag into the Identity domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Identity
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/insertFace'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getFaces'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getTextExtraction'].get
+  description: Tag into the General domain and attach the undeclared error responses.
+  update:
+    tags:
+    - General
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getPersonFaces'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/assignFace'].put
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/findDuplicatePersons'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/deleteFace'].delete
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getOrphanedPersons'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getPotentialDuplicates'].get
+  description: Tag into the General domain and attach the undeclared error responses.
+  update:
+    tags:
+    - General
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getOrgOrphanedPersons'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getOrgPotentialDuplicates'].get
+  description: Tag into the General domain and attach the undeclared error responses.
+  update:
+    tags:
+    - General
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/mergePersons'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/rejectNameDuplicateGroup'].post
+  description: Tag into the General domain and attach the undeclared error responses.
+  update:
+    tags:
+    - General
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/ignoreNameDuplicateGroup'].post
+  description: Tag into the General domain and attach the undeclared error responses.
+  update:
+    tags:
+    - General
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/scanExistingFacesForPerson'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/scanUnknownFacesForMatches'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/scanAllFacesForMatches'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getFaceMatchSuggestions'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/scanOrgFacesForMatches'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getOrgFaceMatchSuggestions'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/approveFaceMatchSuggestion'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/rejectFaceMatchSuggestion'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/ignoreFaceMatchSuggestion'].post
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getPersons'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getPersonFolders'].get
+  description: Tag into the Persons & Faces domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Persons & Faces
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/createShareLink'].post
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getShares'].get
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/updateShare'].patch
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/reviews'].get
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/reviews/flags'].get
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/reviews/flags/clear'].post
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/reviews/close'].post
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/reviews/reopen'].post
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/deleteShare'].delete
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/getShare/{id}/manage'].get
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/shares/{id}/images'].get
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/shares/{id}/snapshot'].post
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/shares/create'].post
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/shares/preview'].post
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/addImagesToShare'].post
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/shares/generate'].post
+  description: Tag into the Shares & Reviews domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Shares & Reviews
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/isAdmin'].get
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/me'].get
+  description: Tag into the Identity domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Identity
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/event-organizers'].get
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/projects'].get
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/projects/{project_id}/set-primary-organizer'].patch
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/photographers'].get
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/delete-photographer'].delete
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/recipients'].get
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/delete-recipient'].delete
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/organizations'].get
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/organizations'].post
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/create-organizer'].post
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/delete-organizer'].delete
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/organizations/{organization_id}'].patch
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/organizations/{organization_id}'].delete
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/organizations/{organization_id}/create-rekognition-collection'].post
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/organizations/{organization_id}/collection-faces'].get
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/organizations/{organization_id}/missing-faces'].get
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/organizations/{organization_id}/migrate-missing-faces'].post
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/organizations/{organization_id}/migration-progress'].get
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/organizations/{organization_id}/add-organizer'].post
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/organizations/{organization_id}/remove-organizer'].post
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/assign-organizer'].post
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/can-manage-organizers'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/branding'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/branding'].post
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/event-organizers'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/photographers'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/managers'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/managers/set'].post
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/projects'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/create-organizer'].post
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/update-organizer'].patch
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/assign-organizer'].post
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/unassign-organizer'].post
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/remove-organizer'].post
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/permissions/tasks'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/permissions/user-matrix'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/permissions/user'].patch
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/permissions/search-members'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/permissions/role-matrix'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/permission-presets'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/permission-presets'].post
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/permission-presets/{preset_id}'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/permission-presets/{preset_id}'].patch
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/permission-presets/{preset_id}'].delete
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/permission-presets/set-default'].post
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/permission-presets/apply'].post
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/permissions/role-assignments'].get
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/org/permissions/assign-role'].post
+  description: Tag into the Organizations domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Organizations
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/admins'].get
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/admins/add'].post
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/admin/admins/remove'].post
+  description: Tag into the Admin domain and attach the undeclared error responses.
+  update:
+    tags:
+    - Admin
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'
+- target: $.paths['/'].get
+  description: Tag into the General domain and attach the undeclared error responses.
+  update:
+    tags:
+    - General
+    responses:
+      '401':
+        $ref: '#/components/responses/Unauthorized'
+      '403':
+        $ref: '#/components/responses/Forbidden'
+      '404':
+        $ref: '#/components/responses/NotFound'

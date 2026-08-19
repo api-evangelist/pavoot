@@ -1,0 +1,59 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://pavoot.com/ (homepage), https://pavoot.com/sitemap-0.xml,
+  https://pavoot.com/pricing
+name: Pavoot plans and pricing
+plan_count: 0
+plans: []
+summary: >-
+  Pavoot publishes no pricing. There is no pricing page, no tier list, no
+  self-serve checkout and no published quota. Acquisition is a booked call.
+evidence:
+- url: https://pavoot.com/pricing
+  status: 404
+- url: https://pavoot.com/sitemap-0.xml
+  status: 200
+  note: >-
+    The complete sitemap is 17 URLs — home, about-us, four product pages, four
+    draft pages, an og-card, and the legal set (privacy, privacy-attendees,
+    extension-privacy, client/gtc, client/dpa). No pricing URL exists.
+- url: https://pavoot.com/
+  status: 200
+  note: >-
+    Homepage navigation links only to the four product pages, the privacy policy,
+    a #contact anchor and an external booking link. No pricing link.
+acquisition:
+  model: sales-led
+  self_serve: false
+  free_tier: false
+  trial: false
+  contact:
+  - type: booking
+    url: https://cal.com/team/pavoot/30min
+    note: '"Book a 30 min" team meeting — the primary published call to action.'
+  - type: email
+    url: mailto:hello@pavoot.com
+api_pricing:
+  published: false
+  note: >-
+    There is no API product to price. api.pavoot.com is the application's own
+    backend; access comes with being a Pavoot customer, and no API-specific
+    metering, quota or price is published.
+quota_surfaces_in_api:
+  note: >-
+    The API does expose business-quota reads, which implies plan limits exist
+    internally even though none are published externally.
+  operations:
+  - get_organization_limits_and_usage_endpoint_getOrganizationLimitsAndUsage_get
+  - check_upload_limit_endpoint_checkUploadLimit_get
+  - get_storage_endpoint_getStorage_get
+  - get_project_storage_endpoint_getProjectStorage_get
+  dimensions_implied:
+  - storage
+  - upload volume
+  - per-organization limits
+no_pointer_reason: >-
+  No Plans or Pricing pointer is wired into apis.yml. plan_count is 0 and
+  https://pavoot.com/pricing returns 404, so a pointer would assert published
+  pricing the provider does not have.

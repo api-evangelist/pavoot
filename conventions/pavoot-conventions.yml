@@ -1,0 +1,196 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  openapi/_original/pavoot-openapi.json (248 operations, 56 schemas) + live
+  response-header probes of https://api.pavoot.com/openapi.json and
+  https://api.pavoot.com/me
+name: Pavoot Application API conventions
+summary: >-
+  Cross-cutting runtime semantics for the Pavoot application backend. Derived from
+  the provider's own FastAPI-generated OpenAPI and from live probes; Pavoot
+  publishes no prose API guide, so nothing here is quoted from developer
+  documentation that does not exist.
+style:
+  protocol: HTTPS/1.1 + HTTP/2 (JSON over REST-ish RPC)
+  server: uvicorn (FastAPI), fronted by an AWS Lambda function URL in eu-central-1
+  resource_model: rpc-style
+  resource_model_note: >-
+    Paths are camelCase verb-noun RPC calls (/getProjects, /addImages,
+    /deleteFolderWithContents), not resource collections. Only a small minority of
+    newer paths are resource-shaped (/projects/{project_id}/images/retry-tagging,
+    /shares/{id}/images, /org/permissions/*), which suggests an in-progress
+    migration toward REST. HTTP methods are not used semantically throughout —
+    several destructive operations are POST (/deleteImages, /deleteTag,
+    /deleteFolder) while others are DELETE (/deleteShare, /deleteUploadLink).
+  casing:
+    paths: camelCase (older) / kebab+snake (newer resource paths)
+    query_params: camelCase (projectId, pageSize, photographerId)
+    body_fields: camelCase (projectId, imageIds) with snake_case exceptions in
+      newer bodies (zero_images_phrase, chosen_name, status_filter)
+    casing_note: >-
+      Mixed. camelCase dominates the request surface but snake_case appears in
+      newer fields and in path parameters (project_id, organization_id, image_id).
+      A client cannot assume one casing.
+authentication:
+  style: bearer
+  header: 'Authorization: Bearer <clerk-session-jwt>'
+  declared_in_spec: false
+  detail: authentication/pavoot-authentication.yml
+idempotency:
+  supported: false
+  idempotency_key_header: null
+  detail: >-
+    Pavoot ships NO idempotency-key mechanism. There is no Idempotency-Key
+    header, no client-supplied request token, no dedup window, and no replay
+    semantics anywhere in the 248-operation surface. Two operations document
+    themselves as naturally idempotent — /regenerateThumbnails ("Idempotent —
+    safe to re-run") and /revokePhotographerProjectAccess ("Idempotent — revoking
+    access nobody has is a success with changed=false") — but natural idempotence
+    of two handlers is not an idempotency contract, and it does not make the
+    write surface safe to retry.
+  retry_hazard: >-
+    The high-consequence writes are the unsafe ones. /sendAttendeeEmails sends
+    real email to real attendees and returns partial success; /addImages queues
+    SQS tagging work per image; /createMultipartUpload and /shares/generate
+    create billable/visible artifacts. Retrying any of them after a timeout may
+    duplicate the effect, and the API offers no way to make the retry safe.
+pagination:
+  supported: partial
+  uniform: false
+  styles:
+  - style: page-number
+    params:
+    - page
+    - pageSize
+    optional_sort:
+    - sortBy
+    operations: 6
+  - style: limit-offset
+    params:
+    - limit
+    - offset
+    operations: 4
+  - style: limit-only
+    params:
+    - limit
+    operations: 6
+  cursor: false
+  detail: >-
+    Only 16 of 248 operations expose any pagination at all, in three mutually
+    incompatible styles. The remaining 232 — including large collection reads
+    like /getImages, /getProjectPersons and /getAllTags — return unbounded result
+    sets with no page controls declared in the spec. No cursor pagination, no
+    total-count envelope, and no declared response wrapper.
+sorting:
+  params:
+  - sortBy
+  operations: 4
+filtering:
+  detail: >-
+    Filtering is per-operation and passed as query params or request-body fields
+    rather than a shared convention. Notable: /searchImages accepts an "AI boolean
+    query AST" (aiQuery) in the request body, and
+    /projects/{project_id}/images/tagging-failures takes comma-delimited
+    ?steps=general,rekognition,bda with an ?operator=AND|OR combinator and
+    ?statuses=failed,stuck,pending.
+field_expansion:
+  supported: false
+sparse_fieldsets:
+  supported: false
+metadata:
+  supported: false
+  note: >-
+    No generic customer metadata bag. Extensibility is domain-specific instead —
+    per-project personalized prompts, personalized tags, custom tag categories,
+    locked tags, and filenaming config each have their own get/update pair.
+request_tracing:
+  request_id_header: null
+  detail: >-
+    No X-Request-Id, no correlation-id header, and no request identifier echoed in
+    responses. Observed response headers on both a 200 and a 401 are only date,
+    content-type, content-length, server (uvicorn) and vary. There is nothing for
+    a caller to quote when reporting a failure.
+versioning:
+  scheme: none
+  detail: >-
+    Paths are unversioned (no /v1 prefix), there is no version header, no media-type
+    versioning, and info.version is the FastAPI default "0.1.0" rather than a
+    meaningful release identifier. Breaking changes to this surface would be
+    unannounceable.
+error_envelope:
+  content_type: application/json
+  field: detail
+  rfc9457: false
+  shape_varies_by_status: true
+  detail: errors/pavoot-problem-types.yml
+rate_limit_signaling:
+  headers: []
+  status_on_exhaustion: null
+  detail: >-
+    No RateLimit-*, no X-RateLimit-*, and no Retry-After appear anywhere in the
+    spec or in observed responses. Pavoot does expose business quota reads
+    (/getOrganizationLimitsAndUsage, /checkUploadLimit, /getStorage,
+    /getProjectStorage) but these are storage/upload allowances, not API request
+    throttles. See rate-limits/pavoot-rate-limits.yml.
+concurrency_control:
+  etag: false
+  if_match: false
+  optimistic_locking: false
+  domain_locking: >-
+    Not HTTP-level, but the domain models locks explicitly: /getProjectLockedTags,
+    /updateProjectLockedTags, /setPhotographerLock and
+    /updateProjectLockedPhotographers pin values against being overwritten by the
+    AI tagging pipeline.
+async_and_long_running:
+  pattern: fire-and-forget background tasks over SQS
+  detail: >-
+    Several operations return immediately and complete out of band —
+    /scanUnknownFacesForMatches ("Runs in background; returns immediately"),
+    /scanAllFacesForMatches, /approveFaceMatchSuggestion (emits run in a background
+    task), /regenerateThumbnails (returns "202-style {success, queued: N}" with an
+    actual 200), and /addImages (queues tagging tasks to SQS).
+  no_job_resource: true
+  polling_surfaces:
+  - get_tagging_failures_projects__project_id__images_tagging_failures_get
+  - internal_logo_training_status_internal_logoTrainingStatus_get
+  - get_face_match_suggestions_endpoint_getFaceMatchSuggestions_get
+  detail_note: >-
+    There is no job/operation resource to poll and no completion callback. A
+    caller learns an async step finished by re-reading domain state — which is why
+    the tagging-failures endpoint has to define "stuck" as pending for over an
+    hour.
+bulk_operations:
+  detail: >-
+    Bulk is a first-class pattern, expressed as separate *Bulk operations rather
+    than array-accepting singulars: /addTagBulk, /deleteTagBulk, /updateTagBulk,
+    /bulkAddPersonFaces, /bulkAddBrands, /deletePersons, /addRecipients.
+  partial_failure: >-
+    Bulk and fan-out operations return 200 on partial success. /sendAttendeeEmails
+    is the documented case: per-recipient failure sets status email-failed and
+    records last_email_error, then continues.
+file_upload:
+  pattern: S3 presigned URLs, browser-direct
+  small_files: POST /generatePresignedUrls then PUT direct to S3
+  large_files: >-
+    POST /createMultipartUpload -> parallel part PUTs ->
+    POST /completeMultipartUpload (or /abortMultipartUpload)
+  registration: POST /addImages registers uploaded UUIDs and queues tagging
+  detail: Bytes never transit the Pavoot API; only presign and registration do.
+tenancy:
+  levels:
+  - organization
+  - project
+  required_scoping_params:
+  - projectId
+  - organizationId
+  detail: >-
+    projectId is a required parameter on 51 operations and projectIds[] on 18
+    more; organizationId on 14. Effectively every call must name its tenant — there
+    is no implicit "current project" resolved from the session.
+cross_links:
+  authentication: authentication/pavoot-authentication.yml
+  errors: errors/pavoot-problem-types.yml
+  lifecycle: lifecycle/pavoot-lifecycle.yml
+  rate_limits: rate-limits/pavoot-rate-limits.yml
+  scopes: scopes/pavoot-scopes.yml
+  data_model: data-model/pavoot-data-model.yml

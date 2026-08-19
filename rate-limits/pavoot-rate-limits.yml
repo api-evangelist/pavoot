@@ -1,0 +1,64 @@
+generated: '2026-08-13'
+method: probed
+source: >-
+  openapi/_original/pavoot-openapi.json plus live response-header inspection of
+  https://api.pavoot.com/openapi.json (200) and https://api.pavoot.com/me (401)
+name: Pavoot Application API rate limits
+limit_count: 0
+limits: []
+summary: >-
+  Pavoot publishes no rate limits and returns no rate-limit signalling headers.
+  Checked against both the spec and live responses — an honest zero.
+response_headers:
+  rate_limit_headers: []
+  retry_after: false
+  observed_on_200:
+  - date
+  - content-type
+  - content-length
+  - server
+  - vary
+  observed_on_401:
+  - date
+  - content-type
+  - content-length
+  - server
+  note: >-
+    Neither the RFC-style RateLimit-Limit/Remaining/Reset fields nor the
+    X-RateLimit-* convention appear. No Retry-After. The string "ratelimit" does
+    not occur anywhere in the 216KB OpenAPI document.
+status_on_exhaustion: null
+status_on_exhaustion_note: >-
+  Unknown and undocumented. No 429 response is declared on any of the 248
+  operations — the only error status declared anywhere in the spec is 422.
+documentation:
+  published: false
+  url: null
+  note: >-
+    Pavoot has no developer documentation of any kind, so there is no page on
+    which limits could be published. The only machine-readable contract is the
+    FastAPI-generated OpenAPI.
+infrastructure_note: >-
+  api.pavoot.com is served by an AWS Lambda function URL
+  (ec-bfdeb82aabcf4e709cc0dc9f4dcd8d0e.ecs.eu-central-1.on.aws). Lambda
+  concurrency limits and any AWS-side throttling would therefore apply, but those
+  are platform defaults rather than a published API policy, and they surface as
+  429/502 without any of the headers a client could use to back off gracefully.
+business_quotas:
+  note: >-
+    Distinct from API request throttling. Pavoot meters storage and upload volume
+    per organization and exposes those counters, but does not publish the values.
+  operations:
+  - operationId: get_organization_limits_and_usage_endpoint_getOrganizationLimitsAndUsage_get
+    path: /getOrganizationLimitsAndUsage
+  - operationId: check_upload_limit_endpoint_checkUploadLimit_get
+    path: /checkUploadLimit
+  - operationId: get_storage_endpoint_getStorage_get
+    path: /getStorage
+  - operationId: get_project_storage_endpoint_getProjectStorage_get
+    path: /getProjectStorage
+no_pointer_reason: >-
+  No RateLimits pointer is wired into apis.yml. limit_count is 0 and no
+  rate-limit response header exists, so a pointer would assert a rate-limit
+  signalling surface the provider does not have — the same failure mode as a
+  WellKnown pointer over an all-404 probe.

@@ -1,0 +1,48 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  registry.npmjs.org search, pypi.org, rubygems.org, crates.io, api.github.com,
+  and the Pavoot marketing site
+name: Pavoot client libraries
+package_count: 0
+official_package_count: 0
+packages: []
+summary: >-
+  Pavoot publishes no client libraries in any public package registry, and has no
+  public source repository. Checked, nothing found — this is a recorded absence,
+  not an unchecked field.
+registries_searched:
+- registry: npm
+  query: https://registry.npmjs.org/-/v1/search?text=pavoot
+  result_count: 0
+  status: 200
+- registry: pypi
+  query: https://pypi.org/pypi/pavoot/json
+  result: Not Found
+  status: 404
+- registry: rubygems
+  query: https://rubygems.org/api/v1/gems/pavoot.json
+  result: This rubygem could not be found.
+  status: 404
+- registry: crates.io
+  query: https://crates.io/api/v1/crates?q=pavoot
+  result_count: 0
+  status: 200
+source_control:
+- host: github.com
+  query: https://api.github.com/orgs/pavoot
+  status: 404
+  result: >-
+    No GitHub organization. A repository search for "pavoot" returns only the
+    API Evangelist profile repo and unrelated matches — no first-party Pavoot code.
+distribution_note: >-
+  The only first-party distributed client Pavoot ships is a browser extension
+  ("Pavoot Event Sync", which has its own privacy policy at
+  https://pavoot.com/extension-privacy). It is a product surface for users, not a
+  developer SDK, it is not in a package registry, and no store listing URL is
+  published on the marketing site, so there is no version or publish date to
+  record. version: null, published: null — checked, nothing to record.
+no_pointer_reason: >-
+  No Packages or SDKs pointer is wired into apis.yml. Zero official client
+  libraries were found, and a pointer would assert an SDK surface the provider
+  does not have.

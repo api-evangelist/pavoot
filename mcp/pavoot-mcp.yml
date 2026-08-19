@@ -1,0 +1,118 @@
+generated: '2026-08-13'
+method: derived
+status: candidate
+source: openapi/_original/pavoot-openapi.json (248 operations)
+name: Pavoot MCP server (candidate — not published by Pavoot)
+summary: >-
+  Pavoot ships NO MCP server, hosted or packaged. The tools below are a CANDIDATE
+  set derived from operations in Pavoot's own OpenAPI to show what an agent
+  surface over this API would look like. Nothing here is offered by Pavoot and
+  none of it is callable today.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: derived
+search_evidence:
+- url: https://api.pavoot.com/mcp
+  status: 404
+- url: https://registry.npmjs.org/-/v1/search?text=pavoot
+  status: 200
+  result: 0 packages — no @pavoot/mcp or community server
+- url: https://api.github.com/orgs/pavoot
+  status: 404
+  result: no public GitHub organization
+- url: https://pavoot.com/sitemap-0.xml
+  status: 200
+  result: >-
+    17 URLs, none mentioning MCP, agents, integrations or a developer surface
+auth_note: >-
+  Any real MCP server over this API would have to carry a Clerk session JWT
+  (issuer https://clerk.pavoot.com) and scope every call by projectId or
+  organizationId. Since Pavoot issues no API keys and runs no client-registration
+  flow, there is no credential an independent MCP server could obtain.
+candidate_tools:
+- name: list_projects
+  description: List the events (projects) the caller can access.
+  rest: get_projects_endpoint_getProjects_get
+  method: GET
+  path: /getProjects
+- name: search_images
+  description: >-
+    Search event photos with Pavoot's AI boolean query AST plus filters.
+  rest: search_images_endpoint_searchImages_post
+  method: POST
+  path: /searchImages
+- name: get_images
+  description: List images in a project.
+  rest: get_images_endpoint_getImages_get
+  method: GET
+  path: /getImages
+- name: tags_from_prompt
+  description: >-
+    Resolve a natural-language prompt to relevant tags (Pavoot runs this through
+    AWS Bedrock/Claude server-side).
+  rest: get_tags_from_prompt_ai_endpoint_getTagsFromPromptAI_post
+  method: POST
+  path: /getTagsFromPromptAI
+- name: list_project_persons
+  description: List identified people detected across a project's media.
+  rest: get_project_persons_endpoint_getProjectPersons_get
+  method: GET
+  path: /getProjectPersons
+- name: list_project_attendees
+  description: List registered attendees for an event.
+  rest: get_project_attendees_endpoint_getProjectAttendees_get
+  method: GET
+  path: /getProjectAttendees
+- name: get_attendee_registration_link
+  description: Return (creating if needed) the public attendee registration URL.
+  rest: get_attendee_registration_link_endpoint_getAttendeeRegistrationLink_get
+  method: GET
+  path: /getAttendeeRegistrationLink
+- name: get_face_match_suggestions
+  description: Fetch pending machine-proposed identity merges for human review.
+  rest: get_face_match_suggestions_endpoint_getFaceMatchSuggestions_get
+  method: GET
+  path: /getFaceMatchSuggestions
+- name: get_tagging_failures
+  description: >-
+    Report images whose AI tagging failed or is stuck (pending over one hour).
+  rest: get_tagging_failures_projects__project_id__images_tagging_failures_get
+  method: GET
+  path: /projects/{project_id}/images/tagging-failures
+- name: get_project_logos
+  description: List sponsor/brand logos detected in a project's media.
+  rest: get_project_logos_endpoint_getProjectLogos_get
+  method: GET
+  path: /getProjectLogos
+- name: get_organization_limits_and_usage
+  description: Read the organization's storage and upload usage against its limits.
+  rest: get_organization_limits_and_usage_endpoint_getOrganizationLimitsAndUsage_get
+  method: GET
+  path: /getOrganizationLimitsAndUsage
+- name: list_shares
+  description: List gallery share links for a project.
+  rest: get_shares_getShares_get
+  method: GET
+  path: /getShares
+tool_selection_note: >-
+  Deliberately read-only. The candidate set excludes the high-consequence writes
+  on this API — /sendAttendeeEmails (sends real email to attendees and returns
+  partial success), /register-attendee, the merge and delete operations, and
+  everything under /admin/*. With no idempotency key, no rate-limit signalling and
+  no typed error responses, those writes are not safe to expose to an agent.
+crosswalk: null
+crosswalk_note: >-
+  No mcp/pavoot-tool-crosswalk.yml is written. A crosswalk binds a REAL MCP tool
+  set (or GraphQL schema) to backing OpenAPI operations; Pavoot has neither an MCP
+  server nor a GraphQL endpoint (https://api.pavoot.com/graphql returns 404), so
+  there is nothing to cross-walk against and a file here would just restate the
+  candidates above.
+no_pointer_reason: >-
+  No MCPServer pointer is wired into apis.yml. Pavoot ships no MCP server in any
+  deployment mode (mode: none); the tools above are a derived candidate set. An
+  MCPServer pointer would credit the provider with an agent surface that does not
+  exist and is not callable.

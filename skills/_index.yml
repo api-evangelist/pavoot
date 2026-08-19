@@ -1,0 +1,63 @@
+generated: '2026-08-13'
+method: generated
+source: openapi/_original/pavoot-openapi.json
+name: Pavoot Agent Skills
+summary: >-
+  Packaged operating instructions for the four marquee flows in the Pavoot
+  application API. Every operationId cited in these skills was verified against
+  the provider's published OpenAPI; none is invented. Each skill carries the
+  runtime hazards this API does not encode in its contract — no idempotency key,
+  partial-success writes, untyped 200 responses, and undeclared 401/403 errors.
+skill_count: 4
+skills:
+- name: pavoot-upload-and-tag-event-media
+  file: pavoot-upload-and-tag-event-media.md
+  description: >-
+    S3 presigned single-PUT and multipart upload, image registration, and recovery
+    of failed or stuck AI tagging steps.
+  operations: 9
+  consequence: medium
+- name: pavoot-attendee-registration
+  file: pavoot-attendee-registration.md
+  description: >-
+    Organizer-side registration page setup and the public, token-scoped attendee
+    self-registration flow including the mandatory face photo.
+  operations: 8
+  consequence: high
+  consequence_note: Collects biometric data from members of the public.
+- name: pavoot-send-attendee-galleries
+  file: pavoot-send-attendee-galleries.md
+  description: >-
+    Approve attendees, send their post-event photo emails, and reconcile the
+    partial-success response that a 200 hides.
+  operations: 8
+  consequence: high
+  consequence_note: >-
+    Sends real email to real guests, with no idempotency key and no unsend.
+- name: pavoot-resolve-unknown-faces
+  file: pavoot-resolve-unknown-faces.md
+  description: >-
+    Run Rekognition match scans over unnamed persons and review, approve, reject
+    or ignore each proposed identity merge.
+  operations: 9
+  consequence: high
+  consequence_note: >-
+    Approving a merge deletes a person and their enrolled face, irreversibly.
+cross_cutting_rules:
+  auth: 'Authorization: Bearer <clerk-session-jwt> on every organizer-side call.'
+  tenancy: Nearly every call must name its projectId or organizationId explicitly.
+  idempotency: >-
+    None. No idempotency key exists anywhere in the 248-operation surface, so no
+    write in these skills is safe to blind-retry.
+  errors: >-
+    detail is an ARRAY on 422 and a STRING on every other status. 401/403/404/500
+    are returned but never declared in the spec.
+  rate_limits: None published and no rate-limit response headers.
+human_in_the_loop:
+  required_for:
+  - approve_face_match_suggestion_endpoint_approveFaceMatchSuggestion_post
+  - merge_persons_endpoint_mergePersons_post
+  - send_attendee_emails_endpoint_sendAttendeeEmails_post
+  reason: >-
+    Irreversible identity merges and outbound email to third parties. These skills
+    instruct agents to confirm with a human rather than act autonomously.

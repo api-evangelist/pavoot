@@ -1,0 +1,144 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  openapi/_original/pavoot-openapi.json (response objects + operation
+  descriptions) and live probes of https://api.pavoot.com/me and
+  https://api.pavoot.com/openapi.yaml
+name: Pavoot Application API error catalog
+format: fastapi-detail
+rfc9457: false
+note: >-
+  Pavoot does NOT emit RFC 9457 application/problem+json. Every error is a plain
+  application/json object with a single `detail` key. For 422 validation errors
+  `detail` is an ARRAY of ValidationError objects; for every other status observed
+  it is a STRING. That shape change on the same key is the main integration hazard
+  in this API — a client that types `detail` as a string will break on the first
+  validation failure.
+envelope:
+  content_type: application/json
+  field: detail
+  shapes:
+  - status: 422
+    type: array
+    items: ValidationError
+    schema: '#/components/schemas/HTTPValidationError'
+  - status: other
+    type: string
+    example: 'Unauthorized: Authentication failed'
+validation_error_shape:
+  schema: '#/components/schemas/ValidationError'
+  required:
+  - loc
+  - msg
+  - type
+  fields:
+    loc: Array of string|integer identifying the offending field path.
+    msg: Human-readable message.
+    type: Machine-readable error type slug.
+problem_types:
+- status: 401
+  title: Unauthorized
+  detail: 'Unauthorized: Authentication failed'
+  method: probed
+  evidence:
+    url: https://api.pavoot.com/me
+    http_status: 401
+    body: '{"detail":"Unauthorized: Authentication failed"}'
+  remediation: >-
+    Present a valid Clerk session JWT in the Authorization: Bearer header. A
+    malformed or expired token returns the identical body — the API does not
+    distinguish missing from invalid credentials, and returns no
+    WWW-Authenticate challenge header.
+- status: 403
+  title: Forbidden
+  method: derived
+  source_operation: generate_presigned_urls_endpoint_generatePresignedUrls_post
+  note: >-
+    Documented in operation descriptions ("403 if user lacks permission") but NOT
+    declared as a response in the OpenAPI. Raised when the authenticated user's
+    effective permissions do not cover the requested project/organization.
+  remediation: >-
+    Check the caller's grants with GET /getEffectivePermissions or
+    GET /checkRouteAccess before retrying.
+- status: 404
+  title: Not Found
+  detail: Not Found
+  method: probed
+  evidence:
+    url: https://api.pavoot.com/openapi.yaml
+    http_status: 404
+    body: '{"detail":"Not Found"}'
+- status: 400
+  title: Bad Request
+  method: derived
+  source_operation: generate_presigned_urls_endpoint_generatePresignedUrls_post
+  note: >-
+    Documented in operation descriptions ("400 if required parameters are
+    missing") but not declared in the spec. Distinct from the 422 FastAPI
+    validation path — this is a hand-raised argument check.
+- status: 422
+  title: Validation Error
+  method: derived
+  declared_on_operations: 206
+  schema: '#/components/schemas/HTTPValidationError'
+  note: >-
+    The only error status actually declared in the OpenAPI. FastAPI emits it
+    automatically for request-model validation failures.
+  remediation: >-
+    Read detail[].loc to find the offending field and detail[].type for the
+    machine-readable cause.
+- status: 500
+  title: Internal Server Error
+  method: derived
+  source_operation: generate_presigned_urls_endpoint_generatePresignedUrls_post
+  note: >-
+    Documented for S3 access failures ("500 if S3 service access fails"); not
+    declared in the spec.
+coverage:
+  operations_total: 248
+  operations_declaring_2xx: 248
+  operations_declaring_422: 206
+  operations_declaring_401: 0
+  operations_declaring_403: 0
+  operations_declaring_404: 0
+  operations_declaring_5xx: 0
+  gap: >-
+    248 of 248 operations declare only 200 (and mostly 422). Not one operation
+    declares the 401/403/404/500 responses the API demonstrably returns, so a
+    generated client has no typed error path at all. This is the single largest
+    contract-quality gap in the Pavoot spec.
+domain_failure_states:
+  note: >-
+    Beyond HTTP status codes, Pavoot models per-record failure as workflow state
+    rather than as an error response. These are real, documented values worth
+    handling.
+  states:
+  - surface: attendee share emails
+    operation: send_attendee_emails_endpoint_sendAttendeeEmails_post
+    values:
+    - pending
+    - approved
+    - approved-none
+    - approved-Pavoot
+    - sent
+    - auto-sent
+    - email-failed
+    note: >-
+      /sendAttendeeEmails returns PARTIAL SUCCESS. A per-recipient failure sets
+      that attendee's status to email-failed and records last_email_error, then
+      the loop continues. A 200 does not mean every email was sent — the caller
+      must re-read attendee status.
+  - surface: image AI tagging
+    operation: get_tagging_failures_projects__project_id__images_tagging_failures_get
+    values:
+    - pending
+    - failed
+    - stuck
+    steps:
+    - general
+    - rekognition
+    - bda
+    note: >-
+      Tagging is asynchronous over SQS. "stuck" is defined by the API as status
+      'pending' for more than one hour. Recover with
+      POST /projects/{project_id}/images/retry-tagging.

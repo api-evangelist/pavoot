@@ -1,0 +1,141 @@
+generated: '2026-08-13'
+method: probed
+source: Live GET of each /.well-known/ path on every Pavoot-controlled host
+name: Pavoot /.well-known/ discovery surface
+summary: >-
+  Four hosts probed across eight discovery paths. Three real documents were found,
+  all on clerk.pavoot.com — Pavoot's own Clerk-hosted OAuth 2.0 / OpenID Connect
+  authorization server. Everything else missed. app.pavoot.com answers 200 with an
+  HTML application shell for every path, which is a single-page-app catch-all and
+  is recorded as a MISS, not a hit.
+hosts:
+- host: https://clerk.pavoot.com
+  role: OAuth 2.0 / OIDC authorization server (Clerk instance on Pavoot's domain)
+  documents:
+  - path: /.well-known/openid-configuration
+    spec: OpenID Connect Discovery 1.0
+    status: 200
+    content_type: application/json
+    file: pavoot-openid-configuration.json
+    real_document: true
+  - path: /.well-known/oauth-authorization-server
+    spec: RFC 8414
+    status: 200
+    content_type: application/json
+    file: pavoot-oauth-authorization-server.json
+    real_document: true
+  - path: /.well-known/jwks.json
+    spec: RFC 7517
+    status: 200
+    content_type: application/json
+    file: pavoot-jwks.json
+    real_document: true
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://api.pavoot.com
+  role: Application API (FastAPI on an AWS Lambda function URL, eu-central-1)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  note: >-
+    Clean 404s with a JSON {"detail":"Not Found"} body — an honest miss, no
+    catch-all. Notably /.well-known/oauth-protected-resource (RFC 9728) is absent
+    even though the API is in fact protected by the clerk.pavoot.com authorization
+    server, so an agent cannot discover the auth server from the resource server.
+- host: https://pavoot.com
+  role: Marketing site (Astro static site)
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/jwks.json
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://app.pavoot.com
+  role: Web application (CloudFront-fronted SPA)
+  catch_all_200: true
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: text/html
+    real_document: false
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: text/html
+    real_document: false
+  - path: /.well-known/jwks.json
+    status: 200
+    content_type: text/html
+    real_document: false
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/html
+    real_document: false
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: text/html
+    real_document: false
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: text/html
+    real_document: false
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: text/html
+    real_document: false
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: text/html
+    real_document: false
+  note: >-
+    Every path returns the same ~19.7KB HTML application shell
+    (<!DOCTYPE html><html lang="en" class="dark h-full">). This is the dominant
+    false-positive shape for well-known probes. All eight are MISSES.
+summary_counts:
+  hosts_probed: 4
+  paths_probed: 32
+  real_documents: 3
+  soft_200_html: 8
+  hard_404: 21
+security_txt:
+  present: false
+  note: No RFC 9116 security.txt on any host. No SecurityTxt pointer emitted.
+agent_card:
+  present: false
+  note: >-
+    No A2A agent card at either the canonical /.well-known/agent-card.json or the
+    legacy /.well-known/agent.json on any host. The eight 200s on app.pavoot.com
+    are HTML and were rejected. Nothing written to a2a/ — per pipeline rule, an
+    agent card is never authored on a provider's behalf.

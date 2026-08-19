@@ -1,0 +1,76 @@
+generated: '2026-08-13'
+method: probed
+source: https://clerk.pavoot.com/.well-known/openid-configuration
+docs: https://clerk.com/docs/oauth/scoped-access
+name: Pavoot OAuth 2.0 / OIDC scopes
+summary: >-
+  Scopes read verbatim from Pavoot's own OAuth authorization-server metadata at
+  clerk.pavoot.com. These are the identity scopes of the Clerk instance that
+  issues Pavoot sessions — they are NOT permissions over the api.pavoot.com
+  application surface, which uses a database-backed RBAC model instead.
+authorization_server:
+  issuer: https://clerk.pavoot.com
+  authorization_endpoint: https://clerk.pavoot.com/oauth/authorize
+  token_endpoint: https://clerk.pavoot.com/oauth/token
+  introspection_endpoint: https://clerk.pavoot.com/oauth/token_info
+  revocation_endpoint: https://clerk.pavoot.com/oauth/token/revoke
+  userinfo_endpoint: https://clerk.pavoot.com/oauth/userinfo
+  jwks_uri: https://clerk.pavoot.com/.well-known/jwks.json
+  grant_types_supported:
+  - authorization_code
+  - refresh_token
+  response_types_supported:
+  - code
+  code_challenge_methods_supported:
+  - S256
+  id_token_signing_alg_values_supported:
+  - RS256
+  service_documentation: https://clerk.com/docs/oauth/scoped-access
+scope_count: 7
+scopes:
+- name: openid
+  description: OpenID Connect — request an ID token identifying the end user.
+  standard: OIDC Core 1.0
+- name: profile
+  description: Basic profile claims (name, given_name, family_name,
+    preferred_username, picture).
+  standard: OIDC Core 1.0
+- name: email
+  description: Email address and email_verified claim.
+  standard: OIDC Core 1.0
+- name: offline_access
+  description: Issue a refresh token so the client can act after the user leaves.
+  standard: OIDC Core 1.0
+- name: public_metadata
+  description: Read the Clerk user's public metadata.
+  standard: Clerk-specific
+- name: private_metadata
+  description: Read the Clerk user's private metadata.
+  standard: Clerk-specific
+- name: 'user:org:read'
+  description: Read the user's organization membership.
+  standard: Clerk-specific
+claims_supported:
+- sub
+- aud
+- iss
+- exp
+- iat
+- email
+- email_verified
+- given_name
+- family_name
+- name
+- preferred_username
+- picture
+- org_id
+api_authorization_note: >-
+  The api.pavoot.com OpenAPI declares no securitySchemes and no per-operation
+  security, and none of the seven scopes above appear anywhere in the spec. API
+  authorization is enforced by Pavoot's own permission system — role and user
+  permission matrices (/org/permissions/role-matrix, /org/permissions/user-matrix),
+  per-task permissions (/org/permissions/tasks), permission presets with a
+  settable org default, an effective-permissions read (/getEffectivePermissions,
+  /getEffectiveOrgPermissions) and a middleware gate (/checkRouteAccess). Those
+  permission names are not published anywhere anonymous, so they cannot be
+  enumerated without an authenticated session.
