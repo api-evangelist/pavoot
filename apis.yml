@@ -42,6 +42,16 @@ created: '2026-07-17'
 modified: '2026-08-13'
 tags:
 - Company
+- Event
+- Event Management
+- Marketing
+- AI Agent
+- Attendee Intelligence
+- Go-To-Market
+- Field Marketing
+- Pipeline
+tags_raw:
+- Company
 - Events
 - Event Management
 - Marketing
@@ -71,6 +81,17 @@ apis:
   humanURL: https://api.pavoot.com/docs
   baseURL: https://api.pavoot.com
   tags:
+  - Event Management
+  - event-media
+  - image-tagging
+  - Face Recognition
+  - Biometrics
+  - Attendee Intelligence
+  - brand-detection
+  - Digital Asset Management
+  - Marketing
+  - Artificial Intelligence
+  tags_raw:
   - event-management
   - event-media
   - image-tagging
