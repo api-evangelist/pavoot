@@ -18,6 +18,17 @@ description: >-
   authenticated with Clerk-issued session tokens against Pavoot's own OAuth 2.0
   / OpenID Connect authorization server at clerk.pavoot.com, so the contract is
   observable but not consumable by third parties.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: approval
@@ -4745,6 +4756,9 @@ apis:
   - type: Conformance
     url: conformance/pavoot-conformance.yml
 common:
+- type: CapabilityMap
+  url: capabilities/pavoot-capability-edges.yml
+  name: Pavoot Business Capability Map
 - type: Overlay
   url: overlays/pavoot-api-overlay.yaml
 - type: DomainSecurity
