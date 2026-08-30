@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Reject Brand Duplicate Group API
+  version: 0.1.0
+tags:
+- name: RejectBrandDuplicateGroup
+paths:
+  /rejectBrandDuplicateGroup:
+    post:
+      summary: Reject Brand Duplicate Group Endpoint
+      description: Mark a brand duplicate group rejected (hidden). Body {project_id, logo_ids[]}.
+      operationId: reject_brand_duplicate_group_endpoint_rejectBrandDuplicateGroup_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - RejectBrandDuplicateGroup

@@ -1,0 +1,22 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Event Organizer Name API
+  version: 0.1.0
+tags:
+- name: GetEventOrganizerName
+paths:
+  /getEventOrganizerName:
+    get:
+      summary: Get Event Organizer Name Endpoint
+      description: 'Returns the current user''s event organizer name from the database, if they are an event organizer.
+
+        Used e.g. for the "Regards" field when inviting photographers.'
+      operationId: get_event_organizer_name_endpoint_getEventOrganizerName_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - GetEventOrganizerName

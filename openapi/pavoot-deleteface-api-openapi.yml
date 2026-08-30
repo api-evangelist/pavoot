@@ -1,0 +1,78 @@
+openapi: 3.2.0
+info:
+  title: Fast Delete Face API
+  version: 0.1.0
+tags:
+- name: DeleteFace
+paths:
+  /deleteFace:
+    delete:
+      summary: Delete Face Endpoint
+      description: 'Deletes a face from an image.
+
+        Modes:
+
+        - "box": Delete the face bounding box completely
+
+        - "name": Keep the box but reset the person name to "?"'
+      operationId: delete_face_endpoint_deleteFace_delete
+      parameters:
+      - name: faceId
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Faceid
+      - name: mode
+        in: query
+        required: false
+        schema:
+          type: string
+          default: box
+          title: Mode
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - DeleteFace
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

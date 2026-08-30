@@ -1,0 +1,28 @@
+openapi: 3.2.0
+info:
+  title: Fast Push Person To Brand API
+  version: 0.1.0
+tags:
+- name: PushPersonToBrand
+paths:
+  /pushPersonToBrand:
+    post:
+      summary: Push Person To Brand Endpoint
+      description: 'Migration helper: convert a mislabeled PERSON (e.g. "Mercedes" wrongly tagged as a person)
+
+        into an org-global BRAND. For every image where the person appears, adds a brand tag with
+
+        the same name (so the images keep the association, just re-categorized person -> brand),
+
+        registers (or merges into) the org brand of that name (union of project memberships), then
+
+        deletes the person (cascading its face boxes + Rekognition entry). Body: {personId}.'
+      operationId: push_person_to_brand_endpoint_pushPersonToBrand_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - PushPersonToBrand

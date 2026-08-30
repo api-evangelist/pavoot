@@ -1,0 +1,98 @@
+openapi: 3.2.0
+info:
+  title: Fast Edit Person API
+  version: 0.1.0
+tags:
+- name: EditPerson
+paths:
+  /editPerson:
+    post:
+      summary: Edit Person Endpoint
+      description: "Endpoint for editing a person's information in the face recognition system.\n\nArgs:\n    personId: The person's unique ID\n    name: The person's name (optional)\n    category: Category/type of person (optional)\n    position: The person's position/role (optional)\n    link: Link associated with the person (optional)\n    faceImageId: New face image ID to update the face (optional)\n\nReturns:\n    JSON response with success status and updated person details"
+      operationId: edit_person_endpoint_editPerson_post
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Body_edit_person_endpoint_editPerson_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - EditPerson
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    Body_edit_person_endpoint_editPerson_post:
+      properties:
+        personId:
+          type: string
+          title: Personid
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+        position:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Position
+        link:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Link
+        faceImageId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Faceimageid
+      type: object
+      required:
+      - personId
+      title: Body_edit_person_endpoint_editPerson_post
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

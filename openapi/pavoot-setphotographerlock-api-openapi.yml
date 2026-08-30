@@ -1,0 +1,99 @@
+openapi: 3.2.0
+info:
+  title: Fast Set Photographer Lock API
+  version: 0.1.0
+tags:
+- name: SetPhotographerLock
+paths:
+  /setPhotographerLock:
+    post:
+      summary: Set Photographer Lock Endpoint
+      description: 'Lock or unlock ONE photographer across several projects in a single call.
+
+
+        The All-Projects photographers table needs this: a photographer spans many projects, and
+
+        doing it with the per-project full-list replace would mean N read-modify-write round trips
+
+        racing each other. This touches only the one photographer''s rows, so concurrent edits to
+
+        other photographers in the same project can''t clobber each other either.
+
+
+        Authorised per project — the caller''s projects are filtered to those where they actually
+
+        hold settings.manage.lockedPhotographers, so an All-Projects click can''t reach a project
+
+        they don''t administer. Returns the projects actually changed.'
+      operationId: set_photographer_lock_endpoint_setPhotographerLock_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetPhotographerLockRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - SetPhotographerLock
+components:
+  schemas:
+    SetPhotographerLockRequest:
+      properties:
+        photographerId:
+          type: string
+          title: Photographerid
+        projectIds:
+          items:
+            type: integer
+          type: array
+          title: Projectids
+        locked:
+          type: boolean
+          title: Locked
+      type: object
+      required:
+      - photographerId
+      - projectIds
+      - locked
+      title: SetPhotographerLockRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Update Tag API
+  version: 0.1.0
+tags:
+- name: UpdateTag
+paths:
+  /updateTag:
+    put:
+      summary: Update Tag Endpoint
+      description: Updates a tag for an image.
+      operationId: update_tag_endpoint_updateTag_put
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - UpdateTag

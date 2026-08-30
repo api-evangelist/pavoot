@@ -1,0 +1,92 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Project Folders API
+  version: 0.1.0
+tags:
+- name: GetProjectFolders
+paths:
+  /getProjectFolders:
+    get:
+      summary: Get Project Folders Endpoint
+      description: Gets all folders for a specified project or the union across multiple projects.
+      operationId: get_project_folders_endpoint_getProjectFolders_get
+      parameters:
+      - name: projectId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Projectid
+      - name: projectIds[]
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+          title: Projectids[]
+      - name: category
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+      - name: photographerId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Photographerid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetProjectFolders
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

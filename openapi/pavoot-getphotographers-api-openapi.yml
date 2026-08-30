@@ -1,0 +1,76 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Photographers API
+  version: 0.1.0
+tags:
+- name: GetPhotographers
+paths:
+  /getPhotographers:
+    get:
+      summary: Get Photographers Endpoint
+      description: "Retrieves photographers for a single project, or the union across multiple\nprojects (the \"All Projects\" view).\n\nQuery Parameters (one of):\n    - projectId: A single project ID\n    - projectIds[]: Multiple project IDs. Photographers are merged by identity\n      (id) across projects, with totalImagesCount summed across them.\n\nReturns:\n    JSON response with list of photographers containing:\n    - id: unique identifier\n    - name: photographer's name\n    - email: photographer's email address\n    - description: additional information about the photographer\n    - isEventOrganizer: boolean indicating if photographer is also an event organizer\n    - totalImagesCount: total number of images uploaded by this photographer\n\nErrors:\n    - 400 if neither projectId nor projectIds[] is provided\n    - 500 if database access fails"
+      operationId: get_photographers_endpoint_getPhotographers_get
+      parameters:
+      - name: projectId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Projectid
+      - name: projectIds[]
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+          title: Projectids[]
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetPhotographers
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

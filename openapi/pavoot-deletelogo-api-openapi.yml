@@ -1,0 +1,64 @@
+openapi: 3.2.0
+info:
+  title: Fast Delete Logo API
+  version: 0.1.0
+tags:
+- name: DeleteLogo
+paths:
+  /deleteLogo:
+    delete:
+      summary: Delete Logo Endpoint
+      description: "Delete brands, and the brand tags on their photos.\n\nBody, either shape:\n    [logoId, ...]                                     -> legacy, means scope=\"all\"\n    {\"logoIds\": [...], \"scope\": \"all\"|\"project\",\n     \"projectId\": <int, required when scope=\"project\">}\n\nscope=\"project\" removes the brand from that ONE project: the tags on its photos, that\nproject's folder, and the project from the brand's membership. The brand survives elsewhere.\nscope=\"all\" removes the brand outright, everywhere.\n\nDeleting the tags is deliberate and unrecoverable — see delete_brand_scoped. The client is\nexpected to have shown brand_deletion_impact() first, which is what /brandDeletionImpact is\nfor; this endpoint does not assume it and simply does what it is told."
+      operationId: delete_logo_endpoint_deleteLogo_delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - DeleteLogo
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

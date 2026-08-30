@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Recipient Projects API
+  version: 0.1.0
+tags:
+- name: GetRecipientProjects
+paths:
+  /getRecipientProjects:
+    get:
+      summary: Get Recipient Projects Endpoint
+      description: "Retrieves all projects associated with a specific recipient.\n\nQuery Parameters:\n    recipientId (str): The ID of the recipient (required)\n\nReturns:\n    JSON response containing:\n        - projects: List of projects with their metadata\n        Each project contains:\n            - id\n            - title\n            - start_date\n            - end_date\n            - status\n\nErrors:\n    - 400 if recipientId is missing\n    - 404 if recipient is not found\n    - 500 if database access fails"
+      operationId: get_recipient_projects_endpoint_getRecipientProjects_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - GetRecipientProjects

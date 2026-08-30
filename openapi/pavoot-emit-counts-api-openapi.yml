@@ -1,0 +1,72 @@
+openapi: 3.2.0
+info:
+  title: Fast Emit Counts API
+  version: 0.1.0
+tags:
+- name: Emit Counts
+paths:
+  /emit_counts:
+    post:
+      summary: Emit Counts
+      operationId: emit_counts_emit_counts_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CountsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Emit Counts
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CountsRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+      type: object
+      required:
+      - projectId
+      title: CountsRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

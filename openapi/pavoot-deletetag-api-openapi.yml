@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Delete Tag API
+  version: 0.1.0
+tags:
+- name: DeleteTag
+paths:
+  /deleteTag:
+    post:
+      summary: Delete Tag Endpoint
+      description: Deletes a tag from an image. Body must include imageId, tag, category, and projectId (for person category).
+      operationId: delete_tag_endpoint_deleteTag_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - DeleteTag

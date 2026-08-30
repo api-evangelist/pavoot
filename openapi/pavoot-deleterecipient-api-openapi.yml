@@ -1,0 +1,66 @@
+openapi: 3.2.0
+info:
+  title: Fast Delete Recipient API
+  version: 0.1.0
+tags:
+- name: DeleteRecipient
+paths:
+  /deleteRecipient:
+    post:
+      summary: Delete Recipient Endpoint
+      description: "Removes a recipient's association with a specific project.\n\nExpects:\n    - JSON with:\n        - 'recipientId': unique identifier of the recipient\n        - 'projectId': ID of the project to remove from\n\nReturns:\n    - Success message if recipient was found and removed from project\n    - Error if recipient not found or other issues occur"
+      operationId: delete_recipient_endpoint_deleteRecipient_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - DeleteRecipient
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

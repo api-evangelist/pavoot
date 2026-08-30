@@ -1,0 +1,118 @@
+openapi: 3.2.0
+info:
+  title: Fast Update Upload Link API
+  version: 0.1.0
+tags:
+- name: UpdateUploadLink
+paths:
+  /updateUploadLink:
+    patch:
+      summary: Update Upload Link Endpoint
+      operationId: update_upload_link_endpoint_updateUploadLink_patch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUploadLinkRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - UpdateUploadLink
+components:
+  schemas:
+    UpdateUploadLinkRequest:
+      properties:
+        id:
+          type: string
+          title: Id
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        photographerId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Photographerid
+        location:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Location
+        color:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Color
+        presetTags:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Presettags
+        locked:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Locked
+        startsAt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Startsat
+        endsAt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Endsat
+        revoked:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Revoked
+      type: object
+      required:
+      - id
+      title: UpdateUploadLinkRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

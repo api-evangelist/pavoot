@@ -1,0 +1,111 @@
+openapi: 3.2.0
+info:
+  title: Fast Create Multipart Upload API
+  version: 0.1.0
+tags:
+- name: CreateMultipartUpload
+paths:
+  /createMultipartUpload:
+    post:
+      summary: Create Multipart Upload Endpoint
+      description: 'Initiate S3 multipart uploads and return presigned part URLs. Used for
+
+        large files so the browser can upload parts in parallel (small files still
+
+        use the single-PUT /generatePresignedUrls path).'
+      operationId: create_multipart_upload_endpoint_createMultipartUpload_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMultipartUploadRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - CreateMultipartUpload
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    MultipartFileInfo:
+      properties:
+        contentType:
+          type: string
+          title: Contenttype
+        size:
+          type: integer
+          title: Size
+      type: object
+      required:
+      - contentType
+      - size
+      title: MultipartFileInfo
+    CreateMultipartUploadRequest:
+      properties:
+        files:
+          items:
+            $ref: '#/components/schemas/MultipartFileInfo'
+          type: array
+          title: Files
+        projectId:
+          type: integer
+          title: Projectid
+        folderName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Foldername
+        photographerId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Photographerid
+        fileType:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Filetype
+      type: object
+      required:
+      - files
+      - projectId
+      title: CreateMultipartUploadRequest

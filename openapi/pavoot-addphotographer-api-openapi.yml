@@ -1,0 +1,66 @@
+openapi: 3.2.0
+info:
+  title: Fast Add Photographer API
+  version: 0.1.0
+tags:
+- name: AddPhotographer
+paths:
+  /addPhotographer:
+    post:
+      summary: Add Photographer Endpoint
+      description: "Adds a photographer to a project WITHOUT creating a login account or sending\nan email. Email is optional and can be filled in later (via editPhotographer)\nor when the photographer is invited (via invitePhotographer).\n\nExpects:\n    - JSON with:\n        - 'name': photographer's name (required)\n        - 'email': photographer's email (optional)\n        - 'description': photographer's description (optional)\n        - 'projectId': ID of the project to associate with (required)\n\nReturns:\n    - Success message with the new photographer id if successful\n    - Error if required fields are missing or other issues occur"
+      operationId: add_photographer_endpoint_addPhotographer_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - AddPhotographer
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

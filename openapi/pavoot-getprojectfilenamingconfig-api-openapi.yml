@@ -1,0 +1,65 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Project Filenaming Config API
+  version: 0.1.0
+tags:
+- name: GetProjectFilenamingConfig
+paths:
+  /getProjectFilenamingConfig:
+    get:
+      summary: Get Project Filenaming Config Endpoint
+      description: "Retrieves the filenaming configuration for a specific project.\n\nParameters:\n    projectId (int): The ID of the project to get the filenaming config for\n\nReturns:\n    JSON response with:\n        - project: Project details including id, title, and filenaming_config"
+      operationId: get_project_filenaming_config_endpoint_getProjectFilenamingConfig_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetProjectFilenamingConfig
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

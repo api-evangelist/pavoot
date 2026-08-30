@@ -1,0 +1,67 @@
+openapi: 3.2.0
+info:
+  title: Fast Project By Upload Token API
+  version: 0.1.0
+tags:
+- name: Project By Upload Token
+paths:
+  /project-by-upload-token:
+    get:
+      summary: Get Project By Upload Token Endpoint
+      description: "Resolve a project from its upload token for the current user.\n\n- Only event organizers, photographers, admins, and super admins may use this.\n- Recipients are not allowed to resolve upload links.\n- Also checks that the user is actually associated with the project\n  (event_organizer_projects or photographer_projects) unless admin/super-admin."
+      operationId: get_project_by_upload_token_endpoint_project_by_upload_token_get
+      parameters:
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
+          description: Project upload token (UUID)
+          title: Token
+        description: Project upload token (UUID)
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Project By Upload Token
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

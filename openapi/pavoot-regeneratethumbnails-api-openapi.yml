@@ -1,0 +1,33 @@
+openapi: 3.2.0
+info:
+  title: Fast Regenerate Thumbnails API
+  version: 0.1.0
+tags:
+- name: RegenerateThumbnails
+paths:
+  /regenerateThumbnails:
+    post:
+      summary: Regenerate Thumbnails Endpoint
+      description: 'Maintenance: regenerate (overwrite) correctly-oriented thumbnails at the canonical key
+
+        `thumbnails/{project_id}/{image_id}`. Fixes STALE/rotated thumbnail objects that were
+
+        written by an older pipeline before EXIF orientation was baked in. Reuses the same
+
+        load_downscaled_rgb path as /generateThumbnail (orientation baked into pixels).
+
+
+        Body: {"projectId": <id>} to regenerate every non-deleted image in a project, or
+
+        {"imageIds": [...]} for a specific set. Runs in the background; returns 202-style
+
+        {"success": true, "queued": N}. Idempotent — safe to re-run.'
+      operationId: regenerate_thumbnails_endpoint_regenerateThumbnails_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - RegenerateThumbnails

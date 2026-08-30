@@ -1,0 +1,22 @@
+openapi: 3.2.0
+info:
+  title: Fast Search Images API
+  version: 0.1.0
+tags:
+- name: SearchImages
+paths:
+  /searchImages:
+    post:
+      summary: Search Images Endpoint
+      description: 'Endpoint for searching images with AI boolean query AST.
+
+        Accepts aiQuery in request body along with other filters.'
+      operationId: search_images_endpoint_searchImages_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - SearchImages

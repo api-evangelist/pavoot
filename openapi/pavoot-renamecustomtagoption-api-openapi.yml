@@ -1,0 +1,34 @@
+openapi: 3.2.0
+info:
+  title: Fast Rename Custom Tag Option API
+  version: 0.1.0
+tags:
+- name: RenameCustomTagOption
+paths:
+  /renameCustomTagOption:
+    post:
+      summary: Rename Custom Tag Option Endpoint
+      description: 'Renames one option of a custom tag category, everywhere its name is stored.
+
+
+        Body: { projectId, categoryName, oldValue, newValue }
+
+
+        Separate from /updateProjectCustomTagCategories on purpose: that endpoint replaces the
+
+        project''s categories wholesale, so a renamed option arrives as a deletion plus an
+
+        insertion and there is no way to tell it apart from someone genuinely swapping one tag
+
+        for another. A rename has to be stated to be carried out — see
+
+        project_operations.rename_custom_tag_option for what it touches.'
+      operationId: rename_custom_tag_option_endpoint_renameCustomTagOption_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - RenameCustomTagOption

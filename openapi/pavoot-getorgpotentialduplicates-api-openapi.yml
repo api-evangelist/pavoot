@@ -1,0 +1,86 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Org Potential Duplicates API
+  version: 0.1.0
+tags:
+- name: GetOrgPotentialDuplicates
+paths:
+  /getOrgPotentialDuplicates:
+    get:
+      summary: Get Org Potential Duplicates Endpoint
+      description: 'Org-wide name-duplicate suggestions. Mirrors /getPotentialDuplicates but scoped by
+
+        organization (all org persons). Crop URLs use each person''s origin project_id.
+
+
+        When countOnly is set, the (still-required) name-similarity pass runs but per-person
+
+        S3 presigned crop URLs are skipped and only `{success, count}` is returned — cheap enough
+
+        for a background badge fetch on the faces page.'
+      operationId: get_org_potential_duplicates_endpoint_getOrgPotentialDuplicates_get
+      parameters:
+      - name: projectIds[]
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+          title: Projectids[]
+      - name: countOnly
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Return only the group count (skips S3 crop URLs) — used for the /faces badge.
+          default: false
+          title: Countonly
+        description: Return only the group count (skips S3 crop URLs) — used for the /faces badge.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetOrgPotentialDuplicates
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

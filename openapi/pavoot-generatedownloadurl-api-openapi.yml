@@ -1,0 +1,85 @@
+openapi: 3.2.0
+info:
+  title: Fast Generate Download URL API
+  version: 0.1.0
+tags:
+- name: GenerateDownloadUrl
+paths:
+  /generateDownloadUrl:
+    post:
+      summary: Generate Download Url Endpoint
+      description: "Generates a presigned URL for downloading images. If only one image is requested,\nreturns a direct download URL for that image. If multiple images, creates a ZIP file.\n\nRequest Body:\n    imageIds: List of image IDs to include\n    projectId: Project ID for the images\n    \nReturns:\n    JSON response with:\n        - downloadUrl: The presigned URL\n        - filename: The filename for download\n        - isZip: Boolean indicating if it's a ZIP file or single image\n    \nErrors:\n    - 500 if download generation fails"
+      operationId: generate_download_url_endpoint_generateDownloadUrl_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZipDownloadRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GenerateDownloadUrl
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ZipDownloadRequest:
+      properties:
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+        projectId:
+          type: integer
+          title: Projectid
+        size:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Size
+          default: original
+      type: object
+      required:
+      - imageIds
+      - projectId
+      title: ZipDownloadRequest

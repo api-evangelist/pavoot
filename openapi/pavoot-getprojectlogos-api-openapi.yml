@@ -1,0 +1,74 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Project Logos API
+  version: 0.1.0
+tags:
+- name: GetProjectLogos
+paths:
+  /getProjectLogos:
+    get:
+      summary: Get Project Logos Endpoint
+      description: "Endpoint for retrieving all logos for a project.\n\nArgs:\n    projectId: The project ID\n    excludeStartup: When true, rows with category \"startup\" are omitted.\n\nReturns:\n    JSON response with list of logos"
+      operationId: get_project_logos_endpoint_getProjectLogos_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Projectid
+      - name: excludeStartup
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Omit logos with category startup (e.g. Brands page)
+          default: false
+          title: Excludestartup
+        description: Omit logos with category startup (e.g. Brands page)
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetProjectLogos
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

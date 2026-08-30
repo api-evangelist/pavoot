@@ -1,0 +1,114 @@
+openapi: 3.2.0
+info:
+  title: Fast Register Attendee API
+  version: 0.1.0
+tags:
+- name: Register Attendee
+paths:
+  /register-attendee:
+    post:
+      summary: Register Attendee Endpoint
+      description: 'Register via project registration link.
+
+        - Public token: attendee registration only (mandatory face photo).
+
+        - Member token: requires Clerk sign-in; attendee, startup, or both (face required when attendee is included).'
+      operationId: register_attendee_endpoint_register_attendee_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterAttendeeRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Register Attendee
+components:
+  schemas:
+    RegisterAttendeeRequest:
+      properties:
+        token:
+          type: string
+          title: Token
+        registration_type:
+          type: string
+          enum:
+          - attendee
+          - attendee_startup
+          - startup
+          title: Registration Type
+          default: attendee
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        startup_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Startup Name
+        startup_contact_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Startup Contact Email
+        use_same_email_for_startup:
+          type: boolean
+          title: Use Same Email For Startup
+          default: false
+        face_image_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Face Image Id
+      type: object
+      required:
+      - token
+      title: RegisterAttendeeRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

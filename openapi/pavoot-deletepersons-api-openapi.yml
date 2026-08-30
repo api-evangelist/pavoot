@@ -1,0 +1,83 @@
+openapi: 3.2.0
+info:
+  title: Fast Delete Persons API
+  version: 0.1.0
+tags:
+- name: DeletePersons
+paths:
+  /deletePersons:
+    delete:
+      summary: Delete Persons Endpoint
+      description: 'Endpoint for deleting multiple persons from the system, including their database records,
+
+        face images from S3, and faces from AWS Rekognition.
+
+        cascadeAttendee=True also removes project_attendees and shared_links rows.'
+      operationId: delete_persons_endpoint_deletePersons_delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeletePersonsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - DeletePersons
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DeletePersonsRequest:
+      properties:
+        personIds:
+          items:
+            type: string
+          type: array
+          title: Personids
+        cascadeAttendee:
+          type: boolean
+          title: Cascadeattendee
+          default: false
+      type: object
+      required:
+      - personIds
+      title: DeletePersonsRequest

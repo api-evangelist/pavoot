@@ -1,0 +1,81 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Effective Permissions API
+  version: 0.1.0
+tags:
+- name: GetEffectivePermissions
+paths:
+  /getEffectivePermissions:
+    get:
+      summary: Get Effective Permissions Endpoint
+      description: "Returns effective task-based permissions for a user within a project.\n\nFor normal users:\n- Start from role defaults for (project, role)\n- Apply per-user overrides if present\n\nNotes:\n    - If user_id/role are omitted, they default to the authenticated user.\n    - Non-super-admins can only request their own permissions."
+      operationId: get_effective_permissions_endpoint_getEffectivePermissions_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      - name: userId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Userid
+      - name: role
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Role
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetEffectivePermissions
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

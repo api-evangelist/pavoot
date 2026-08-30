@@ -1,0 +1,67 @@
+openapi: 3.2.0
+info:
+  title: Fast Generate Brand Folders API
+  version: 0.1.0
+tags:
+- name: GenerateBrandFolders
+paths:
+  /generateBrandFolders:
+    post:
+      summary: Generate Brand Folders Endpoint
+      description: 'Creates missing project_folders for all brands in the logos table (admin-only).
+
+        Use this to repair folders if they are out of sync.'
+      operationId: generate_brand_folders_endpoint_generateBrandFolders_post
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GenerateBrandFolders
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

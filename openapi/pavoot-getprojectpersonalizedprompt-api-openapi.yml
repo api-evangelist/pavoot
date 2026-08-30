@@ -1,0 +1,65 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Project Personalized Prompt API
+  version: 0.1.0
+tags:
+- name: GetProjectPersonalizedPrompt
+paths:
+  /getProjectPersonalizedPrompt:
+    get:
+      summary: Get Project Personalized Prompt Endpoint
+      description: "Retrieves the personalized prompt for a specific project.\n\nParameters:\n    projectId (int): The ID of the project to get the personalized prompt for\n\nReturns:\n    JSON response with:\n        - project: Project details including id, title, and personalized_prompt\n\nErrors:\n    - 400 if projectId is missing\n    - 404 if project is not found\n    - 500 if database access fails"
+      operationId: get_project_personalized_prompt_endpoint_getProjectPersonalizedPrompt_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetProjectPersonalizedPrompt
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

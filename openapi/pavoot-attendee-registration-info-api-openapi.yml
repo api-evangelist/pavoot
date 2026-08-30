@@ -1,0 +1,65 @@
+openapi: 3.2.0
+info:
+  title: Fast Attendee Registration Info API
+  version: 0.1.0
+tags:
+- name: Attendee Registration Info
+paths:
+  /attendee-registration-info/{token}:
+    get:
+      summary: Attendee Registration Info Endpoint
+      description: 'Public: returns project name and layout for the registration form. No auth required.'
+      operationId: attendee_registration_info_endpoint_attendee_registration_info__token__get
+      parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Attendee Registration Info
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

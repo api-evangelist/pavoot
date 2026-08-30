@@ -1,0 +1,104 @@
+openapi: 3.2.0
+info:
+  title: Fast Create Share Link API
+  version: 0.1.0
+tags:
+- name: CreateShareLink
+paths:
+  /createShareLink:
+    post:
+      summary: Create Share Link
+      operationId: create_share_link_createShareLink_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateShareRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - CreateShareLink
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CreateShareRequest:
+      properties:
+        projectId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Projectid
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+        expiresInDays:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Expiresindays
+        password:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Password
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        creatorDisplay:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Creatordisplay
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+      type: object
+      required:
+      - imageIds
+      title: CreateShareRequest

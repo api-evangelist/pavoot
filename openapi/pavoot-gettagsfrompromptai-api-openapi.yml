@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Tags From Prompt AI API
+  version: 0.1.0
+tags:
+- name: GetTagsFromPromptAI
+paths:
+  /getTagsFromPromptAI:
+    post:
+      summary: Get Tags From Prompt Ai Endpoint
+      description: Gets relevant tags from a prompt using AWS Bedrock (Claude).
+      operationId: get_tags_from_prompt_ai_endpoint_getTagsFromPromptAI_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - GetTagsFromPromptAI

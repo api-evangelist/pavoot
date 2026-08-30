@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Set Attendee Registration Page Layout API
+  version: 0.1.0
+tags:
+- name: SetAttendeeRegistrationPageLayout
+paths:
+  /setAttendeeRegistrationPageLayout:
+    put:
+      summary: Set Attendee Registration Page Layout Endpoint
+      description: 'Organiser: save a new registration page layout for a project. Requires manage_attendees permission.'
+      operationId: set_attendee_registration_page_layout_endpoint_setAttendeeRegistrationPageLayout_put
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - SetAttendeeRegistrationPageLayout

@@ -1,0 +1,65 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Project Locked Tags API
+  version: 0.1.0
+tags:
+- name: GetProjectLockedTags
+paths:
+  /getProjectLockedTags:
+    get:
+      summary: Get Project Locked Tags Endpoint
+      description: Returns the list of locked tag values for the project (tags that exclude images from share links).
+      operationId: get_project_locked_tags_endpoint_getProjectLockedTags_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetProjectLockedTags
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

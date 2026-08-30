@@ -1,0 +1,98 @@
+openapi: 3.2.0
+info:
+  title: Fast Send Attendee Emails API
+  version: 0.1.0
+tags:
+- name: SendAttendeeEmails
+paths:
+  /sendAttendeeEmails:
+    post:
+      summary: Send Attendee Emails Endpoint
+      description: "Send emails to attendees with their share link.\n- Attendee must have status in approved / approved-none / approved-Pavoot\n  (or status sent/auto-sent when forceResend=true).\n- For persons with 0 images, zero_images_phrase must be provided.\n- On success: sets status to 'sent'.\n- On per-recipient failure: sets status to 'email-failed' and records last_email_error;\n  continues to next recipient (returns partial success)."
+      operationId: send_attendee_emails_endpoint_sendAttendeeEmails_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendAttendeeEmailsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - SendAttendeeEmails
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SendAttendeeEmailsRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        personIds:
+          items:
+            type: string
+          type: array
+          title: Personids
+        zeroImagesConfirmation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Zeroimagesconfirmation
+        subjectOverride:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Subjectoverride
+        bodyTextOverride:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bodytextoverride
+        forceResend:
+          type: boolean
+          title: Forceresend
+          default: false
+      type: object
+      required:
+      - projectId
+      - personIds
+      title: SendAttendeeEmailsRequest

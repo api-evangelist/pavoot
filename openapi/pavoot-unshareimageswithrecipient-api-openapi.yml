@@ -1,0 +1,66 @@
+openapi: 3.2.0
+info:
+  title: Fast Unshare Images With Recipient API
+  version: 0.1.0
+tags:
+- name: UnshareImagesWithRecipient
+paths:
+  /unshareImagesWithRecipient:
+    post:
+      summary: Unshare Images With Recipient Endpoint
+      description: "Unshares multiple images from a recipient by removing entries from the image_recipients table.\n\nExpects:\n    - JSON with:\n        - 'imageIds': list of image IDs to unshare\n        - 'recipientId': ID of the recipient to unshare from\n\nProcess:\n    1. Checks if recipient exists\n    2. Removes entries from image_recipients table\n\nReturns:\n    - Success message with counts of unshared images\n    - Detailed results including successful and skipped operations"
+      operationId: unshare_images_with_recipient_endpoint_unshareImagesWithRecipient_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - UnshareImagesWithRecipient
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

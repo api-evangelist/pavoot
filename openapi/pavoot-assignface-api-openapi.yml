@@ -1,0 +1,100 @@
+openapi: 3.2.0
+info:
+  title: Fast Assign Face API
+  version: 0.1.0
+tags:
+- name: AssignFace
+paths:
+  /assignFace:
+    put:
+      summary: Assign Face Endpoint
+      description: 'Assign or rename a face/person based on 4 explicit scenarios:
+
+
+        - single_new:       only this face → create new person
+
+        - single_existing:  only this face → assign to existing person
+
+        - all_new:          rename this entire person to a new name
+
+        - all_existing:     merge this entire person into an existing person'
+      operationId: assign_face_endpoint_assignFace_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignFaceRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - AssignFace
+components:
+  schemas:
+    AssignFaceRequest:
+      properties:
+        faceId:
+          type: string
+          title: Faceid
+        newName:
+          type: string
+          title: Newname
+        renameMode:
+          type: string
+          enum:
+          - single_new
+          - single_existing
+          - all_new
+          - all_existing
+          title: Renamemode
+        targetPersonId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Targetpersonid
+      type: object
+      required:
+      - faceId
+      - newName
+      - renameMode
+      title: AssignFaceRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

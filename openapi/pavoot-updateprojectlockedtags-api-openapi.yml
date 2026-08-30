@@ -1,0 +1,29 @@
+openapi: 3.2.0
+info:
+  title: Fast Update Project Locked Tags API
+  version: 0.1.0
+tags:
+- name: UpdateProjectLockedTags
+paths:
+  /updateProjectLockedTags:
+    put:
+      summary: Update Project Locked Tags Endpoint
+      description: 'Replaces the project''s locked tags with the body''s list. Body: { projectId: number, lockedTags: string[] }.
+
+
+        Gated on ''settings.manage.lockedTags'' (migration 026). Before that this endpoint was gated
+
+        only by require_project_access, so ANY project member — a photographer included — could
+
+        rewrite the locked-tag list and expose images the organizers had deliberately withheld.
+
+        require_task_or_403 also enforces project membership, so it replaces that check.'
+      operationId: update_project_locked_tags_endpoint_updateProjectLockedTags_put
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - UpdateProjectLockedTags

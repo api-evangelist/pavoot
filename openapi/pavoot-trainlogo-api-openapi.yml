@@ -1,0 +1,77 @@
+openapi: 3.2.0
+info:
+  title: Fast Train Logo API
+  version: 0.1.0
+tags:
+- name: TrainLogo
+paths:
+  /trainLogo:
+    post:
+      summary: Train Logo Endpoint
+      description: "Endpoint for queuing a logo training task to SQS.\n\nArgs:\n    logoId: The logo ID to train\n    projectId: The project ID\n\nReturns:\n    JSON response with success status"
+      operationId: train_logo_endpoint_trainLogo_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body_train_logo_endpoint_trainLogo_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - TrainLogo
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Body_train_logo_endpoint_trainLogo_post:
+      properties:
+        logoId:
+          type: string
+          title: Logoid
+        projectId:
+          type: integer
+          title: Projectid
+      type: object
+      required:
+      - logoId
+      - projectId
+      title: Body_train_logo_endpoint_trainLogo_post

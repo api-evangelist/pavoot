@@ -1,0 +1,80 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Recipients API
+  version: 0.1.0
+tags:
+- name: GetRecipients
+paths:
+  /getRecipients:
+    get:
+      summary: Get Recipients Endpoint
+      description: 'Retrieves recipients for a single project, or the union across multiple
+
+        projects (the "All Projects" view) when projectIds[] is provided. The
+
+        multi-project payload includes per-recipient project membership (projectIds).'
+      operationId: get_recipients_endpoint_getRecipients_get
+      parameters:
+      - name: projectId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Projectid
+      - name: projectIds[]
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+          title: Projectids[]
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetRecipients
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

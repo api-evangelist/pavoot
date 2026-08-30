@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Update Project Personalized Tags API
+  version: 0.1.0
+tags:
+- name: UpdateProjectPersonalizedTags
+paths:
+  /updateProjectPersonalizedTags:
+    put:
+      summary: Update Project Personalized Tags Endpoint
+      description: "Updates the personalized tags for a specific project.\nDeletes existing tags for the project and adds new ones.\n\nRequest Body:\n    projectId (int): The ID of the project (required)\n    personalizedTags (dict): Dictionary with tags as keys and descriptions as values (required)\n\nReturns:\n    JSON response with:\n        - message: Success message\n        - project: Updated project details including the new personalized tags\n\nErrors:\n    - 400 if projectId is missing or duplicate tags found\n    - 404 if project is not found\n    - 500 if database access fails"
+      operationId: update_project_personalized_tags_endpoint_updateProjectPersonalizedTags_put
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - UpdateProjectPersonalizedTags

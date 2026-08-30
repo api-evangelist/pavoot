@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Remove Brand From Project API
+  version: 0.1.0
+tags:
+- name: RemoveBrandFromProject
+paths:
+  /removeBrandFromProject:
+    post:
+      summary: Remove Brand From Project Endpoint
+      description: Remove an EXPLICIT project membership from a brand. 409 if origin or photo-derived.
+      operationId: remove_brand_from_project_endpoint_removeBrandFromProject_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - RemoveBrandFromProject

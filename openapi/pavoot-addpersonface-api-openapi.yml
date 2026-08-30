@@ -1,0 +1,108 @@
+openapi: 3.2.0
+info:
+  title: Fast Add Person Face API
+  version: 0.1.0
+tags:
+- name: AddPersonFace
+paths:
+  /addPersonFace:
+    post:
+      summary: Add Person Face Endpoint
+      description: "Endpoint for adding a person to the face recognition system.\nIf scanExistingFaces is \"true\", starts a background scan for matches in existing stored faces.\nIf bulk is \"true\", skips folder update, persons emit, and duplicate scan; call completeBulkFaceUpload when done.\n\nArgs:\n    name: The person's name\n    projectId: The project ID this person belongs to\n    category: Category/type of person (default: \"person\")\n    position: The person's position/role (optional)\n    link: Link associated with the person (optional)\n    faceImageId: Face image ID to associate with the person (used to fetch image from S3)\n    scanExistingFaces: If \"true\", scan existing images for this person after registration\n    bulk: If \"true\", do not run background tasks (folders, persons emit, duplicate scan); caller must call completeBulkFaceUpload at the end\n\nReturns:\n    JSON response with success status and person details"
+      operationId: add_person_face_endpoint_addPersonFace_post
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Body_add_person_face_endpoint_addPersonFace_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - AddPersonFace
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    Body_add_person_face_endpoint_addPersonFace_post:
+      properties:
+        name:
+          type: string
+          title: Name
+        projectId:
+          type: string
+          title: Projectid
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+        position:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Position
+        link:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Link
+        faceImageId:
+          type: string
+          title: Faceimageid
+        scanExistingFaces:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scanexistingfaces
+          default: 'false'
+        bulk:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bulk
+          default: 'false'
+      type: object
+      required:
+      - name
+      - projectId
+      - faceImageId
+      title: Body_add_person_face_endpoint_addPersonFace_post
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

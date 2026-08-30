@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Tags From Prompt API
+  version: 0.1.0
+tags:
+- name: GetTagsFromPrompt
+paths:
+  /getTagsFromPrompt:
+    post:
+      summary: Get Tags From Prompt Endpoint
+      description: Gets relevant tags from a prompt using OpenAI.
+      operationId: get_tags_from_prompt_endpoint_getTagsFromPrompt_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - GetTagsFromPrompt

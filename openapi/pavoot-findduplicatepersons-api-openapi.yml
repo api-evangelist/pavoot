@@ -1,0 +1,69 @@
+openapi: 3.2.0
+info:
+  title: Fast Find Duplicate Persons API
+  version: 0.1.0
+tags:
+- name: FindDuplicatePersons
+paths:
+  /findDuplicatePersons:
+    get:
+      summary: Find Duplicate Persons
+      description: 'Find duplicate person names within a project.
+
+        Returns a list of names that appear more than once, with counts and person_ids.'
+      operationId: find_duplicate_persons_findDuplicatePersons_get
+      parameters:
+      - name: project_id
+        in: query
+        required: true
+        schema:
+          type: integer
+          description: Project ID to check for duplicate names
+          title: Project Id
+        description: Project ID to check for duplicate names
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - FindDuplicatePersons
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

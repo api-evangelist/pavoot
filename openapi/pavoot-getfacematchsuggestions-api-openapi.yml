@@ -1,0 +1,74 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Face Match Suggestions API
+  version: 0.1.0
+tags:
+- name: GetFaceMatchSuggestions
+paths:
+  /getFaceMatchSuggestions:
+    get:
+      summary: Get Face Match Suggestions Endpoint
+      description: Returns face match suggestions for the project (for review/approve/reject UI).
+      operationId: get_face_match_suggestions_endpoint_getFaceMatchSuggestions_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      - name: status_filter
+        in: query
+        required: false
+        schema:
+          type: string
+          description: pending | rejected | approved | ignored | all
+          default: pending
+          title: Status Filter
+        description: pending | rejected | approved | ignored | all
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetFaceMatchSuggestions
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

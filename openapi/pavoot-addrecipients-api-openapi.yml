@@ -1,0 +1,66 @@
+openapi: 3.2.0
+info:
+  title: Fast Add Recipients API
+  version: 0.1.0
+tags:
+- name: AddRecipients
+paths:
+  /addRecipients:
+    post:
+      summary: Add Recipients Endpoint
+      description: "API endpoint for adding recipients to a project.\n\nValidates request JSON, extracts the project ID and recipients data,\nthen calls the add_recipients function to process them.\n\nReturns:\n    Flask response: JSON response with success message or error details"
+      operationId: add_recipients_endpoint_addRecipients_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - AddRecipients
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

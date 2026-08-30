@@ -1,0 +1,78 @@
+openapi: 3.2.0
+info:
+  title: Fast Download Attendee Faces Zip API
+  version: 0.1.0
+tags:
+- name: DownloadAttendeeFacesZip
+paths:
+  /downloadAttendeeFacesZip:
+    get:
+      summary: Download Attendee Faces Zip
+      description: 'Stream a ZIP of all attendee face images for a project, named by person name.
+
+
+        Assembled on disk and streamed, not held in memory. It used to read every face
+
+        image into RAM, build the archive in a BytesIO, and then copy the whole archive
+
+        again into the response body — three copies of the same bytes. Face images are
+
+        the full-size originals (~5MB each), so a project with a few hundred attendees
+
+        exceeded the task''s 2GB and took the container down with every other request on
+
+        it. Now only one image is resident at a time.'
+      operationId: download_attendee_faces_zip_downloadAttendeeFacesZip_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - DownloadAttendeeFacesZip
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

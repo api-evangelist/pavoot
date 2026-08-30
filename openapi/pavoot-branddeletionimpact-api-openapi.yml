@@ -1,0 +1,81 @@
+openapi: 3.2.0
+info:
+  title: Fast Brand Deletion Impact API
+  version: 0.1.0
+tags:
+- name: BrandDeletionImpact
+paths:
+  /brandDeletionImpact:
+    get:
+      summary: Brand Deletion Impact Endpoint
+      description: 'What deleting these brands would destroy — for the confirmation dialog.
+
+
+        Read-only. Gated the same way the delete is, so it cannot be used to probe brands in projects
+
+        the caller has no business seeing.'
+      operationId: brand_deletion_impact_endpoint_brandDeletionImpact_get
+      parameters:
+      - name: logoIds[]
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default: []
+          title: Logoids[]
+      - name: projectId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Projectid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - BrandDeletionImpact
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

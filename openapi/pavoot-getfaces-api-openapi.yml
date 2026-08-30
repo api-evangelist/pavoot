@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Faces API
+  version: 0.1.0
+tags:
+- name: GetFaces
+paths:
+  /getFaces:
+    get:
+      summary: Get Faces Endpoint
+      description: Retrieves all detected faces (bounding boxes and person IDs) for a given image.
+      operationId: get_faces_endpoint_getFaces_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - GetFaces

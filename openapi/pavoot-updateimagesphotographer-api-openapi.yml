@@ -1,0 +1,87 @@
+openapi: 3.2.0
+info:
+  title: Fast Update Images Photographer API
+  version: 0.1.0
+tags:
+- name: UpdateImagesPhotographer
+paths:
+  /updateImagesPhotographer:
+    post:
+      summary: Update Images Photographer Endpoint
+      description: 'Sets the photographer for the given images in the project.
+
+        Expects: projectId, imageIds, photographerId.
+
+        Photographer must be associated with the project.'
+      operationId: update_images_photographer_endpoint_updateImagesPhotographer_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateImagesPhotographerRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - UpdateImagesPhotographer
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UpdateImagesPhotographerRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+        photographerId:
+          type: string
+          title: Photographerid
+      type: object
+      required:
+      - projectId
+      - imageIds
+      - photographerId
+      title: UpdateImagesPhotographerRequest

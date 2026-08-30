@@ -1,0 +1,66 @@
+openapi: 3.2.0
+info:
+  title: Fast Revoke Photographer Project Access API
+  version: 0.1.0
+tags:
+- name: RevokePhotographerProjectAccess
+paths:
+  /revokePhotographerProjectAccess:
+    post:
+      summary: Revoke Photographer Project Access Endpoint
+      description: "Takes away a photographer's access to ONE project, keeping their row and image credit.\n\nExpects:\n    - JSON with 'photographerId' and 'projectId'\n\nCounterpart to /invitePhotographer, which is the only thing that grants a project.\n/deletePhotographer is NOT the counterpart: it drops the association row, which also\ndrops the photographer out of that project's list. Idempotent — revoking access nobody\nhas is a success with changed=false."
+      operationId: revoke_photographer_project_access_endpoint_revokePhotographerProjectAccess_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - RevokePhotographerProjectAccess
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

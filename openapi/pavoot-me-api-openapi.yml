@@ -1,0 +1,34 @@
+openapi: 3.2.0
+info:
+  title: Fast Me API
+  version: 0.1.0
+tags:
+- name: Me
+paths:
+  /me:
+    get:
+      summary: Get Me
+      description: 'Resolve the authenticated Clerk user''s membership in THIS app.
+
+
+        Clerk is shared across multiple Pavoot apps, so a valid Clerk session does
+
+        NOT imply the user belongs here. The frontend uses this to gate the app
+
+        shell: a signed-in user with no membership is signed out rather than being
+
+        dropped into (and shown cached data from) an app they don''t belong to.
+
+
+        Membership is derived from this app''s database only — never from the
+
+        (cross-app) Clerk public_metadata role.'
+      operationId: get_me_me_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Me

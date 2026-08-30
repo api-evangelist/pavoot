@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Update Project Filenaming Config API
+  version: 0.1.0
+tags:
+- name: UpdateProjectFilenamingConfig
+paths:
+  /updateProjectFilenamingConfig:
+    put:
+      summary: Update Project Filenaming Config Endpoint
+      description: "Updates the filenaming configuration for a specific project.\n\nRequest Body:\n    projectId (int): The ID of the project (required)\n    titleTemplate (str | null): Template for image titles (optional)\n    filenameTemplate (str | null): Template for filenames without extension (optional)\n\nThe configuration is stored as JSONB in the projects table and used when\ngenerating image titles (for display) and filenames for downloads."
+      operationId: update_project_filenaming_config_endpoint_updateProjectFilenamingConfig_put
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - UpdateProjectFilenamingConfig

@@ -1,0 +1,65 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Orphaned Persons API
+  version: 0.1.0
+tags:
+- name: GetOrphanedPersons
+paths:
+  /getOrphanedPersons:
+    get:
+      summary: Get Orphaned Persons Endpoint
+      description: Retrieves all orphaned persons (persons with no face references) for a project.
+      operationId: get_orphaned_persons_endpoint_getOrphanedPersons_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetOrphanedPersons
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

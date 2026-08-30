@@ -1,0 +1,67 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Project Face Categories API
+  version: 0.1.0
+tags:
+- name: GetProjectFaceCategories
+paths:
+  /getProjectFaceCategories:
+    get:
+      summary: Get Project Face Categories Endpoint
+      description: 'Returns distinct face category labels for a project (from persons and project_face_categories).
+
+        Used for dropdowns when adding/editing faces. When category is null, UI shows "user added" or "auto detected" from creation_type.'
+      operationId: get_project_face_categories_endpoint_getProjectFaceCategories_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Projectid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetProjectFaceCategories
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

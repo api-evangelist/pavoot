@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Update Project Personalized Prompt API
+  version: 0.1.0
+tags:
+- name: UpdateProjectPersonalizedPrompt
+paths:
+  /updateProjectPersonalizedPrompt:
+    put:
+      summary: Update Project Personalized Prompt Endpoint
+      description: "Updates the personalized prompt for a specific project.\n\nRequest Body:\n    projectId (int): The ID of the project (required)\n    personalizedPrompt (str): The personalized prompt to set (optional, can be null to clear it)\n\nReturns:\n    JSON response with:\n        - message: Success message\n        - project: Updated project details including the new personalized prompt\n\nErrors:\n    - 400 if projectId is missing\n    - 404 if project is not found\n    - 500 if database access fails"
+      operationId: update_project_personalized_prompt_endpoint_updateProjectPersonalizedPrompt_put
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - UpdateProjectPersonalizedPrompt

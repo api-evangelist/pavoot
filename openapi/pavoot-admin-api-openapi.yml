@@ -1,0 +1,965 @@
+openapi: 3.2.0
+info:
+  title: Fast Admin API
+  version: 0.1.0
+tags:
+- name: Admin
+paths:
+  /admin/permission-presets:
+    get:
+      summary: Admin List Permission Presets Endpoint
+      description: 'List named permission presets for the given role for organization(s).
+
+        Pass organizationIds, or projectIds to infer orgs from projects (via organizers).
+
+        Requires admin (admins table).'
+      operationId: admin_list_permission_presets_endpoint_admin_permission_presets_get
+      parameters:
+      - name: role
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Role
+      - name: organizationIds
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Comma-separated organization IDs (preferred)
+          default: ''
+          title: Organizationids
+        description: Comma-separated organization IDs (preferred)
+      - name: projectIds
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Comma-separated project IDs (orgs inferred for listing)
+          default: ''
+          title: Projectids
+        description: Comma-separated project IDs (orgs inferred for listing)
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/permissions/role:
+    patch:
+      summary: Admin Patch Role Permissions Endpoint
+      description: "Super-admin endpoint.\nEdits role defaults (insert/delete) for a project, enforcing global locks.\n\nExpected body:\n{\n  \"role\": \"photographer\",\n  \"changes\": {\n    \"sharelinks.create\": true,\n    \"images.delete\": false\n  }\n}"
+      operationId: admin_patch_role_permissions_endpoint_admin_permissions_role_patch
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/permissions/user:
+    patch:
+      summary: Admin Patch User Permissions Endpoint
+      description: "Super-admin endpoint.\nEdits user-specific permissions (upsert) for a project, enforcing global locks.\n\nExpected body:\n{\n  \"role\": \"photographer\",\n  \"user_id\": \"user_target\",\n  \"changes\": {\n    \"sharelinks.create\": true,\n    \"images.delete\": false\n  }\n}"
+      operationId: admin_patch_user_permissions_endpoint_admin_permissions_user_patch
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/permissions/tasks:
+    get:
+      summary: List Tasks Endpoint
+      description: 'Super-admin endpoint.
+
+        Lists all permission tasks (category + task) for building UI structures.'
+      operationId: list_tasks_endpoint_admin_permissions_tasks_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Admin
+  /admin/permissions/org:
+    get:
+      summary: Admin Get Org Manager Grants Endpoint
+      description: 'Admin endpoint.
+
+        List an organization''s organizers with whether each holds the
+
+        ''org.manage.organizers'' permission.'
+      operationId: admin_get_org_manager_grants_endpoint_admin_permissions_org_get
+      parameters:
+      - name: organizationId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Organizationid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+    patch:
+      summary: Admin Patch Org Manager Grant Endpoint
+      description: 'Admin endpoint.
+
+        Grant (allowed=true) or revoke (allowed=false) the ''org.manage.organizers''
+
+        permission for a user within an organization.
+
+
+        Expected body: { "organizationId": int, "userId": str, "allowed": bool }'
+      operationId: admin_patch_org_manager_grant_endpoint_admin_permissions_org_patch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/isAdmin:
+    get:
+      summary: Admin Is Admin
+      operationId: admin_is_admin_admin_isAdmin_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Admin
+  /admin/event-organizers:
+    get:
+      summary: Admin Event Organizers
+      operationId: admin_event_organizers_admin_event_organizers_get
+      parameters:
+      - name: query
+        in: query
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: Query
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/projects:
+    get:
+      summary: Admin Projects
+      operationId: admin_projects_admin_projects_get
+      parameters:
+      - name: query
+        in: query
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: Query
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/projects/{project_id}/set-primary-organizer:
+    patch:
+      summary: Admin Set Primary Organizer
+      operationId: admin_set_primary_organizer_admin_projects__project_id__set_primary_organizer_patch
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/photographers:
+    get:
+      summary: Admin Photographers
+      description: 'List photographers that are NOT event organizers.
+
+        Only returns photographers that exist in photographers table
+
+        but NOT in event_organizers table.'
+      operationId: admin_photographers_admin_photographers_get
+      parameters:
+      - name: query
+        in: query
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: Query
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/delete-photographer:
+    delete:
+      summary: Admin Delete Photographer Endpoint
+      description: "Delete a photographer completely.\nThis removes:\n- Entries from photographer_projects table\n- Entry from photographers table\n- Clerk user account\n\nNote: Only deletes photographers that are NOT event organizers.\nEvent organizers should be deleted via delete-organizer endpoint.\n\nQuery Parameters:\n    photographerId (str): The Clerk user ID of the photographer to delete (required)"
+      operationId: admin_delete_photographer_endpoint_admin_delete_photographer_delete
+      parameters:
+      - name: photographerId
+        in: query
+        required: true
+        schema:
+          type: string
+          description: The Clerk user ID of the photographer to delete
+          title: Photographerid
+        description: The Clerk user ID of the photographer to delete
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/recipients:
+    get:
+      summary: Admin Recipients
+      description: 'List recipients that are NOT event organizers or photographers.
+
+        Only returns recipients that exist in recipients table
+
+        but NOT in event_organizers or photographers tables.'
+      operationId: admin_recipients_admin_recipients_get
+      parameters:
+      - name: query
+        in: query
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: Query
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/delete-recipient:
+    delete:
+      summary: Admin Delete Recipient Endpoint
+      description: "Delete a recipient completely.\nThis removes:\n- Entries from recipient_projects table\n- Entry from recipients table\n- Clerk user account\n\nNote: Only deletes recipients that are NOT event organizers or photographers.\nEvent organizers should be deleted via delete-organizer endpoint.\nPhotographers should be deleted via delete-photographer endpoint.\n\nQuery Parameters:\n    recipientId (str): The Clerk user ID of the recipient to delete (required)"
+      operationId: admin_delete_recipient_endpoint_admin_delete_recipient_delete
+      parameters:
+      - name: recipientId
+        in: query
+        required: true
+        schema:
+          type: string
+          description: The Clerk user ID of the recipient to delete
+          title: Recipientid
+        description: The Clerk user ID of the recipient to delete
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/organizations:
+    get:
+      summary: Admin Organizations
+      description: List organizations with their limits and attached organizers.
+      operationId: admin_organizations_admin_organizations_get
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+    post:
+      summary: Admin Create Organization
+      description: 'Create an organization with a name, storage, and image tagging limits.
+
+        Automatically creates a dedicated Rekognition collection for the org.'
+      operationId: admin_create_organization_admin_organizations_post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/create-organizer:
+    post:
+      summary: Admin Create Organizer Endpoint
+      operationId: admin_create_organizer_endpoint_admin_create_organizer_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/delete-organizer:
+    delete:
+      summary: Admin Delete Organizer Endpoint
+      description: "Delete an event organizer completely.\nThis removes:\n- Entries from event_organizer_projects table\n- Entries from photographer_projects table\n- Entry from organization_event_organizers table (if any)\n- Entry from event_organizers table\n- Entry from photographers table\n- Clerk user account\n\nQuery Parameters:\n    eventOrganizerId (str): The Clerk user ID of the event organizer to delete (required)"
+      operationId: admin_delete_organizer_endpoint_admin_delete_organizer_delete
+      parameters:
+      - name: eventOrganizerId
+        in: query
+        required: true
+        schema:
+          type: string
+          description: The Clerk user ID of the event organizer to delete
+          title: Eventorganizerid
+        description: The Clerk user ID of the event organizer to delete
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/organizations/{organization_id}:
+    patch:
+      summary: Admin Update Organization
+      description: Update an organization's name and limits.
+      operationId: admin_update_organization_admin_organizations__organization_id__patch
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Organization Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+    delete:
+      summary: Admin Delete Organization
+      description: Delete an organization. Event organizer mappings are removed via ON DELETE CASCADE.
+      operationId: admin_delete_organization_admin_organizations__organization_id__delete
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Organization Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/organizations/{organization_id}/create-rekognition-collection:
+    post:
+      summary: Admin Create Org Rekognition Collection
+      description: 'Create a new Rekognition collection for this organization and save its ID to the DB.
+
+        Auto-generates the collection ID as ''pavoot-{env}-{org-name-slug}'' where env comes
+
+        from the request body (dev/staging/prod, detected client-side from the browser hostname).
+
+        Returns an error if the org already has a custom collection set.
+
+        Migrates existing faces from the org''s projects into the new collection as a background task.'
+      operationId: admin_create_org_rekognition_collection_admin_organizations__organization_id__create_rekognition_collection_post
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Organization Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCollectionBody'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/organizations/{organization_id}/collection-faces:
+    get:
+      summary: Admin Get Org Collection Faces
+      description: 'List all faces in the Rekognition collection used by this organization.
+
+        Uses the org''s custom collection if set, otherwise the global default.
+
+        Paginates through the entire collection and returns face count + face list.'
+      operationId: admin_get_org_collection_faces_admin_organizations__organization_id__collection_faces_get
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Organization Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/organizations/{organization_id}/missing-faces:
+    get:
+      summary: Admin Get Org Missing Faces
+      description: 'Returns persons in the org''s projects who have a face_image_id but are NOT yet indexed
+
+        in the org''s custom Rekognition collection. Used to identify faces that need migration.
+
+        Requires the org to have a custom collection (rekognition_collection_id not null).'
+      operationId: admin_get_org_missing_faces_admin_organizations__organization_id__missing_faces_get
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Organization Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/organizations/{organization_id}/migrate-missing-faces:
+    post:
+      summary: Admin Migrate Missing Faces
+      description: 'Re-indexes into the org''s custom collection all persons who have a face_image_id
+
+        but are not yet indexed there. Starts in background; poll migration-progress for updates.
+
+        Does NOT remove faces from the default collection (safe, non-destructive).'
+      operationId: admin_migrate_missing_faces_admin_organizations__organization_id__migrate_missing_faces_post
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Organization Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/organizations/{organization_id}/migration-progress:
+    get:
+      summary: Admin Migration Progress
+      description: Returns the current migration progress for an org (populated by migrate-missing-faces).
+      operationId: admin_migration_progress_admin_organizations__organization_id__migration_progress_get
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Organization Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/organizations/{organization_id}/add-organizer:
+    post:
+      summary: Admin Add Organizer To Organization
+      description: Assign an event organizer to an organization.
+      operationId: admin_add_organizer_to_organization_admin_organizations__organization_id__add_organizer_post
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Organization Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/organizations/{organization_id}/remove-organizer:
+    post:
+      summary: Admin Remove Organizer From Organization
+      description: Remove an event organizer from an organization.
+      operationId: admin_remove_organizer_from_organization_admin_organizations__organization_id__remove_organizer_post
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Organization Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/assign-organizer:
+    post:
+      summary: Admin Assign Organizer Endpoint
+      operationId: admin_assign_organizer_endpoint_admin_assign_organizer_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/admins:
+    get:
+      summary: Admin List Admins Endpoint
+      operationId: admin_list_admins_endpoint_admin_admins_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Admin
+  /admin/admins/add:
+    post:
+      summary: Admin Add Admin Endpoint
+      operationId: admin_add_admin_endpoint_admin_admins_add_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /admin/admins/remove:
+    post:
+      summary: Admin Remove Admin Endpoint
+      operationId: admin_remove_admin_endpoint_admin_admins_remove_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+components:
+  schemas:
+    CreateCollectionBody:
+      properties:
+        env:
+          type: string
+          title: Env
+          default: dev
+      type: object
+      title: CreateCollectionBody
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

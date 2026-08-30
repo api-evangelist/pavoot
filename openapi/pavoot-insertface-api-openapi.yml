@@ -1,0 +1,105 @@
+openapi: 3.2.0
+info:
+  title: Fast Insert Face API
+  version: 0.1.0
+tags:
+- name: InsertFace
+paths:
+  /insertFace:
+    post:
+      summary: Insert Face
+      description: Insert a detected face occurrence into image_faces table
+      operationId: insert_face_insertFace_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FaceOccurrenceCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Insert Face Insertface Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - InsertFace
+components:
+  schemas:
+    FaceOccurrenceCreate:
+      properties:
+        image_id:
+          type: string
+          title: Image Id
+        bbox:
+          $ref: '#/components/schemas/BBox'
+        person_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Person Id
+      type: object
+      required:
+      - image_id
+      - bbox
+      title: FaceOccurrenceCreate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    BBox:
+      properties:
+        top:
+          type: integer
+          title: Top
+        left:
+          type: integer
+          title: Left
+        width:
+          type: integer
+          title: Width
+        height:
+          type: integer
+          title: Height
+      type: object
+      required:
+      - top
+      - left
+      - width
+      - height
+      title: BBox
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

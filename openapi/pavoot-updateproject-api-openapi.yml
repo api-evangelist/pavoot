@@ -1,0 +1,22 @@
+openapi: 3.2.0
+info:
+  title: Fast Update Project API
+  version: 0.1.0
+tags:
+- name: UpdateProject
+paths:
+  /updateProject:
+    put:
+      summary: Update Project Endpoint
+      description: 'Updates project title, start date and end date.
+
+        Access is restricted to event organizers associated with the project.'
+      operationId: update_project_endpoint_updateProject_put
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - UpdateProject

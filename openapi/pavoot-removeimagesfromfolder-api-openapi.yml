@@ -1,0 +1,83 @@
+openapi: 3.2.0
+info:
+  title: Fast Remove Images From Folder API
+  version: 0.1.0
+tags:
+- name: RemoveImagesFromFolder
+paths:
+  /removeImagesFromFolder:
+    post:
+      summary: Remove Image From Folder Endpoint
+      description: "Removes multiple images from a folder by deleting the folder name tag.\n\nExpects:\n    - JSON with:\n        - 'imageIds': list of image IDs to remove from the folder\n        - 'folderName': the name of the folder to remove the images from\n        - 'projectId'\n\nProcess:\n    1. Gets the project ID for each image\n    2. Checks if the folder exists for each project\n    3. Removes the folder name tag for each image if it exists\n\nReturns:\n    - Success message with results for each image\n    - Detailed results including successful and failed operations"
+      operationId: remove_image_from_folder_endpoint_removeImagesFromFolder_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModifyFolderImagesRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - RemoveImagesFromFolder
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ModifyFolderImagesRequest:
+      properties:
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+        folderName:
+          type: string
+          title: Foldername
+        projectId:
+          type: integer
+          title: Projectid
+      type: object
+      required:
+      - imageIds
+      - folderName
+      - projectId
+      title: ModifyFolderImagesRequest

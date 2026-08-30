@@ -1,0 +1,111 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Org Persons API
+  version: 0.1.0
+tags:
+- name: GetOrgPersons
+paths:
+  /getOrgPersons:
+    get:
+      summary: Get Org Persons Endpoint
+      description: 'Org-global persons list (the faces model is org-wide). `projectIds[]` is the set of
+
+        projects the caller can access (used for auth + org resolution + the default membership
+
+        scope). `filterProjectIds[]` optionally narrows to persons appearing in a chosen subset
+
+        (the per-project / project-picker view). Each person includes member_project_ids (the
+
+        projects they appear in) and image_count.
+
+
+        Paged for fast first paint: `limit`/`offset` return a stable window ordered by newest
+
+        activity (last_uploaded DESC). The client fetches pages and appends until a short page.'
+      operationId: get_org_persons_endpoint_getOrgPersons_get
+      parameters:
+      - name: projectIds[]
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+          title: Projectids[]
+      - name: filterProjectIds[]
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+          title: Filterprojectids[]
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 150
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Offset
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: name
+          title: Sort
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetOrgPersons
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

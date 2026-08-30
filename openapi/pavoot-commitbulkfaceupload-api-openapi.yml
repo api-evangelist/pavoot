@@ -1,0 +1,66 @@
+openapi: 3.2.0
+info:
+  title: Fast Commit Bulk Face Upload API
+  version: 0.1.0
+tags:
+- name: CommitBulkFaceUpload
+paths:
+  /commitBulkFaceUpload:
+    post:
+      summary: Commit Bulk Face Upload Endpoint
+      description: "Commit the reviewed bulk upload. Body:\n  { projectId, category, actions: [ { faceImageId, name, action, personId? } ] }\nwhere action is \"update\" | \"new\" | \"skip\". Runs them with limited concurrency,\nthen updates folders and schedules one face-match scan."
+      operationId: commit_bulk_face_upload_endpoint_commitBulkFaceUpload_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - CommitBulkFaceUpload
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

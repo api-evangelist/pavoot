@@ -1,0 +1,71 @@
+openapi: 3.2.0
+info:
+  title: Fast Add Photographer To Projects API
+  version: 0.1.0
+tags:
+- name: AddPhotographerToProjects
+paths:
+  /addPhotographerToProjects:
+    post:
+      summary: Add Photographer To Projects Endpoint
+      description: 'Attach an EXISTING photographer to additional projects (link-only): no new
+
+        account, no email. Used by the All-Projects photographers panel.
+
+
+        Body: { photographerId: str, projectIds: int[] }'
+      operationId: add_photographer_to_projects_endpoint_addPhotographerToProjects_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - AddPhotographerToProjects
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

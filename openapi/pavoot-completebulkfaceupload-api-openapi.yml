@@ -1,0 +1,70 @@
+openapi: 3.2.0
+info:
+  title: Fast Complete Bulk Face Upload API
+  version: 0.1.0
+tags:
+- name: CompleteBulkFaceUpload
+paths:
+  /completeBulkFaceUpload:
+    post:
+      summary: Complete Bulk Face Upload Endpoint
+      description: 'Call once after a batch of addPersonFace(..., bulk=true) is done.
+
+        Runs folder update, persons emit, and one project-wide face match scan; then returns.
+
+        Frontend should call this after the last face is added in a bulk upload, then fetch faces/duplicates/suggestions once.'
+      operationId: complete_bulk_face_upload_endpoint_completeBulkFaceUpload_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - CompleteBulkFaceUpload
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

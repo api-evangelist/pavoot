@@ -1,0 +1,69 @@
+openapi: 3.2.0
+info:
+  title: Fast Upload Link By Token API
+  version: 0.1.0
+tags:
+- name: Upload Link By Token
+paths:
+  /upload-link-by-token:
+    get:
+      summary: Upload Link By Token Endpoint
+      description: 'Resolve a stored upload link by token for the current user. 404 if the token is
+
+        not a stored link (the frontend then falls back to the legacy query-string link).'
+      operationId: upload_link_by_token_endpoint_upload_link_by_token_get
+      parameters:
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
+          description: Stored upload-link token
+          title: Token
+        description: Stored upload-link token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Upload Link By Token
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

@@ -1,0 +1,260 @@
+openapi: 3.2.0
+info:
+  title: Fast Reviews API
+  version: 0.1.0
+tags:
+- name: Reviews
+paths:
+  /reviews:
+    get:
+      summary: List Reviews Endpoint
+      description: 'Reviews overview: one row per share link with a review enabled.
+
+
+        The top level of the review surface. Flags take effect the moment a recipient sets them, so
+
+        the team''s actual question is "where do my reviews stand" — which are open, who responded,
+
+        how much came back — rather than a wall of every rejected image.'
+      operationId: list_reviews_endpoint_reviews_get
+      parameters:
+      - name: projectId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Projectid
+      - name: projectIds[]
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+          title: Projectids[]
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Reviews
+  /reviews/flags:
+    get:
+      summary: List Review Flags Endpoint
+      description: 'Active do-not-publish flags with provenance, for the Review page.
+
+
+        Scope by share link (the jump from the share editor) or by project(s). All-Projects mode
+
+        passes projectIds[] the same way /getShares does; the set is then narrowed to the projects
+
+        where the caller actually holds sharelinks.review.manage, so a union can never surface
+
+        flags from a project they can''t manage.'
+      operationId: list_review_flags_endpoint_reviews_flags_get
+      parameters:
+      - name: projectId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Projectid
+      - name: projectIds[]
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+          title: Projectids[]
+      - name: shareId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Shareid
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          title: Page
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+          title: Pagesize
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Reviews
+  /reviews/flags/clear:
+    post:
+      summary: Clear Review Flags Endpoint
+      description: '"Approve anyway": clear flags so the images become visible again.
+
+
+        Authorised per flag: a caller may only clear flags on images in projects where they hold
+
+        sharelinks.review.manage, so a cross-project Review page can''t be used to clear someone
+
+        else''s flags by id. Sets cleared_at rather than deleting, keeping the decision history.'
+      operationId: clear_review_flags_endpoint_reviews_flags_clear_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClearReviewFlagsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Reviews
+  /reviews/close:
+    post:
+      summary: Close Review Endpoint
+      description: 'Stop the recipient flagging on a link.
+
+
+        This is the manual lock the client asked for instead of a deadline — management can take
+
+        days, and the review ends when the team says so. Closing does NOT break the link: viewing
+
+        and downloads keep working, only the flag tool disappears.'
+      operationId: close_review_endpoint_reviews_close_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewLifecycleRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Reviews
+  /reviews/reopen:
+    post:
+      summary: Reopen Review Endpoint
+      description: Reopen a closed review so the recipient can flag again.
+      operationId: reopen_review_endpoint_reviews_reopen_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewLifecycleRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Reviews
+components:
+  schemas:
+    ClearReviewFlagsRequest:
+      properties:
+        flagIds:
+          items:
+            type: string
+          type: array
+          title: Flagids
+      type: object
+      required:
+      - flagIds
+      title: ClearReviewFlagsRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ReviewLifecycleRequest:
+      properties:
+        shareId:
+          type: string
+          title: Shareid
+      type: object
+      required:
+      - shareId
+      title: ReviewLifecycleRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

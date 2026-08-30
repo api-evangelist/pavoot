@@ -1,0 +1,72 @@
+openapi: 3.2.0
+info:
+  title: Fast Scan All Faces For Matches API
+  version: 0.1.0
+tags:
+- name: ScanAllFacesForMatches
+paths:
+  /scanAllFacesForMatches:
+    post:
+      summary: Scan All Faces For Matches Endpoint
+      description: 'Scans all persons with a face_id and finds Rekognition matches to other persons.
+
+        Search includes all images (labeled and unlabeled); no exclusion of folder/tagged images.
+
+        Creates face_match_suggestions so user can approve merging duplicate faces (any pair).
+
+        Runs in background; returns immediately.'
+      operationId: scan_all_faces_for_matches_endpoint_scanAllFacesForMatches_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - ScanAllFacesForMatches
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

@@ -1,0 +1,105 @@
+openapi: 3.2.0
+info:
+  title: Fast Set Project Attendee Setup API
+  version: 0.1.0
+tags:
+- name: SetProjectAttendeeSetup
+paths:
+  /setProjectAttendeeSetup:
+    put:
+      summary: Set Project Attendee Setup Endpoint
+      description: Update auto_send_email and/or send_from_email on project_attendee_setup.
+      operationId: set_project_attendee_setup_endpoint_setProjectAttendeeSetup_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttendeeSetupRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - SetProjectAttendeeSetup
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AttendeeSetupRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        autoSendEmail:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Autosendemail
+        senderEmail:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Senderemail
+        sendFromEmail:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sendfromemail
+        subject:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Subject
+        bodyHtml:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bodyhtml
+        defaultShareFolderNames:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Defaultsharefoldernames
+      type: object
+      required:
+      - projectId
+      title: AttendeeSetupRequest

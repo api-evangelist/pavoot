@@ -1,0 +1,69 @@
+openapi: 3.2.0
+info:
+  title: Fast Check Route Access API
+  version: 0.1.0
+tags:
+- name: CheckRouteAccess
+paths:
+  /checkRouteAccess:
+    get:
+      summary: Check Route Access Endpoint
+      description: 'For middleware: returns { "allowed": true/false } for the current user and path.
+
+        Used to gate /faces, /personalized-tags, /photographers, /recipients by permissions.'
+      operationId: check_route_access_endpoint_checkRouteAccess_get
+      parameters:
+      - name: path
+        in: query
+        required: true
+        schema:
+          type: string
+          description: Path e.g. /ProjectTitle/faces
+          title: Path
+        description: Path e.g. /ProjectTitle/faces
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - CheckRouteAccess
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

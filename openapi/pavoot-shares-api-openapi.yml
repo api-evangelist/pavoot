@@ -1,0 +1,391 @@
+openapi: 3.2.0
+info:
+  title: Fast Shares API
+  version: 0.1.0
+tags:
+- name: Shares
+paths:
+  /shares/{id}/images:
+    get:
+      summary: Get Share Content Images
+      description: 'Paginated content of a share link (the editor''s right-pane grid): filename + timestamp + thumbnail.'
+      operationId: get_share_content_images_shares__id__images_get
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Id
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          title: Page
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 40
+          title: Pagesize
+      - name: sortBy
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: newest
+          title: Sortby
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Shares
+  /shares/{id}/snapshot:
+    post:
+      summary: Snapshot Share
+      description: 'Freeze a scoped (auto-updating) link into a static one: materialize the current visible
+
+        set into image_ids, then null the scope and clear include/exclude. Stops auto-updates.'
+      operationId: snapshot_share_shares__id__snapshot_post
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Shares
+  /shares/create:
+    post:
+      summary: Create Hybrid Share
+      description: 'Create a combinable link in one call: folders/people scope (auto-updating) AND/OR
+
+        manually-selected images. Scope requires a concrete projectId; explicit-only images may
+
+        be cross-project (representative project is stored, like /createShareLink).'
+      operationId: create_hybrid_share_shares_create_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHybridShareRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Shares
+  /shares/preview:
+    post:
+      summary: Preview Share
+      description: 'Live preview for the create/edit builder: resolves the exact set of images a link WOULD
+
+        contain (scope resolved within its project + individual images cross-project), returning the
+
+        total count and a handful of thumbnails. No link is created.'
+      operationId: preview_share_shares_preview_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SharePreviewRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Shares
+  /shares/generate:
+    post:
+      summary: Generate Share Links
+      description: "Generates one or multiple share links based on person IDs and folder names.\n\nLogic:\n- Person images: images where image_faces.person_id matches\n- folderNames: tag values (uncategorized folders, brands, custom options — not only project_folders).\n  Images: tagged with that name AND \"Highlights\" (general). Locked tags on images are excluded\n  on the share page/download unless unlocked for that link (sharelink_unlocked_tags).\n- Final set: personMedia ∪ tagMedia (deduplicated)\n\nIf mode=\"per_person\": creates one share per personId with label=person.name\nIf mode=\"all_in_one\": creates one share with all selected persons + folders\nIf no people and customTagLinkMode=\"per_option\" with 2+ custom tag options selected:\none share per option; each share includes the same folders/brands plus that option.\nLabels use labelStrategyCustomFolder (e.g. category_option → \"Category - Option\")."
+      operationId: generate_share_links_shares_generate_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateShareLinksRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Shares
+components:
+  schemas:
+    CreateHybridShareRequest:
+      properties:
+        projectId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Projectid
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+          default: []
+        personIds:
+          items:
+            type: string
+          type: array
+          title: Personids
+          default: []
+        folderNames:
+          items:
+            type: string
+          type: array
+          title: Foldernames
+          default: []
+        mode:
+          anyOf:
+          - type: string
+            enum:
+            - per_person
+            - all_in_one
+          - type: 'null'
+          title: Mode
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        includedLabel:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Includedlabel
+        expiresInDays:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Expiresindays
+        password:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Password
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+        creatorDisplay:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Creatordisplay
+      type: object
+      title: CreateHybridShareRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    GenerateShareLinksRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        personIds:
+          items:
+            type: string
+          type: array
+          title: Personids
+          default: []
+        mode:
+          type: string
+          enum:
+          - per_person
+          - all_in_one
+          title: Mode
+          default: per_person
+        folderNames:
+          items:
+            type: string
+          type: array
+          title: Foldernames
+          default: []
+        expiresInDays:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Expiresindays
+        password:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Password
+        creatorDisplay:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Creatordisplay
+        labelStrategyPeople:
+          anyOf:
+          - type: string
+            enum:
+            - name_only
+            - category_name
+            - name_category
+          - type: 'null'
+          title: Labelstrategypeople
+          default: name_only
+        labelStrategyBrands:
+          anyOf:
+          - type: string
+            enum:
+            - name_only
+            - brand_prefix
+          - type: 'null'
+          title: Labelstrategybrands
+          default: name_only
+        labelStrategyCustomFolder:
+          anyOf:
+          - type: string
+            enum:
+            - name_only
+            - category_option
+          - type: 'null'
+          title: Labelstrategycustomfolder
+          default: name_only
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+        linkLabel:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Linklabel
+        customTagLinkMode:
+          anyOf:
+          - type: string
+            enum:
+            - combined
+            - per_option
+          - type: 'null'
+          title: Customtaglinkmode
+          default: combined
+      type: object
+      required:
+      - projectId
+      title: GenerateShareLinksRequest
+    SharePreviewRequest:
+      properties:
+        projectId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Projectid
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+          default: []
+        personIds:
+          items:
+            type: string
+          type: array
+          title: Personids
+          default: []
+        folderNames:
+          items:
+            type: string
+          type: array
+          title: Foldernames
+          default: []
+      type: object
+      title: SharePreviewRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

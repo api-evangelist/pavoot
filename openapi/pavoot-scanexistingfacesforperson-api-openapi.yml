@@ -1,0 +1,70 @@
+openapi: 3.2.0
+info:
+  title: Fast Scan Existing Faces For Person API
+  version: 0.1.0
+tags:
+- name: ScanExistingFacesForPerson
+paths:
+  /scanExistingFacesForPerson:
+    post:
+      summary: Scan Existing Faces For Person Endpoint
+      description: 'Starts a background job to scan existing stored faces for matches to the given person.
+
+        Used after registering a new person (if checkbox enabled) or via manual "Search for duplicate faces" button.
+
+        Returns immediately; scan runs asynchronously.'
+      operationId: scan_existing_faces_for_person_endpoint_scanExistingFacesForPerson_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - ScanExistingFacesForPerson
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

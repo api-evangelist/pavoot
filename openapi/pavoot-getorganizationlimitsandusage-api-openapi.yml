@@ -1,0 +1,84 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Organization Limits And Usage API
+  version: 0.1.0
+tags:
+- name: GetOrganizationLimitsAndUsage
+paths:
+  /getOrganizationLimitsAndUsage:
+    get:
+      summary: Get Organization Limits And Usage Endpoint
+      description: 'Returns organization limits and current usage: storage, share links, event organizers,
+
+        photographers, and upload (image tagging). For use on the project page header.
+
+
+        - mode=event_organizer: use auth user''s id, resolve to organization.
+
+        - mode=photographer: require projectId, resolve one event_organizer from event_organizer_projects, then their organization.'
+      operationId: get_organization_limits_and_usage_endpoint_getOrganizationLimitsAndUsage_get
+      parameters:
+      - name: mode
+        in: query
+        required: true
+        schema:
+          type: string
+          description: event_organizer or photographer
+          title: Mode
+        description: event_organizer or photographer
+      - name: projectId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Required when mode=photographer
+          title: Projectid
+        description: Required when mode=photographer
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetOrganizationLimitsAndUsage
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

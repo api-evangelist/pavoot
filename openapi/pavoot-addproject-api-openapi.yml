@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Add Project API
+  version: 0.1.0
+tags:
+- name: AddProject
+paths:
+  /addProject:
+    post:
+      summary: Add Project Endpoint
+      description: "Creates a new project and associates it with an event organizer.\n\nRequest Body:\n    eventOrganizerId (str): The ID of the event organizer (required)\n    title (str): The title of the project (required)\n    startDate (str): The start date in ISO format (required)\n    endDate (str): The end date in ISO format (required)\n\nReturns:\n    JSON response with:\n        - message: Success message\n        - project: Created project details\n\nErrors:\n    - 400 if any required parameter is missing or dates are invalid\n    - 404 if event organizer is not found\n    - 500 if database access fails"
+      operationId: add_project_endpoint_addProject_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - AddProject

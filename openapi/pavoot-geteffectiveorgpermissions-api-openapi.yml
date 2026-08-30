@@ -1,0 +1,97 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Effective Org Permissions API
+  version: 0.1.0
+tags:
+- name: GetEffectiveOrgPermissions
+paths:
+  /getEffectiveOrgPermissions:
+    get:
+      summary: Get Effective Org Permissions Endpoint
+      description: 'Org-wide effective permissions for a user — NO project needed.
+
+
+        Permissions are per-organization-user now, so the app fetches this ONCE per
+
+        session (on login / reload) instead of once per project. Resolution:
+
+        role default → live-linked role preset → per-user org overrides, unioned
+
+        across the user''s organizations. See get_effective_org_permissions_for_user.
+
+
+        - userId/role default to the authenticated user.
+
+        - Non-super-admins can only request their own permissions.'
+      operationId: get_effective_org_permissions_endpoint_getEffectiveOrgPermissions_get
+      parameters:
+      - name: userId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Userid
+      - name: role
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Role
+      - name: projectId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Projectid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetEffectiveOrgPermissions
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

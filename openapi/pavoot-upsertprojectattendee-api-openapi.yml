@@ -1,0 +1,82 @@
+openapi: 3.2.0
+info:
+  title: Fast Upsert Project Attendee API
+  version: 0.1.0
+tags:
+- name: UpsertProjectAttendee
+paths:
+  /upsertProjectAttendee:
+    post:
+      summary: Upsert Project Attendee Endpoint
+      description: Create or update project_attendees row; create share link for person if missing.
+      operationId: upsert_project_attendee_endpoint_upsertProjectAttendee_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertAttendeeRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - UpsertProjectAttendee
+components:
+  schemas:
+    UpsertAttendeeRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        personId:
+          type: string
+          title: Personid
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+      type: object
+      required:
+      - projectId
+      - personId
+      title: UpsertAttendeeRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

@@ -1,0 +1,137 @@
+openapi: 3.2.0
+info:
+  title: Fast Add Images API
+  version: 0.1.0
+tags:
+- name: AddImages
+paths:
+  /addImages:
+    post:
+      summary: Add Images Route
+      description: 'Endpoint for registering multiple images by UUID and queuing tagging tasks to SQS.
+
+
+        Sync on purpose: every call inside add_images blocks (SQLAlchemy, boto3), so as
+
+        an async handler a 50-image upload held the event loop for seconds and stalled
+
+        every other request on the worker. FastAPI runs sync handlers in its threadpool.'
+      operationId: add_images_route_addImages_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddImagesRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - AddImages
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AddImagesRequest:
+      properties:
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+        projectId:
+          type: integer
+          title: Projectid
+        photographerId:
+          type: string
+          title: Photographerid
+        folderName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Foldername
+        presetBrandTags:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Presetbrandtags
+        presetPersonalizedTags:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Presetpersonalizedtags
+        presetPersonTags:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Presetpersontags
+        presetGeneralTags:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Presetgeneraltags
+        presetCustomCategoryTags:
+          anyOf:
+          - additionalProperties:
+              items:
+                type: string
+              type: array
+            type: object
+          - type: 'null'
+          title: Presetcustomcategorytags
+        uploadLinkToken:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Uploadlinktoken
+      type: object
+      required:
+      - imageIds
+      - projectId
+      - photographerId
+      title: AddImagesRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

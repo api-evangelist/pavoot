@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Bulk Add Brands API
+  version: 0.1.0
+tags:
+- name: BulkAddBrands
+paths:
+  /bulkAddBrands:
+    post:
+      summary: Bulk Add Brands Endpoint
+      description: Bulk create/merge brands from CSV/paste. Body {projectId, rows:[{brandName, category, keywords[]}]}.
+      operationId: bulk_add_brands_endpoint_bulkAddBrands_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - BulkAddBrands

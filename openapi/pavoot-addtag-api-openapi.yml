@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Add Tag API
+  version: 0.1.0
+tags:
+- name: AddTag
+paths:
+  /addTag:
+    post:
+      summary: Add Tag Endpoint
+      description: Adds a tag to an image.
+      operationId: add_tag_endpoint_addTag_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - AddTag

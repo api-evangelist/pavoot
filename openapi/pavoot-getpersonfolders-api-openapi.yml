@@ -1,0 +1,67 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Person Folders API
+  version: 0.1.0
+tags:
+- name: GetPersonFolders
+paths:
+  /getPersonFolders:
+    get:
+      summary: Get Person Folders Endpoint
+      description: 'Fetches person folders based on image_faces data.
+
+        Only returns folders with >0 images and handles duplicate names.'
+      operationId: get_person_folders_endpoint_getPersonFolders_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetPersonFolders
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

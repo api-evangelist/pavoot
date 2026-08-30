@@ -1,0 +1,75 @@
+openapi: 3.2.0
+info:
+  title: Fast Match Bulk Face Names API
+  version: 0.1.0
+tags:
+- name: MatchBulkFaceNames
+paths:
+  /matchBulkFaceNames:
+    post:
+      summary: Match Bulk Face Names Endpoint
+      description: 'Preview step for bulk face upload: match each uploaded name against EXISTING
+
+        people (org-wide, accent/typo tolerant) WITHOUT writing anything to the DB.
+
+
+        Body: { projectId, faces: [ { faceImageId, name } ] }
+
+        Returns per-face candidates so the frontend can show a review list where the
+
+        user chooses, per match: update the existing person / skip / add as new.'
+      operationId: match_bulk_face_names_endpoint_matchBulkFaceNames_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - MatchBulkFaceNames
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

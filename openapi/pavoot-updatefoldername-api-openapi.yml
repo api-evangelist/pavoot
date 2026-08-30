@@ -1,0 +1,80 @@
+openapi: 3.2.0
+info:
+  title: Fast Update Folder Name API
+  version: 0.1.0
+tags:
+- name: UpdateFolderName
+paths:
+  /updateFolderName:
+    put:
+      summary: Update Folder Name Endpoint
+      operationId: update_folder_name_endpoint_updateFolderName_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFolderNameRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - UpdateFolderName
+components:
+  schemas:
+    UpdateFolderNameRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        oldFolderName:
+          type: string
+          title: Oldfoldername
+        newFolderName:
+          type: string
+          title: Newfoldername
+      type: object
+      required:
+      - projectId
+      - oldFolderName
+      - newFolderName
+      title: UpdateFolderNameRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

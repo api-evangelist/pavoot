@@ -1,0 +1,99 @@
+openapi: 3.2.0
+info:
+  title: Fast Complete Multipart Upload API
+  version: 0.1.0
+tags:
+- name: CompleteMultipartUpload
+paths:
+  /completeMultipartUpload:
+    post:
+      summary: Complete Multipart Upload Endpoint
+      operationId: complete_multipart_upload_endpoint_completeMultipartUpload_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompleteMultipartUploadRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - CompleteMultipartUpload
+components:
+  schemas:
+    CompletedPart:
+      properties:
+        partNumber:
+          type: integer
+          title: Partnumber
+        etag:
+          type: string
+          title: Etag
+      type: object
+      required:
+      - partNumber
+      - etag
+      title: CompletedPart
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CompleteMultipartUploadRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        key:
+          type: string
+          title: Key
+        uploadId:
+          type: string
+          title: Uploadid
+        parts:
+          items:
+            $ref: '#/components/schemas/CompletedPart'
+          type: array
+          title: Parts
+      type: object
+      required:
+      - projectId
+      - key
+      - uploadId
+      - parts
+      title: CompleteMultipartUploadRequest

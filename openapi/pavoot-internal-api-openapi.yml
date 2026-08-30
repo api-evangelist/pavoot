@@ -1,0 +1,76 @@
+openapi: 3.2.0
+info:
+  title: Fast Internal API
+  version: 0.1.0
+tags:
+- name: Internal
+paths:
+  /internal/logoTrainingStatus:
+    post:
+      summary: Update Logo Training Status Endpoint
+      operationId: update_logo_training_status_endpoint_internal_logoTrainingStatus_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Internal
+  /internal/logoInfo:
+    get:
+      summary: Get Logo Info Endpoint
+      operationId: get_logo_info_endpoint_internal_logoInfo_get
+      parameters:
+      - name: logoId
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Logoid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Internal
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

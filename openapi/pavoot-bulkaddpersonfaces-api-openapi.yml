@@ -1,0 +1,70 @@
+openapi: 3.2.0
+info:
+  title: Fast Bulk Add Person Faces API
+  version: 0.1.0
+tags:
+- name: BulkAddPersonFaces
+paths:
+  /bulkAddPersonFaces:
+    post:
+      summary: Bulk Add Person Faces Endpoint
+      description: 'Add many faces in one request. Frontend should upload all images to S3 first (presigned URLs),
+
+        then send projectId, category, and faces: [ { faceImageId, name } ].
+
+        Backend processes them (with limited concurrency), then runs folder update + persons emit + one scan.'
+      operationId: bulk_add_person_faces_endpoint_bulkAddPersonFaces_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - BulkAddPersonFaces
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

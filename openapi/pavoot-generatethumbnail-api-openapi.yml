@@ -1,0 +1,67 @@
+openapi: 3.2.0
+info:
+  title: Fast Generate Thumbnail API
+  version: 0.1.0
+tags:
+- name: GenerateThumbnail
+paths:
+  /generateThumbnail/{image_id}:
+    post:
+      summary: Generate Thumbnail Endpoint
+      description: 'Generates a thumbnail for the given image if it doesn''t exist, uploads it to S3,
+
+        and marks has_thumbnail = TRUE in the DB. Returns the presigned thumbnail URL.'
+      operationId: generate_thumbnail_endpoint_generateThumbnail__image_id__post
+      parameters:
+      - name: image_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Image Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GenerateThumbnail
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

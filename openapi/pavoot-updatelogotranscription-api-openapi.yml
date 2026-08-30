@@ -1,0 +1,80 @@
+openapi: 3.2.0
+info:
+  title: Fast Update Logo Transcription API
+  version: 0.1.0
+tags:
+- name: UpdateLogoTranscription
+paths:
+  /updateLogoTranscription:
+    put:
+      summary: Update Logo Transcription Endpoint
+      operationId: update_logo_transcription_endpoint_updateLogoTranscription_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body_update_logo_transcription_endpoint_updateLogoTranscription_put'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - UpdateLogoTranscription
+components:
+  schemas:
+    Body_update_logo_transcription_endpoint_updateLogoTranscription_put:
+      properties:
+        logoId:
+          type: string
+          title: Logoid
+        oldTranscription:
+          type: string
+          title: Oldtranscription
+        newTranscription:
+          type: string
+          title: Newtranscription
+      type: object
+      required:
+      - logoId
+      - oldTranscription
+      - newTranscription
+      title: Body_update_logo_transcription_endpoint_updateLogoTranscription_put
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

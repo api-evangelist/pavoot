@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Text Extraction API
+  version: 0.1.0
+tags:
+- name: GetTextExtraction
+paths:
+  /getTextExtraction:
+    get:
+      summary: Get Text Extraction Endpoint
+      description: Retrieves all text extraction results (bounding boxes and text) for a given image.
+      operationId: get_text_extraction_endpoint_getTextExtraction_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - GetTextExtraction

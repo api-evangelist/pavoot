@@ -1,0 +1,81 @@
+openapi: 3.2.0
+info:
+  title: Fast Emit Tagging Step API
+  version: 0.1.0
+tags:
+- name: Emit Tagging Step
+paths:
+  /emit_tagging_step:
+    post:
+      summary: Emit Tagging Step
+      description: Internal endpoint called by Lambda workers after each tagging step completes.
+      operationId: emit_tagging_step_emit_tagging_step_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaggingStepRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Emit Tagging Step
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    TaggingStepRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        imageId:
+          type: string
+          title: Imageid
+        step:
+          type: string
+          title: Step
+      type: object
+      required:
+      - projectId
+      - imageId
+      - step
+      title: TaggingStepRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

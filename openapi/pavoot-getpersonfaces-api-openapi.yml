@@ -1,0 +1,71 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Person Faces API
+  version: 0.1.0
+tags:
+- name: GetPersonFaces
+paths:
+  /getPersonFaces:
+    get:
+      summary: Get Person Faces Endpoint
+      description: Returns faces for the given person. For photographer role, only returns faces from that photographer's images.
+      operationId: get_person_faces_endpoint_getPersonFaces_get
+      parameters:
+      - name: personId
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Personid
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Projectid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetPersonFaces
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

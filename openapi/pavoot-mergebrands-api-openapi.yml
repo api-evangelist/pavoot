@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Merge Brands API
+  version: 0.1.0
+tags:
+- name: MergeBrands
+paths:
+  /mergeBrands:
+    post:
+      summary: Merge Brands Endpoint
+      description: Merge >=2 brands into one org-global brand. Body {logo_ids[], new_name, project_id?, keep_logo_id?}.
+      operationId: merge_brands_endpoint_mergeBrands_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - MergeBrands

@@ -1,0 +1,87 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Images With Unknown Faces API
+  version: 0.1.0
+tags:
+- name: GetImagesWithUnknownFaces
+paths:
+  /getImagesWithUnknownFaces:
+    get:
+      summary: Get Images With Unknown Faces Endpoint
+      description: 'Retrieves images that have at least one face with an unknown name (name IS NULL OR name = ''?'').
+
+        This is optimized to only return images that actually have unknown faces.'
+      operationId: get_images_with_unknown_faces_endpoint_getImagesWithUnknownFaces_get
+      parameters:
+      - name: projectId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Projectid
+      - name: page
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          default: 1
+          title: Page
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          default: 50
+          title: Pagesize
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetImagesWithUnknownFaces
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

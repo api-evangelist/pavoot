@@ -1,0 +1,194 @@
+openapi: 3.2.0
+info:
+  title: Fast Update Share API
+  version: 0.1.0
+tags:
+- name: UpdateShare
+paths:
+  /updateShare:
+    patch:
+      summary: Update Share
+      operationId: update_share_updateShare_patch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateShareRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - UpdateShare
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UpdateShareRequest:
+      properties:
+        id:
+          type: string
+          title: Id
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+        expiresInDays:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Expiresindays
+        personIds:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Personids
+        folderNames:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Foldernames
+        mode:
+          anyOf:
+          - type: string
+            enum:
+            - per_person
+            - all_in_one
+          - type: 'null'
+          title: Mode
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+        unlockedTags:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Unlockedtags
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        includedLabel:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Includedlabel
+        imageIds:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Imageids
+        includedImageIds:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Includedimageids
+        excludedImageIds:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Excludedimageids
+        password:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Password
+        removePassword:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Removepassword
+        showLockedTags:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Showlockedtags
+        showLockedPhotographers:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Showlockedphotographers
+        showFlagged:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Showflagged
+        unlockedPhotographers:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Unlockedphotographers
+        reviewEnabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Reviewenabled
+        reviewInstructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reviewinstructions
+      type: object
+      required:
+      - id
+      title: UpdateShareRequest

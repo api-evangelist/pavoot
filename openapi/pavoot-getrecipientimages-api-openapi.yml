@@ -1,0 +1,71 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Recipient Images API
+  version: 0.1.0
+tags:
+- name: GetRecipientImages
+paths:
+  /getRecipientImages:
+    get:
+      summary: Get Recipient Images Endpoint
+      description: "Retrieves all image IDs that a recipient has access to from the image_shares table.\n\nRequired Query Parameters:\n    - recipientId: The ID of the recipient\n\nOptional Query Parameters:\n    - projectId: Filter images by project ID\n\nReturns:\n    JSON response with list of image IDs and count:\n    - success: boolean indicating if the request was successful\n    - count: number of images found\n    - imageIds: list of image IDs the recipient has access to\n\nErrors:\n    - 400 if recipientId is missing\n    - 404 if recipient doesn't exist\n    - 500 if database access fails"
+      operationId: get_recipient_images_endpoint_getRecipientImages_get
+      parameters:
+      - name: recipientId
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Recipientid
+      - name: projectId
+        in: query
+        required: false
+        schema:
+          type: string
+          title: Projectid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetRecipientImages
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

@@ -1,0 +1,19 @@
+openapi: 3.2.0
+info:
+  title: Fast Update Tag Bulk API
+  version: 0.1.0
+tags:
+- name: UpdateTagBulk
+paths:
+  /updateTagBulk:
+    put:
+      summary: Update Tag Bulk Endpoint
+      operationId: update_tag_bulk_endpoint_updateTagBulk_put
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - UpdateTagBulk

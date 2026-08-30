@@ -1,0 +1,73 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Project Upload Link Info API
+  version: 0.1.0
+tags:
+- name: GetProjectUploadLinkInfo
+paths:
+  /getProjectUploadLinkInfo:
+    get:
+      summary: Get Project Upload Link Info Endpoint
+      description: 'Returns upload_token and title for the project so the client can build upload links.
+
+        Gated on the ''images.upload'' task (org-wide) — matching the sidebar entry
+
+        (useCan(''images.upload'')) and the write gate — so anyone allowed to upload
+
+        (photographers included), not just event organizers, can build a link.
+
+        require_task_or_403 also enforces project membership.'
+      operationId: get_project_upload_link_info_endpoint_getProjectUploadLinkInfo_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetProjectUploadLinkInfo
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

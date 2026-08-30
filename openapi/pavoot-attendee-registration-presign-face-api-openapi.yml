@@ -1,0 +1,95 @@
+openapi: 3.2.0
+info:
+  title: Fast Attendee Registration Presign Face API
+  version: 0.1.0
+tags:
+- name: Attendee Registration Presign Face
+paths:
+  /attendee-registration-presign-face:
+    post:
+      summary: Attendee Registration Presign Face Endpoint
+      description: 'Presigned PUT for the mandatory attendee profile photo (same S3 layout as dashboard).
+
+        Member registration links require a signed-in Clerk user.'
+      operationId: attendee_registration_presign_face_endpoint_attendee_registration_presign_face_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttendeeRegistrationPresignRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Attendee Registration Presign Face
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AttendeeRegistrationPresignRequest:
+      properties:
+        token:
+          type: string
+          title: Token
+        files:
+          items:
+            $ref: '#/components/schemas/FileInfo'
+          type: array
+          title: Files
+      type: object
+      required:
+      - token
+      - files
+      title: AttendeeRegistrationPresignRequest
+      description: Presign one face photo upload for attendee self-registration (same S3 layout as dashboard).
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    FileInfo:
+      properties:
+        extension:
+          type: string
+          title: Extension
+        contentType:
+          type: string
+          title: Contenttype
+      type: object
+      required:
+      - extension
+      - contentType
+      title: FileInfo

@@ -1,0 +1,79 @@
+openapi: 3.2.0
+info:
+  title: Fast Approve Face Match Suggestion API
+  version: 0.1.0
+tags:
+- name: ApproveFaceMatchSuggestion
+paths:
+  /approveFaceMatchSuggestion:
+    post:
+      summary: Approve Face Match Suggestion Endpoint
+      description: 'Approve a face match suggestion: merge candidate person into reference person
+
+        (reassign all image_faces from candidate to reference, delete candidate person and their Rekognition face).
+
+        Optional chosen_name: set the reference person''s name to this after merge (e.g. user-selected name).
+
+
+        Process: (1) DB transaction: reassign image_faces, delete suggestion and candidate person, update name/folder.
+
+        (2) Rekognition: delete candidate face from collection. (3) Emits (person.folders, persons.updated,
+
+        face_match_suggestions.updated) run in a background task so the response returns immediately; previously
+
+        get_project_persons (which built presigned URLs for every person) ran inline and could take many seconds on large projects.'
+      operationId: approve_face_match_suggestion_endpoint_approveFaceMatchSuggestion_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - ApproveFaceMatchSuggestion
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

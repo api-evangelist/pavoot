@@ -1,0 +1,91 @@
+openapi: 3.2.0
+info:
+  title: Fast Set Attendee Email Approval API
+  version: 0.1.0
+tags:
+- name: SetAttendeeEmailApproval
+paths:
+  /setAttendeeEmailApproval:
+    post:
+      summary: Set Attendee Email Approval Endpoint
+      description: 'Set attendee share-email workflow status (pending or an approved* variant).
+
+        After an email was sent (status sent), you can still change to pending or
+
+        approved* to adjust workflow or send again via /sendAttendeeEmails.'
+      operationId: set_attendee_email_approval_endpoint_setAttendeeEmailApproval_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetAttendeeEmailApprovalRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - SetAttendeeEmailApproval
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SetAttendeeEmailApprovalRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        personId:
+          type: string
+          title: Personid
+        status:
+          type: string
+          enum:
+          - pending
+          - approved
+          - approved-none
+          - approved-Pavoot
+          title: Status
+      type: object
+      required:
+      - projectId
+      - personId
+      - status
+      title: SetAttendeeEmailApprovalRequest
+      description: Set share-email readiness. Any of approved / approved-none / approved-Pavoot allows send.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

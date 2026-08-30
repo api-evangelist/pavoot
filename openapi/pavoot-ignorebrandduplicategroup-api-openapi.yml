@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Ignore Brand Duplicate Group API
+  version: 0.1.0
+tags:
+- name: IgnoreBrandDuplicateGroup
+paths:
+  /ignoreBrandDuplicateGroup:
+    post:
+      summary: Ignore Brand Duplicate Group Endpoint
+      description: Mark a brand duplicate group ignored (hidden). Body {project_id, logo_ids[]}.
+      operationId: ignore_brand_duplicate_group_endpoint_ignoreBrandDuplicateGroup_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - IgnoreBrandDuplicateGroup

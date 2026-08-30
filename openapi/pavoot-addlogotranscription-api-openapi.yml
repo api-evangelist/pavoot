@@ -1,0 +1,76 @@
+openapi: 3.2.0
+info:
+  title: Fast Add Logo Transcription API
+  version: 0.1.0
+tags:
+- name: AddLogoTranscription
+paths:
+  /addLogoTranscription:
+    post:
+      summary: Add Logo Transcription Endpoint
+      operationId: add_logo_transcription_endpoint_addLogoTranscription_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body_add_logo_transcription_endpoint_addLogoTranscription_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - AddLogoTranscription
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    Body_add_logo_transcription_endpoint_addLogoTranscription_post:
+      properties:
+        logoId:
+          type: string
+          title: Logoid
+        transcription:
+          type: string
+          title: Transcription
+      type: object
+      required:
+      - logoId
+      - transcription
+      title: Body_add_logo_transcription_endpoint_addLogoTranscription_post
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

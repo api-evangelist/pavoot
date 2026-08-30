@@ -1,0 +1,864 @@
+openapi: 3.2.0
+info:
+  title: Fast Org API
+  version: 0.1.0
+tags:
+- name: Org
+paths:
+  /org/can-manage-organizers:
+    get:
+      summary: Org Can Manage Organizers Endpoint
+      description: 'Lightweight gate for the frontend: does the caller hold the manage-organizers permission?'
+      operationId: org_can_manage_organizers_endpoint_org_can_manage_organizers_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Org
+  /org/branding:
+    get:
+      summary: Org Branding Get Endpoint
+      description: Current share-link branding for the caller's org (or any org for super-admin).
+      operationId: org_branding_get_endpoint_org_branding_get
+      parameters:
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: integer
+          title: Organizationid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+    post:
+      summary: Org Branding Set Endpoint
+      description: "Set the org's share-link branding.\n\n- Upload ``file`` to replace the logo (old S3 object deleted best-effort).\n- Pass ``removeLogo=true`` to clear the logo.\n- ``logoLinkUrl`` (when the field is present) sets the click-through URL; an\n  empty value clears it. Omit the field entirely to leave it unchanged."
+      operationId: org_branding_set_endpoint_org_branding_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_org_branding_set_endpoint_org_branding_post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/event-organizers:
+    get:
+      summary: Org Event Organizers Endpoint
+      description: List the event organizers in an organization (own org, or any org for super-admin).
+      operationId: org_event_organizers_endpoint_org_event_organizers_get
+      parameters:
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: integer
+          title: Organizationid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/photographers:
+    get:
+      summary: Org Photographers Endpoint
+      description: 'List all photographers appearing on any project in the organization (org-wide).
+
+        Powers the permissions console''s people list alongside organizers.'
+      operationId: org_photographers_endpoint_org_photographers_get
+      parameters:
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: integer
+          title: Organizationid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/managers:
+    get:
+      summary: Org Managers Endpoint
+      description: 'List the org''s organizers with whether each is an org-manager (holds the
+
+        org.manage.organizers grant). An org-manager can see and change these for their
+
+        own org; a super-admin can target any org via organizationId.'
+      operationId: org_managers_endpoint_org_managers_get
+      parameters:
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: integer
+          title: Organizationid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/managers/set:
+    post:
+      summary: Org Managers Set Endpoint
+      description: 'Grant or revoke org-manager status for a member of the caller''s org.
+
+
+        Guard: never remove the LAST remaining org-manager (that would lock the whole
+
+        organization out of managing itself).'
+      operationId: org_managers_set_endpoint_org_managers_set_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/projects:
+    get:
+      summary: Org Projects Endpoint
+      description: List the projects belonging to an organization (own org, or any org for super-admin).
+      operationId: org_projects_endpoint_org_projects_get
+      parameters:
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: integer
+          title: Organizationid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/create-organizer:
+    post:
+      summary: Org Create Organizer Endpoint
+      description: Create an organizer pinned to the caller's org. Org cannot be chosen by the client.
+      operationId: org_create_organizer_endpoint_org_create_organizer_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/update-organizer:
+    patch:
+      summary: Org Update Organizer Endpoint
+      description: Update name/description of an organizer that belongs to the caller's org.
+      operationId: org_update_organizer_endpoint_org_update_organizer_patch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/assign-organizer:
+    post:
+      summary: Org Assign Organizer Endpoint
+      description: Assign an in-org organizer to one or more in-org projects.
+      operationId: org_assign_organizer_endpoint_org_assign_organizer_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/unassign-organizer:
+    post:
+      summary: Org Unassign Organizer Endpoint
+      description: Remove an in-org organizer from one or more in-org projects.
+      operationId: org_unassign_organizer_endpoint_org_unassign_organizer_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/remove-organizer:
+    post:
+      summary: Org Remove Organizer Endpoint
+      description: 'Remove an organizer from the caller''s organization: revokes all project
+
+        access and the org membership, but keeps the underlying account (reversible
+
+        by re-adding). Does NOT delete the Clerk user.'
+      operationId: org_remove_organizer_endpoint_org_remove_organizer_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/permissions/tasks:
+    get:
+      summary: Org Permissions Tasks Endpoint
+      operationId: org_permissions_tasks_endpoint_org_permissions_tasks_get
+      parameters:
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: integer
+          title: Organizationid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/permissions/user-matrix:
+    get:
+      summary: Org Permissions User Matrix Endpoint
+      description: Org-wide per-user permission matrix (role defaults + org-level overrides).
+      operationId: org_permissions_user_matrix_endpoint_org_permissions_user_matrix_get
+      parameters:
+      - name: role
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Role
+      - name: userId
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Userid
+      - name: projectId
+        in: query
+        required: false
+        schema:
+          type: integer
+          title: Projectid
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: integer
+          title: Organizationid
+      - name: mode
+        in: query
+        required: false
+        schema:
+          type: string
+          default: edit
+          title: Mode
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/permissions/user:
+    patch:
+      summary: Org Permissions Patch User Endpoint
+      description: Set org-wide per-user permission overrides (applies across the org's projects).
+      operationId: org_permissions_patch_user_endpoint_org_permissions_user_patch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/permissions/search-members:
+    get:
+      summary: Org Permissions Search Members Endpoint
+      operationId: org_permissions_search_members_endpoint_org_permissions_search_members_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      - name: role
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Role
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: Q
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 30
+          title: Limit
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: integer
+          title: Organizationid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/permissions/role-matrix:
+    get:
+      summary: Org Permissions Role Matrix Endpoint
+      description: 'A role''s default permissions on a project — used to pre-fill a NEW role
+
+        from the current defaults for that role (what''s active for everyone today).'
+      operationId: org_permissions_role_matrix_endpoint_org_permissions_role_matrix_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      - name: role
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Role
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: integer
+          title: Organizationid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/permission-presets:
+    get:
+      summary: Org List Permission Presets Endpoint
+      operationId: org_list_permission_presets_endpoint_org_permission_presets_get
+      parameters:
+      - name: role
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Role
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: integer
+          title: Organizationid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+    post:
+      summary: Org Create Permission Preset Endpoint
+      operationId: org_create_permission_preset_endpoint_org_permission_presets_post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/permission-presets/{preset_id}:
+    get:
+      summary: Org Get Permission Preset Endpoint
+      description: A single preset's full effective map, for pre-loading the role editor. Org-scoped.
+      operationId: org_get_permission_preset_endpoint_org_permission_presets__preset_id__get
+      parameters:
+      - name: preset_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Preset Id
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: integer
+          title: Organizationid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+    patch:
+      summary: Org Update Permission Preset Endpoint
+      description: 'Edit a role IN PLACE (keeps its id, so linked members stay linked and pick up
+
+        the change live).'
+      operationId: org_update_permission_preset_endpoint_org_permission_presets__preset_id__patch
+      parameters:
+      - name: preset_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Preset Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+    delete:
+      summary: Org Delete Permission Preset Endpoint
+      operationId: org_delete_permission_preset_endpoint_org_permission_presets__preset_id__delete
+      parameters:
+      - name: preset_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Preset Id
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: integer
+          title: Organizationid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/permission-presets/set-default:
+    post:
+      summary: Org Set Default Preset Endpoint
+      description: 'Star a role (preset) as the org''s default for its role type — auto-selected
+
+        when adding members. presetId 0 → the built-in Default (clears any starred preset).'
+      operationId: org_set_default_preset_endpoint_org_permission_presets_set_default_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/permission-presets/apply:
+    post:
+      summary: Org Apply Permission Preset Endpoint
+      operationId: org_apply_permission_preset_endpoint_org_permission_presets_apply_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/permissions/role-assignments:
+    get:
+      summary: Org Permissions Role Assignments Endpoint
+      description: Which role (preset) each member currently has — for color-coding the list.
+      operationId: org_permissions_role_assignments_endpoint_org_permissions_role_assignments_get
+      parameters:
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: integer
+          title: Organizationid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /org/permissions/assign-role:
+    post:
+      summary: Org Permissions Assign Role Endpoint
+      description: 'Assign a role (preset) to a member: apply the preset across every project the
+
+        member belongs to in this org, then record the assignment for the UI.'
+      operationId: org_permissions_assign_role_endpoint_org_permissions_assign_role_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+components:
+  schemas:
+    Body_org_branding_set_endpoint_org_branding_post:
+      properties:
+        file:
+          anyOf:
+          - type: string
+            format: binary
+          - type: 'null'
+          title: File
+        logoLinkUrl:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logolinkurl
+        removeLogo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Removelogo
+        organizationId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Organizationid
+      type: object
+      title: Body_org_branding_set_endpoint_org_branding_post
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

@@ -1,0 +1,149 @@
+openapi: 3.2.0
+info:
+  title: Fast Projects API
+  version: 0.1.0
+tags:
+- name: Projects
+paths:
+  /projects/{project_id}/images/tagging-failures:
+    get:
+      summary: Get Tagging Failures
+      description: 'Returns images that have failed or stuck tagging steps for a project.
+
+        Failed = status ''failed''. Stuck = status ''pending'' for more than 1 hour.
+
+        Filter by steps using ?steps=general,rekognition,bda (defaults to all three).
+
+        Use operator=AND to require ALL selected steps to match, OR to match any.
+
+        Use statuses=failed,stuck,pending to control which statuses are included.'
+      operationId: get_tagging_failures_projects__project_id__images_tagging_failures_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Project Id
+      - name: steps
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Steps
+      - name: operator
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: OR
+          title: Operator
+      - name: statuses
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Statuses
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Projects
+  /projects/{project_id}/images/retry-tagging:
+    post:
+      summary: Retry Tagging
+      description: 'Retry specific tagging steps for specific images.
+
+        Resets status to ''pending'' and re-queues to the appropriate SQS queues.'
+      operationId: retry_tagging_projects__project_id__images_retry_tagging_post
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetryTaggingRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Projects
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    RetryTaggingRequest:
+      properties:
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+        steps:
+          items:
+            type: string
+          type: array
+          title: Steps
+      type: object
+      required:
+      - imageIds
+      - steps
+      title: RetryTaggingRequest

@@ -1,0 +1,79 @@
+openapi: 3.2.0
+info:
+  title: Fast Restore Images API
+  version: 0.1.0
+tags:
+- name: RestoreImages
+paths:
+  /restoreImages:
+    post:
+      summary: Restore Images Endpoint
+      description: "Restores multiple images from trash (undeletes them).\n\nExpects:\n    - JSON with:\n        - 'imageIds': list of image IDs to restore\n        - 'projectId'\n\nReturns:\n    - Success message with counts of restored images\n    - Error if imageIds is missing or invalid"
+      operationId: restore_images_endpoint_restoreImages_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestoreImagesRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - RestoreImages
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    RestoreImagesRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+      type: object
+      required:
+      - projectId
+      - imageIds
+      title: RestoreImagesRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

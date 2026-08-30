@@ -1,0 +1,104 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Org Brands API
+  version: 0.1.0
+tags:
+- name: GetOrgBrands
+paths:
+  /getOrgBrands:
+    get:
+      summary: Get Org Brands Endpoint
+      description: 'Org-global brands list (brands mirror the faces model). `projectIds[]` = projects the caller
+
+        can access (auth + org resolution + default membership scope). `filterProjectIds[]` optionally
+
+        narrows to brands appearing in a chosen subset. Each brand includes member_project_ids and
+
+        image_count.'
+      operationId: get_org_brands_endpoint_getOrgBrands_get
+      parameters:
+      - name: projectIds[]
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+          title: Projectids[]
+      - name: filterProjectIds[]
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+          title: Filterprojectids[]
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 150
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Offset
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: name
+          title: Sort
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetOrgBrands
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

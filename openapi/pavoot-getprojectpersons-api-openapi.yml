@@ -1,0 +1,77 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Project Persons API
+  version: 0.1.0
+tags:
+- name: GetProjectPersons
+paths:
+  /getProjectPersons:
+    get:
+      summary: Get Project Persons Endpoint
+      description: 'Endpoint for retrieving all persons associated with a project.
+
+        If minimal=true, returns only person_id, name, category (no S3 presigned URLs) — fast for dropdowns/share links.
+
+        Otherwise returns full person dicts with presigned face image URLs (can be slow on large projects).'
+      operationId: get_project_persons_endpoint_getProjectPersons_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Projectid
+      - name: minimal
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Minimal
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetProjectPersons
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

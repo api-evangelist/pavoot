@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Add Brand To Projects API
+  version: 0.1.0
+tags:
+- name: AddBrandToProjects
+paths:
+  /addBrandToProjects:
+    post:
+      summary: Add Brand To Projects Endpoint
+      description: Add explicit project memberships to a brand (badge-add / import). Body {logoId, projectIds[]}.
+      operationId: add_brand_to_projects_endpoint_addBrandToProjects_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - AddBrandToProjects

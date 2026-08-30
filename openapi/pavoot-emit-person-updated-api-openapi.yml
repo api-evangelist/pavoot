@@ -1,0 +1,77 @@
+openapi: 3.2.0
+info:
+  title: Fast Emit Person Updated API
+  version: 0.1.0
+tags:
+- name: Emit Person Updated
+paths:
+  /emit_person_updated:
+    post:
+      summary: Emit Person Updated Endpoint
+      operationId: emit_person_updated_endpoint_emit_person_updated_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonUpdatedRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Emit Person Updated
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PersonUpdatedRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        person:
+          additionalProperties: true
+          type: object
+          title: Person
+      type: object
+      required:
+      - projectId
+      - person
+      title: PersonUpdatedRequest

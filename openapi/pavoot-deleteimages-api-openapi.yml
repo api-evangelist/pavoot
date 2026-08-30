@@ -1,0 +1,79 @@
+openapi: 3.2.0
+info:
+  title: Fast Delete Images API
+  version: 0.1.0
+tags:
+- name: DeleteImages
+paths:
+  /deleteImages:
+    post:
+      summary: Delete Images Endpoint
+      description: "Deletes multiple images from the system.\n- If images are NOT in trash: performs soft delete (moves to trash)\n- If images are already in trash: performs permanent delete (removes from S3 and DB)\n\nExpects:\n    - JSON with:\n        - 'imageIds': list of image IDs to delete\n        - 'projectId'\n\nReturns:\n    - Success message with counts of deleted images\n    - Error if imageIds is missing or invalid"
+      operationId: delete_images_endpoint_deleteImages_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteImagesRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - DeleteImages
+components:
+  schemas:
+    DeleteImagesRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+      type: object
+      required:
+      - projectId
+      - imageIds
+      title: DeleteImagesRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

@@ -1,0 +1,26 @@
+openapi: 3.2.0
+info:
+  title: Fast Add Brand API
+  version: 0.1.0
+tags:
+- name: AddBrand
+paths:
+  /addBrand:
+    post:
+      summary: Add Brand Endpoint
+      description: 'Add a text-only brand (brands are ORG-GLOBAL; no logo image — the image never drove
+
+        detection). JSON body: {projectId, brandName, category?, keywords?[], contactEmail?, link?}.
+
+        `keywords` are the text/OCR variants the AI matches; the brand name is auto-added as the
+
+        first keyword. The brand''s origin project is projectId; org is resolved from it.'
+      operationId: add_brand_endpoint_addBrand_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - AddBrand

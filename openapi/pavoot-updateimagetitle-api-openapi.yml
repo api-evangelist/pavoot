@@ -1,0 +1,22 @@
+openapi: 3.2.0
+info:
+  title: Fast Update Image Title API
+  version: 0.1.0
+tags:
+- name: UpdateImageTitle
+paths:
+  /updateImageTitle:
+    post:
+      summary: Update Image Title Endpoint
+      description: 'Manually rename a single image''s title. Locks it so file-naming-convention changes and the
+
+        tagging pipeline no longer re-title it, and its download filename follows this title.'
+      operationId: update_image_title_endpoint_updateImageTitle_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - UpdateImageTitle

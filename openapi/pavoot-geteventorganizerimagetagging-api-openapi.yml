@@ -1,0 +1,79 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Event Organizer Image Tagging API
+  version: 0.1.0
+tags:
+- name: GetEventOrganizerImageTagging
+paths:
+  /getEventOrganizerImageTagging:
+    get:
+      summary: Get Event Organizer Image Tagging Endpoint
+      description: 'Returns the current number of tagged images and image tagging limit for an event organizer.
+
+
+        Query params:
+
+        - eventOrganizerId: the event organizer id
+
+
+        Returns:
+
+        - eventOrganizerId: the event organizer id
+
+        - currentTaggedImages: current number of images queued for tagging
+
+        - imageTaggingLimit: the image tagging limit'
+      operationId: get_event_organizer_image_tagging_endpoint_getEventOrganizerImageTagging_get
+      parameters:
+      - name: eventOrganizerId
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Eventorganizerid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetEventOrganizerImageTagging
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

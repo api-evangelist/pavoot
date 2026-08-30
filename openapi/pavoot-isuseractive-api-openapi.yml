@@ -1,0 +1,71 @@
+openapi: 3.2.0
+info:
+  title: Fast Is User Active API
+  version: 0.1.0
+tags:
+- name: IsUserActive
+paths:
+  /isUserActive:
+    get:
+      summary: Is User Active Endpoint
+      description: "Checks if a user is active (not expired).\n\nArgs:\n    user_id: The user's ID\n    role: The user's role ('event_organizer', 'photographer', or 'recipient')\n    \nReturns:\n    JSON response with 'is_active' boolean"
+      operationId: is_user_active_endpoint_isUserActive_get
+      parameters:
+      - name: user_id
+        in: query
+        required: true
+        schema:
+          type: string
+          title: User Id
+      - name: role
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Role
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - IsUserActive
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

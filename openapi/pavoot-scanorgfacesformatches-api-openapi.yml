@@ -1,0 +1,70 @@
+openapi: 3.2.0
+info:
+  title: Fast Scan Org Faces For Matches API
+  version: 0.1.0
+tags:
+- name: ScanOrgFacesForMatches
+paths:
+  /scanOrgFacesForMatches:
+    post:
+      summary: Scan Org Faces For Matches Endpoint
+      description: 'Org-wide duplicate scan: proposes merges between the same real person registered
+
+        separately across the org''s projects. Writes pending face_match_suggestions only —
+
+        never merges automatically. Runs in the background; returns 202 immediately.'
+      operationId: scan_org_faces_for_matches_endpoint_scanOrgFacesForMatches_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - ScanOrgFacesForMatches
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

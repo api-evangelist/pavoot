@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: Fast Update Project Locked Photographers API
+  version: 0.1.0
+tags:
+- name: UpdateProjectLockedPhotographers
+paths:
+  /updateProjectLockedPhotographers:
+    put:
+      summary: Update Project Locked Photographers Endpoint
+      description: 'Replaces the project''s locked photographers. Body: { projectId: number, lockedPhotographers: string[] }.'
+      operationId: update_project_locked_photographers_endpoint_updateProjectLockedPhotographers_put
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - UpdateProjectLockedPhotographers

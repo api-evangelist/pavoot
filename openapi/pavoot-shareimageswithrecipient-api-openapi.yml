@@ -1,0 +1,66 @@
+openapi: 3.2.0
+info:
+  title: Fast Share Images With Recipient API
+  version: 0.1.0
+tags:
+- name: ShareImagesWithRecipient
+paths:
+  /shareImagesWithRecipient:
+    post:
+      summary: Share Images With Recipient Endpoint
+      description: "Shares multiple images with a recipient by adding entries to the image_shares table.\n\nExpects:\n    - JSON with:\n        - 'imageIds': list of image IDs to share\n        - 'recipientId': ID of the recipient to share with\n\nProcess:\n    1. Checks if images and recipient exist\n    2. Adds entries to image_shares table, ignoring duplicates\n\nReturns:\n    - Success message with counts of shared images\n    - Detailed results including successful and skipped operations"
+      operationId: share_images_with_recipient_endpoint_shareImagesWithRecipient_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Body
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - ShareImagesWithRecipient
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

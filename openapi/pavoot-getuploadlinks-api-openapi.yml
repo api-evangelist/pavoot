@@ -1,0 +1,65 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Upload Links API
+  version: 0.1.0
+tags:
+- name: GetUploadLinks
+paths:
+  /getUploadLinks:
+    get:
+      summary: Get Upload Links Endpoint
+      description: "Upload links for a project, scoped to what the caller is allowed to see.\n\nTwo capabilities (migration 028):\n  * settings.manage.uploadLinks -> every link in the project (the timetable / manager view)\n  * uploadLinks.viewAssigned    -> ONLY the links assigned to them, read-only\n\nBefore this, any project member got every link — so a photographer could see the whole\nshooting schedule and everyone else's tokens."
+      operationId: get_upload_links_endpoint_getUploadLinks_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          title: Projectid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetUploadLinks
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

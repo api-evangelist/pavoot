@@ -1,0 +1,107 @@
+openapi: 3.2.0
+info:
+  title: Fast Generate Presigned URLS API
+  version: 0.1.0
+tags:
+- name: GeneratePresignedUrls
+paths:
+  /generatePresignedUrls:
+    post:
+      summary: Generate Presigned Urls Endpoint
+      description: "Generates presigned URLs for uploading files to S3.\n\nRequest Body:\n    files (list): List of file information with contentType (required)\n    projectId (int): The ID of the project (required)\n    folderName (str): Optional folder name for organization\n    photographerId (str): Optional ID of the photographer\n    \nReturns:\n    JSON response with:\n        - urls: List of objects containing file id, key, presigned URL, and contentType\n        \nErrors:\n    - 401 if user is not authenticated\n    - 403 if user lacks permission\n    - 400 if required parameters are missing\n    - 500 if S3 service access fails"
+      operationId: generate_presigned_urls_endpoint_generatePresignedUrls_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeneratePresignedUrlsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GeneratePresignedUrls
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    FileInfo:
+      properties:
+        extension:
+          type: string
+          title: Extension
+        contentType:
+          type: string
+          title: Contenttype
+      type: object
+      required:
+      - extension
+      - contentType
+      title: FileInfo
+    GeneratePresignedUrlsRequest:
+      properties:
+        files:
+          items:
+            $ref: '#/components/schemas/FileInfo'
+          type: array
+          title: Files
+        projectId:
+          type: integer
+          title: Projectid
+        folderName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Foldername
+        photographerId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Photographerid
+        fileType:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Filetype
+      type: object
+      required:
+      - files
+      - projectId
+      title: GeneratePresignedUrlsRequest

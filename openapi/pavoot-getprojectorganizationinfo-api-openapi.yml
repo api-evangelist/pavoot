@@ -1,0 +1,69 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Project Organization Info API
+  version: 0.1.0
+tags:
+- name: GetProjectOrganizationInfo
+paths:
+  /getProjectOrganizationInfo:
+    get:
+      summary: Get Project Organization Info Endpoint
+      description: 'Returns the organization name, ID, and effective Rekognition collection ID for a project.
+
+        Used for client-side debugging to verify which collection faces are indexed into.'
+      operationId: get_project_organization_info_endpoint_getProjectOrganizationInfo_get
+      parameters:
+      - name: projectId
+        in: query
+        required: true
+        schema:
+          type: integer
+          description: Project ID
+          title: Projectid
+        description: Project ID
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - GetProjectOrganizationInfo
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

@@ -1,0 +1,218 @@
+openapi: 3.2.0
+info:
+  title: Fast Photographers API
+  version: 0.1.0
+tags:
+- name: Photographers
+paths:
+  /photographers/revokeAccess:
+    post:
+      summary: Revoke Photographer Access Endpoint
+      description: 'Stop a photographer signing in, while keeping every image credited to them.
+
+
+        Deliberately NOT a delete: images.photographer_id points at this row, so removing it would
+
+        orphan their work or force reassigning it to someone else. See
+
+        auxiliary/user_operations.revoke_photographer_access.'
+      operationId: revoke_photographer_access_endpoint_photographers_revokeAccess_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhotographerAccessRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Photographers
+  /photographers/restoreAccess:
+    post:
+      summary: Restore Photographer Access Endpoint
+      description: 'Clear the revoked flag so the normal Invite flow can issue them a fresh login.
+
+
+        The old Clerk account is gone for good; this only makes the row invitable again.'
+      operationId: restore_photographer_access_endpoint_photographers_restoreAccess_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhotographerAccessRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Photographers
+  /photographers:
+    delete:
+      summary: Delete Photographer Completely Endpoint
+      description: 'Delete a photographer from the database and Clerk. Refused if they own any images.
+
+
+        409 with an explanation when they have images, pointing at revokeAccess (keeps attribution)
+
+        or merge (moves it deliberately) instead.'
+      operationId: delete_photographer_completely_endpoint_photographers_delete
+      parameters:
+      - name: photographerId
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Photographerid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Photographers
+  /photographers/merge/preview:
+    post:
+      summary: Preview Photographer Merge Endpoint
+      description: 'Dry run: what a merge would move, so the UI can state it before the user commits.'
+      operationId: preview_photographer_merge_endpoint_photographers_merge_preview_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MergePhotographersRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Photographers
+  /photographers/merge:
+    post:
+      summary: Merge Photographers Endpoint
+      description: 'Fold duplicate photographer records into one.
+
+
+        The same person routinely appears twice — imported by a migration as a name-only record
+
+        that owns their historical images, then again as a real account once they sign in. The
+
+        records look identical but share nothing, so locking one leaves the other''s images
+
+        shareable. See auxiliary/user_operations.merge_photographers.'
+      operationId: merge_photographers_endpoint_photographers_merge_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MergePhotographersRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Photographers
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    MergePhotographersRequest:
+      properties:
+        targetId:
+          type: string
+          title: Targetid
+        sourceIds:
+          items:
+            type: string
+          type: array
+          title: Sourceids
+        keepEmail:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Keepemail
+      type: object
+      required:
+      - targetId
+      - sourceIds
+      title: MergePhotographersRequest
+    PhotographerAccessRequest:
+      properties:
+        photographerId:
+          type: string
+          title: Photographerid
+      type: object
+      required:
+      - photographerId
+      title: PhotographerAccessRequest
