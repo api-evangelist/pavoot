@@ -58,7 +58,7 @@ tags:
 - Marketing
 - AI Agent
 - Attendee Intelligence
-- Go-To-Market
+- GTM
 - Field Marketing
 - Pipeline
 tags_raw:
@@ -942,6 +942,8 @@ apis:
   humanURL: https://api.pavoot.com/docs
   baseURL: https://api.pavoot.com
   tags:
+  - Create Multipart Upload
+  tags_raw:
   - CreateMultipartUpload
   properties:
   - type: OpenAPI
@@ -968,6 +970,8 @@ apis:
   humanURL: https://api.pavoot.com/docs
   baseURL: https://api.pavoot.com
   tags:
+  - Create Share Link
+  tags_raw:
   - CreateShareLink
   properties:
   - type: OpenAPI
@@ -1230,6 +1234,8 @@ apis:
   humanURL: https://api.pavoot.com/docs
   baseURL: https://api.pavoot.com
   tags:
+  - Delete Project
+  tags_raw:
   - DeleteProject
   properties:
   - type: OpenAPI
@@ -1673,6 +1679,8 @@ apis:
   humanURL: https://api.pavoot.com/docs
   baseURL: https://api.pavoot.com
   tags:
+  - Generate Download Url
+  tags_raw:
   - GenerateDownloadUrl
   properties:
   - type: OpenAPI
@@ -2759,6 +2767,8 @@ apis:
   humanURL: https://api.pavoot.com/docs
   baseURL: https://api.pavoot.com
   tags:
+  - Get Projects
+  tags_raw:
   - GetProjects
   properties:
   - type: OpenAPI
@@ -3518,6 +3528,8 @@ apis:
   humanURL: https://api.pavoot.com/docs
   baseURL: https://api.pavoot.com
   tags:
+  - Project
+  tags_raw:
   - Projects
   properties:
   - type: OpenAPI
