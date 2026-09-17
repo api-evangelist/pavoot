@@ -359,32 +359,6 @@ apis:
     url: lifecycle/pavoot-lifecycle.yml
   - type: Conformance
     url: conformance/pavoot-conformance.yml
-- aid: pavoot:pavoot-addproject-api
-  name: Pavoot Add Project API
-  description: The AddProject API from Pavoot — 1 operation(s) for addproject.
-  humanURL: https://api.pavoot.com/docs
-  baseURL: https://api.pavoot.com
-  tags:
-  - AddProject
-  properties:
-  - type: OpenAPI
-    url: openapi/pavoot-addproject-api-openapi.yml
-  - type: APIReference
-    url: https://api.pavoot.com/docs
-  - type: Authentication
-    url: authentication/pavoot-authentication.yml
-  - type: OAuthScopes
-    url: scopes/pavoot-scopes.yml
-  - type: Conventions
-    url: conventions/pavoot-conventions.yml
-  - type: ErrorCatalog
-    url: errors/pavoot-problem-types.yml
-  - type: DataModel
-    url: data-model/pavoot-data-model.yml
-  - type: Lifecycle
-    url: lifecycle/pavoot-lifecycle.yml
-  - type: Conformance
-    url: conformance/pavoot-conformance.yml
 - aid: pavoot:pavoot-addrecipients-api
   name: Pavoot Add Recipients API
   description: The AddRecipients API from Pavoot — 1 operation(s) for addrecipients.
@@ -936,62 +910,6 @@ apis:
     url: lifecycle/pavoot-lifecycle.yml
   - type: Conformance
     url: conformance/pavoot-conformance.yml
-- aid: pavoot:pavoot-createmultipartupload-api
-  name: Pavoot Create Multipart Upload API
-  description: The CreateMultipartUpload API from Pavoot — 1 operation(s) for createmultipartupload.
-  humanURL: https://api.pavoot.com/docs
-  baseURL: https://api.pavoot.com
-  tags:
-  - Create Multipart Upload
-  tags_raw:
-  - CreateMultipartUpload
-  properties:
-  - type: OpenAPI
-    url: openapi/pavoot-createmultipartupload-api-openapi.yml
-  - type: APIReference
-    url: https://api.pavoot.com/docs
-  - type: Authentication
-    url: authentication/pavoot-authentication.yml
-  - type: OAuthScopes
-    url: scopes/pavoot-scopes.yml
-  - type: Conventions
-    url: conventions/pavoot-conventions.yml
-  - type: ErrorCatalog
-    url: errors/pavoot-problem-types.yml
-  - type: DataModel
-    url: data-model/pavoot-data-model.yml
-  - type: Lifecycle
-    url: lifecycle/pavoot-lifecycle.yml
-  - type: Conformance
-    url: conformance/pavoot-conformance.yml
-- aid: pavoot:pavoot-createsharelink-api
-  name: Pavoot Create Share Link API
-  description: The CreateShareLink API from Pavoot — 1 operation(s) for createsharelink.
-  humanURL: https://api.pavoot.com/docs
-  baseURL: https://api.pavoot.com
-  tags:
-  - Create Share Link
-  tags_raw:
-  - CreateShareLink
-  properties:
-  - type: OpenAPI
-    url: openapi/pavoot-createsharelink-api-openapi.yml
-  - type: APIReference
-    url: https://api.pavoot.com/docs
-  - type: Authentication
-    url: authentication/pavoot-authentication.yml
-  - type: OAuthScopes
-    url: scopes/pavoot-scopes.yml
-  - type: Conventions
-    url: conventions/pavoot-conventions.yml
-  - type: ErrorCatalog
-    url: errors/pavoot-problem-types.yml
-  - type: DataModel
-    url: data-model/pavoot-data-model.yml
-  - type: Lifecycle
-    url: lifecycle/pavoot-lifecycle.yml
-  - type: Conformance
-    url: conformance/pavoot-conformance.yml
 - aid: pavoot:pavoot-createuploadlink-api
   name: Pavoot Create Upload Link API
   description: The CreateUploadLink API from Pavoot — 1 operation(s) for createuploadlink.
@@ -1212,34 +1130,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/pavoot-deletephotographer-api-openapi.yml
-  - type: APIReference
-    url: https://api.pavoot.com/docs
-  - type: Authentication
-    url: authentication/pavoot-authentication.yml
-  - type: OAuthScopes
-    url: scopes/pavoot-scopes.yml
-  - type: Conventions
-    url: conventions/pavoot-conventions.yml
-  - type: ErrorCatalog
-    url: errors/pavoot-problem-types.yml
-  - type: DataModel
-    url: data-model/pavoot-data-model.yml
-  - type: Lifecycle
-    url: lifecycle/pavoot-lifecycle.yml
-  - type: Conformance
-    url: conformance/pavoot-conformance.yml
-- aid: pavoot:pavoot-deleteproject-api
-  name: Pavoot Delete Project API
-  description: The DeleteProject API from Pavoot — 1 operation(s) for deleteproject.
-  humanURL: https://api.pavoot.com/docs
-  baseURL: https://api.pavoot.com
-  tags:
-  - Delete Project
-  tags_raw:
-  - DeleteProject
-  properties:
-  - type: OpenAPI
-    url: openapi/pavoot-deleteproject-api-openapi.yml
   - type: APIReference
     url: https://api.pavoot.com/docs
   - type: Authentication
@@ -1673,34 +1563,6 @@ apis:
     url: lifecycle/pavoot-lifecycle.yml
   - type: Conformance
     url: conformance/pavoot-conformance.yml
-- aid: pavoot:pavoot-generatedownloadurl-api
-  name: Pavoot Generate Download URL API
-  description: The GenerateDownloadUrl API from Pavoot — 1 operation(s) for generatedownloadurl.
-  humanURL: https://api.pavoot.com/docs
-  baseURL: https://api.pavoot.com
-  tags:
-  - Generate Download Url
-  tags_raw:
-  - GenerateDownloadUrl
-  properties:
-  - type: OpenAPI
-    url: openapi/pavoot-generatedownloadurl-api-openapi.yml
-  - type: APIReference
-    url: https://api.pavoot.com/docs
-  - type: Authentication
-    url: authentication/pavoot-authentication.yml
-  - type: OAuthScopes
-    url: scopes/pavoot-scopes.yml
-  - type: Conventions
-    url: conventions/pavoot-conventions.yml
-  - type: ErrorCatalog
-    url: errors/pavoot-problem-types.yml
-  - type: DataModel
-    url: data-model/pavoot-data-model.yml
-  - type: Lifecycle
-    url: lifecycle/pavoot-lifecycle.yml
-  - type: Conformance
-    url: conformance/pavoot-conformance.yml
 - aid: pavoot:pavoot-generatepresignedurls-api
   name: Pavoot Generate Presigned URLS API
   description: The GeneratePresignedUrls API from Pavoot — 1 operation(s) for generatepresignedurls.
@@ -1711,32 +1573,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/pavoot-generatepresignedurls-api-openapi.yml
-  - type: APIReference
-    url: https://api.pavoot.com/docs
-  - type: Authentication
-    url: authentication/pavoot-authentication.yml
-  - type: OAuthScopes
-    url: scopes/pavoot-scopes.yml
-  - type: Conventions
-    url: conventions/pavoot-conventions.yml
-  - type: ErrorCatalog
-    url: errors/pavoot-problem-types.yml
-  - type: DataModel
-    url: data-model/pavoot-data-model.yml
-  - type: Lifecycle
-    url: lifecycle/pavoot-lifecycle.yml
-  - type: Conformance
-    url: conformance/pavoot-conformance.yml
-- aid: pavoot:pavoot-generatethumbnail-api
-  name: Pavoot Generate Thumbnail API
-  description: The GenerateThumbnail API from Pavoot — 1 operation(s) for generatethumbnail.
-  humanURL: https://api.pavoot.com/docs
-  baseURL: https://api.pavoot.com
-  tags:
-  - GenerateThumbnail
-  properties:
-  - type: OpenAPI
-    url: openapi/pavoot-generatethumbnail-api-openapi.yml
   - type: APIReference
     url: https://api.pavoot.com/docs
   - type: Authentication
@@ -1977,32 +1813,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/pavoot-getfaces-api-openapi.yml
-  - type: APIReference
-    url: https://api.pavoot.com/docs
-  - type: Authentication
-    url: authentication/pavoot-authentication.yml
-  - type: OAuthScopes
-    url: scopes/pavoot-scopes.yml
-  - type: Conventions
-    url: conventions/pavoot-conventions.yml
-  - type: ErrorCatalog
-    url: errors/pavoot-problem-types.yml
-  - type: DataModel
-    url: data-model/pavoot-data-model.yml
-  - type: Lifecycle
-    url: lifecycle/pavoot-lifecycle.yml
-  - type: Conformance
-    url: conformance/pavoot-conformance.yml
-- aid: pavoot:pavoot-getimages-api
-  name: Pavoot Get Images API
-  description: The GetImages API from Pavoot — 1 operation(s) for getimages.
-  humanURL: https://api.pavoot.com/docs
-  baseURL: https://api.pavoot.com
-  tags:
-  - GetImages
-  properties:
-  - type: OpenAPI
-    url: openapi/pavoot-getimages-api-openapi.yml
   - type: APIReference
     url: https://api.pavoot.com/docs
   - type: Authentication
@@ -2745,34 +2555,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/pavoot-getprojectpersons-api-openapi.yml
-  - type: APIReference
-    url: https://api.pavoot.com/docs
-  - type: Authentication
-    url: authentication/pavoot-authentication.yml
-  - type: OAuthScopes
-    url: scopes/pavoot-scopes.yml
-  - type: Conventions
-    url: conventions/pavoot-conventions.yml
-  - type: ErrorCatalog
-    url: errors/pavoot-problem-types.yml
-  - type: DataModel
-    url: data-model/pavoot-data-model.yml
-  - type: Lifecycle
-    url: lifecycle/pavoot-lifecycle.yml
-  - type: Conformance
-    url: conformance/pavoot-conformance.yml
-- aid: pavoot:pavoot-getprojects-api
-  name: Pavoot Get Projects API
-  description: The GetProjects API from Pavoot — 1 operation(s) for getprojects.
-  humanURL: https://api.pavoot.com/docs
-  baseURL: https://api.pavoot.com
-  tags:
-  - Get Projects
-  tags_raw:
-  - GetProjects
-  properties:
-  - type: OpenAPI
-    url: openapi/pavoot-getprojects-api-openapi.yml
   - type: APIReference
     url: https://api.pavoot.com/docs
   - type: Authentication
@@ -4751,6 +4533,215 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/pavoot-upsertprojectattendee-api-openapi.yml
+  - type: APIReference
+    url: https://api.pavoot.com/docs
+  - type: Authentication
+    url: authentication/pavoot-authentication.yml
+  - type: OAuthScopes
+    url: scopes/pavoot-scopes.yml
+  - type: Conventions
+    url: conventions/pavoot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pavoot-problem-types.yml
+  - type: DataModel
+    url: data-model/pavoot-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/pavoot-lifecycle.yml
+  - type: Conformance
+    url: conformance/pavoot-conformance.yml
+- aid: pavoot:pavoot-add-project-api
+  name: Pavoot Add Project API
+  description: The Add Project API from Pavoot — 1 operation(s) for add project.
+  humanURL: https://api.pavoot.com/docs
+  baseURL: https://api.pavoot.com
+  tags:
+  - Add Project
+  properties:
+  - type: OpenAPI
+    url: openapi/pavoot-add-project-api-openapi.yml
+  - type: APIReference
+    url: https://api.pavoot.com/docs
+  - type: Authentication
+    url: authentication/pavoot-authentication.yml
+  - type: OAuthScopes
+    url: scopes/pavoot-scopes.yml
+  - type: Conventions
+    url: conventions/pavoot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pavoot-problem-types.yml
+  - type: DataModel
+    url: data-model/pavoot-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/pavoot-lifecycle.yml
+  - type: Conformance
+    url: conformance/pavoot-conformance.yml
+- aid: pavoot:pavoot-create-multipart-upload-api
+  name: Pavoot Create Multipart Upload API
+  description: >-
+    The Create Multipart Upload API from Pavoot — 1 operation(s) for create multipart upload.
+  humanURL: https://api.pavoot.com/docs
+  baseURL: https://api.pavoot.com
+  tags:
+  - Create Multipart Upload
+  properties:
+  - type: OpenAPI
+    url: openapi/pavoot-create-multipart-upload-api-openapi.yml
+  - type: APIReference
+    url: https://api.pavoot.com/docs
+  - type: Authentication
+    url: authentication/pavoot-authentication.yml
+  - type: OAuthScopes
+    url: scopes/pavoot-scopes.yml
+  - type: Conventions
+    url: conventions/pavoot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pavoot-problem-types.yml
+  - type: DataModel
+    url: data-model/pavoot-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/pavoot-lifecycle.yml
+  - type: Conformance
+    url: conformance/pavoot-conformance.yml
+- aid: pavoot:pavoot-create-share-link-api
+  name: Pavoot Create Share Link API
+  description: The Create Share Link API from Pavoot — 1 operation(s) for create share link.
+  humanURL: https://api.pavoot.com/docs
+  baseURL: https://api.pavoot.com
+  tags:
+  - Create Share Link
+  properties:
+  - type: OpenAPI
+    url: openapi/pavoot-create-share-link-api-openapi.yml
+  - type: APIReference
+    url: https://api.pavoot.com/docs
+  - type: Authentication
+    url: authentication/pavoot-authentication.yml
+  - type: OAuthScopes
+    url: scopes/pavoot-scopes.yml
+  - type: Conventions
+    url: conventions/pavoot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pavoot-problem-types.yml
+  - type: DataModel
+    url: data-model/pavoot-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/pavoot-lifecycle.yml
+  - type: Conformance
+    url: conformance/pavoot-conformance.yml
+- aid: pavoot:pavoot-delete-project-api
+  name: Pavoot Delete Project API
+  description: The Delete Project API from Pavoot — 1 operation(s) for delete project.
+  humanURL: https://api.pavoot.com/docs
+  baseURL: https://api.pavoot.com
+  tags:
+  - Delete Project
+  properties:
+  - type: OpenAPI
+    url: openapi/pavoot-delete-project-api-openapi.yml
+  - type: APIReference
+    url: https://api.pavoot.com/docs
+  - type: Authentication
+    url: authentication/pavoot-authentication.yml
+  - type: OAuthScopes
+    url: scopes/pavoot-scopes.yml
+  - type: Conventions
+    url: conventions/pavoot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pavoot-problem-types.yml
+  - type: DataModel
+    url: data-model/pavoot-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/pavoot-lifecycle.yml
+  - type: Conformance
+    url: conformance/pavoot-conformance.yml
+- aid: pavoot:pavoot-generate-download-url-api
+  name: Pavoot Generate Download Url API
+  description: The Generate Download Url API from Pavoot — 1 operation(s) for generate download url.
+  humanURL: https://api.pavoot.com/docs
+  baseURL: https://api.pavoot.com
+  tags:
+  - Generate Download Url
+  properties:
+  - type: OpenAPI
+    url: openapi/pavoot-generate-download-url-api-openapi.yml
+  - type: APIReference
+    url: https://api.pavoot.com/docs
+  - type: Authentication
+    url: authentication/pavoot-authentication.yml
+  - type: OAuthScopes
+    url: scopes/pavoot-scopes.yml
+  - type: Conventions
+    url: conventions/pavoot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pavoot-problem-types.yml
+  - type: DataModel
+    url: data-model/pavoot-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/pavoot-lifecycle.yml
+  - type: Conformance
+    url: conformance/pavoot-conformance.yml
+- aid: pavoot:pavoot-generate-thumbnail-api
+  name: Pavoot Generate Thumbnail API
+  description: The Generate Thumbnail API from Pavoot — 1 operation(s) for generate thumbnail.
+  humanURL: https://api.pavoot.com/docs
+  baseURL: https://api.pavoot.com
+  tags:
+  - Generate Thumbnail
+  properties:
+  - type: OpenAPI
+    url: openapi/pavoot-generate-thumbnail-api-openapi.yml
+  - type: APIReference
+    url: https://api.pavoot.com/docs
+  - type: Authentication
+    url: authentication/pavoot-authentication.yml
+  - type: OAuthScopes
+    url: scopes/pavoot-scopes.yml
+  - type: Conventions
+    url: conventions/pavoot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pavoot-problem-types.yml
+  - type: DataModel
+    url: data-model/pavoot-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/pavoot-lifecycle.yml
+  - type: Conformance
+    url: conformance/pavoot-conformance.yml
+- aid: pavoot:pavoot-get-images-api
+  name: Pavoot Get Images API
+  description: The Get Images API from Pavoot — 1 operation(s) for get images.
+  humanURL: https://api.pavoot.com/docs
+  baseURL: https://api.pavoot.com
+  tags:
+  - Get Images
+  properties:
+  - type: OpenAPI
+    url: openapi/pavoot-get-images-api-openapi.yml
+  - type: APIReference
+    url: https://api.pavoot.com/docs
+  - type: Authentication
+    url: authentication/pavoot-authentication.yml
+  - type: OAuthScopes
+    url: scopes/pavoot-scopes.yml
+  - type: Conventions
+    url: conventions/pavoot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pavoot-problem-types.yml
+  - type: DataModel
+    url: data-model/pavoot-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/pavoot-lifecycle.yml
+  - type: Conformance
+    url: conformance/pavoot-conformance.yml
+- aid: pavoot:pavoot-get-projects-api
+  name: Pavoot Get Projects API
+  description: The Get Projects API from Pavoot — 1 operation(s) for get projects.
+  humanURL: https://api.pavoot.com/docs
+  baseURL: https://api.pavoot.com
+  tags:
+  - Get Projects
+  properties:
+  - type: OpenAPI
+    url: openapi/pavoot-get-projects-api-openapi.yml
   - type: APIReference
     url: https://api.pavoot.com/docs
   - type: Authentication
