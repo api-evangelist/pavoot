@@ -56,11 +56,11 @@ tags:
 - Event
 - Event Management
 - Marketing
-- AI Agent
+- AI Agents
 - Attendee Intelligence
 - Go-To-Market
 - Field Marketing
-- Pipeline
+- Pipelines
 tags_raw:
 - Company
 - Events
@@ -3999,6 +3999,8 @@ apis:
   humanURL: https://api.pavoot.com/docs
   baseURL: https://api.pavoot.com
   tags:
+  - Share
+  tags_raw:
   - Shares
   properties:
   - type: OpenAPI
