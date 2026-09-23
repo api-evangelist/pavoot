@@ -17,7 +17,7 @@ paths:
         load_downscaled_rgb path as /generateThumbnail (orientation baked into pixels).
 
 
-        Body: {"projectId": <id>} to regenerate every non-deleted image in a project, or
+        Body: {"projectId": } to regenerate every non-deleted image in a project, or
 
         {"imageIds": [...]} for a specific set. Runs in the background; returns 202-style
 

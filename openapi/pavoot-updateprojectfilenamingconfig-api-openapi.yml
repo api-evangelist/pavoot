@@ -8,7 +8,21 @@ paths:
   /updateProjectFilenamingConfig:
     put:
       summary: Update Project Filenaming Config Endpoint
-      description: "Updates the filenaming configuration for a specific project.\n\nRequest Body:\n    projectId (int): The ID of the project (required)\n    titleTemplate (str | null): Template for image titles (optional)\n    filenameTemplate (str | null): Template for filenames without extension (optional)\n\nThe configuration is stored as JSONB in the projects table and used when\ngenerating image titles (for display) and filenames for downloads."
+      description: 'Updates the filenaming configuration for a specific project.
+
+
+        Request Body:
+
+        projectId (int): The ID of the project (required)
+
+        titleTemplate (str | null): Template for image titles (optional)
+
+        filenameTemplate (str | null): Template for filenames without extension (optional)
+
+
+        The configuration is stored as JSONB in the projects table and used when
+
+        generating image titles (for display) and filenames for downloads.'
       operationId: update_project_filenaming_config_endpoint_updateProjectFilenamingConfig_put
       responses:
         '200':

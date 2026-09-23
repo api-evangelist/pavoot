@@ -3,7 +3,7 @@ info:
   title: Fast Get Images API
   version: 0.1.0
 tags:
-- name: GetImages
+- name: Get Images
 paths:
   /getImages:
     get:
@@ -189,7 +189,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       tags:
-      - GetImages
+      - Get Images
 components:
   schemas:
     ValidationError:

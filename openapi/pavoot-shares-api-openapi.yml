@@ -143,7 +143,31 @@ paths:
   /shares/generate:
     post:
       summary: Generate Share Links
-      description: "Generates one or multiple share links based on person IDs and folder names.\n\nLogic:\n- Person images: images where image_faces.person_id matches\n- folderNames: tag values (uncategorized folders, brands, custom options — not only project_folders).\n  Images: tagged with that name AND \"Highlights\" (general). Locked tags on images are excluded\n  on the share page/download unless unlocked for that link (sharelink_unlocked_tags).\n- Final set: personMedia ∪ tagMedia (deduplicated)\n\nIf mode=\"per_person\": creates one share per personId with label=person.name\nIf mode=\"all_in_one\": creates one share with all selected persons + folders\nIf no people and customTagLinkMode=\"per_option\" with 2+ custom tag options selected:\none share per option; each share includes the same folders/brands plus that option.\nLabels use labelStrategyCustomFolder (e.g. category_option → \"Category - Option\")."
+      description: 'Generates one or multiple share links based on person IDs and folder names.
+
+
+        Logic:
+
+        - Person images: images where image_faces.person_id matches
+
+        - folderNames: tag values (uncategorized folders, brands, custom options — not only project_folders).
+
+        Images: tagged with that name AND "Highlights" (general). Locked tags on images are excluded
+
+        on the share page/download unless unlocked for that link (sharelink_unlocked_tags).
+
+        - Final set: personMedia ∪ tagMedia (deduplicated)
+
+
+        If mode="per_person": creates one share per personId with label=person.name
+
+        If mode="all_in_one": creates one share with all selected persons + folders
+
+        If no people and customTagLinkMode="per_option" with 2+ custom tag options selected:
+
+        one share per option; each share includes the same folders/brands plus that option.
+
+        Labels use labelStrategyCustomFolder (e.g. category_option → "Category - Option").'
       operationId: generate_share_links_shares_generate_post
       requestBody:
         content:

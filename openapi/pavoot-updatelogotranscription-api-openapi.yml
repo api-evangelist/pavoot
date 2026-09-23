@@ -31,23 +31,6 @@ paths:
       - UpdateLogoTranscription
 components:
   schemas:
-    Body_update_logo_transcription_endpoint_updateLogoTranscription_put:
-      properties:
-        logoId:
-          type: string
-          title: Logoid
-        oldTranscription:
-          type: string
-          title: Oldtranscription
-        newTranscription:
-          type: string
-          title: Newtranscription
-      type: object
-      required:
-      - logoId
-      - oldTranscription
-      - newTranscription
-      title: Body_update_logo_transcription_endpoint_updateLogoTranscription_put
     ValidationError:
       properties:
         loc:
@@ -69,6 +52,23 @@ components:
       - msg
       - type
       title: ValidationError
+    Body_update_logo_transcription_endpoint_updateLogoTranscription_put:
+      properties:
+        logoId:
+          type: string
+          title: Logoid
+        oldTranscription:
+          type: string
+          title: Oldtranscription
+        newTranscription:
+          type: string
+          title: Newtranscription
+      type: object
+      required:
+      - logoId
+      - oldTranscription
+      - newTranscription
+      title: Body_update_logo_transcription_endpoint_updateLogoTranscription_put
     HTTPValidationError:
       properties:
         detail:

@@ -8,7 +8,23 @@ paths:
   /deleteRecipient:
     post:
       summary: Delete Recipient Endpoint
-      description: "Removes a recipient's association with a specific project.\n\nExpects:\n    - JSON with:\n        - 'recipientId': unique identifier of the recipient\n        - 'projectId': ID of the project to remove from\n\nReturns:\n    - Success message if recipient was found and removed from project\n    - Error if recipient not found or other issues occur"
+      description: 'Removes a recipient''s association with a specific project.
+
+
+        Expects:
+
+        - JSON with:
+
+        - ''recipientId'': unique identifier of the recipient
+
+        - ''projectId'': ID of the project to remove from
+
+
+        Returns:
+
+        - Success message if recipient was found and removed from project
+
+        - Error if recipient not found or other issues occur'
       operationId: delete_recipient_endpoint_deleteRecipient_post
       requestBody:
         content:

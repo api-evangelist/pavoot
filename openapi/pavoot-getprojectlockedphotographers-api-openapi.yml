@@ -8,7 +8,23 @@ paths:
   /getProjectLockedPhotographers:
     get:
       summary: Get Project Locked Photographers Endpoint
-      description: "Locked photographer ids (restriction reason 'photographer', migration 025).\n\nImages shot by these photographers are excluded from share links unless the link opts in —\nthis is what backs permanent licensing restrictions (e.g. agency images that media may use\nbut partners may not).\n\nSingle project  -> {projectId, lockedPhotographers: [...]}.\nprojectIds[]    -> additionally {locksByProject: {\"38\": [...], ...}} for the All-Projects\n                   photographers table, where one photographer can be locked in some of\n                   their projects and not others."
+      description: 'Locked photographer ids (restriction reason ''photographer'', migration 025).
+
+
+        Images shot by these photographers are excluded from share links unless the link opts in —
+
+        this is what backs permanent licensing restrictions (e.g. agency images that media may use
+
+        but partners may not).
+
+
+        Single project -> {projectId, lockedPhotographers: [...]}.
+
+        projectIds[] -> additionally {locksByProject: {"38": [...], ...}} for the All-Projects
+
+        photographers table, where one photographer can be locked in some of
+
+        their projects and not others.'
       operationId: get_project_locked_photographers_endpoint_getProjectLockedPhotographers_get
       parameters:
       - name: projectId

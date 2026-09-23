@@ -34,6 +34,19 @@ paths:
       - Attendee Registration Presign Face
 components:
   schemas:
+    FileInfo:
+      properties:
+        extension:
+          type: string
+          title: Extension
+        contentType:
+          type: string
+          title: Contenttype
+      type: object
+      required:
+      - extension
+      - contentType
+      title: FileInfo
     ValidationError:
       properties:
         loc:
@@ -80,16 +93,3 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    FileInfo:
-      properties:
-        extension:
-          type: string
-          title: Extension
-        contentType:
-          type: string
-          title: Contenttype
-      type: object
-      required:
-      - extension
-      - contentType
-      title: FileInfo

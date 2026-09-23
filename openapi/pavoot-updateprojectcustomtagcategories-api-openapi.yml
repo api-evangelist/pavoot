@@ -8,7 +8,24 @@ paths:
   /updateProjectCustomTagCategories:
     put:
       summary: Update Project Custom Tag Categories Endpoint
-      description: "Replaces all custom tag categories and their default options for a project.\n\nRequest body:\n    projectId (int, required)\n    categories (list, required): each category:\n        - name (str, required)\n        - description (str, optional)\n        - options (list[dict], optional) where each option has:\n            - value (str, required)\n            - label (str, optional)"
+      description: 'Replaces all custom tag categories and their default options for a project.
+
+
+        Request body:
+
+        projectId (int, required)
+
+        categories (list, required): each category:
+
+        - name (str, required)
+
+        - description (str, optional)
+
+        - options (list[dict], optional) where each option has:
+
+        - value (str, required)
+
+        - label (str, optional)'
       operationId: update_project_custom_tag_categories_endpoint_updateProjectCustomTagCategories_put
       responses:
         '200':

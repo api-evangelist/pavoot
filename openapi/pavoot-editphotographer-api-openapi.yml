@@ -8,7 +8,27 @@ paths:
   /editPhotographer:
     post:
       summary: Edit Photographer Endpoint
-      description: "Updates a photographer's information in the database.\n\nExpects:\n    - JSON with:\n        - 'id': unique identifier of the photographer (required)\n        - 'name': new name for the photographer (optional)\n        - 'description': new description for the photographer (optional)\n        - 'projectId'\n\nReturns:\n    - Success message if photographer was found and updated\n    - Error if photographer not found or other issues occur"
+      description: 'Updates a photographer''s information in the database.
+
+
+        Expects:
+
+        - JSON with:
+
+        - ''id'': unique identifier of the photographer (required)
+
+        - ''name'': new name for the photographer (optional)
+
+        - ''description'': new description for the photographer (optional)
+
+        - ''projectId''
+
+
+        Returns:
+
+        - Success message if photographer was found and updated
+
+        - Error if photographer not found or other issues occur'
       operationId: edit_photographer_endpoint_editPhotographer_post
       requestBody:
         content:

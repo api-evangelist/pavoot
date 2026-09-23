@@ -31,23 +31,6 @@ paths:
       - UpdateFolderName
 components:
   schemas:
-    UpdateFolderNameRequest:
-      properties:
-        projectId:
-          type: integer
-          title: Projectid
-        oldFolderName:
-          type: string
-          title: Oldfoldername
-        newFolderName:
-          type: string
-          title: Newfoldername
-      type: object
-      required:
-      - projectId
-      - oldFolderName
-      - newFolderName
-      title: UpdateFolderNameRequest
     ValidationError:
       properties:
         loc:
@@ -78,3 +61,20 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    UpdateFolderNameRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        oldFolderName:
+          type: string
+          title: Oldfoldername
+        newFolderName:
+          type: string
+          title: Newfoldername
+      type: object
+      required:
+      - projectId
+      - oldFolderName
+      - newFolderName
+      title: UpdateFolderNameRequest

@@ -8,7 +8,19 @@ paths:
   /changePersonCategory:
     put:
       summary: Change Person Category Endpoint
-      description: "Change a person's creation type between 'user_added' and 'auto_detected'.\n\nArgs:\n    personId: The person's unique ID\n    newCategory: The new creation type ('user_added' or 'auto_detected')\n\nReturns:\n    JSON response with success status and updated person details"
+      description: 'Change a person''s creation type between ''user_added'' and ''auto_detected''.
+
+
+        Args:
+
+        personId: The person''s unique ID
+
+        newCategory: The new creation type (''user_added'' or ''auto_detected'')
+
+
+        Returns:
+
+        JSON response with success status and updated person details'
       operationId: change_person_category_endpoint_changePersonCategory_put
       requestBody:
         content:
@@ -32,19 +44,6 @@ paths:
       - ChangePersonCategory
 components:
   schemas:
-    Body_change_person_category_endpoint_changePersonCategory_put:
-      properties:
-        personId:
-          type: string
-          title: Personid
-        newCategory:
-          type: string
-          title: Newcategory
-      type: object
-      required:
-      - personId
-      - newCategory
-      title: Body_change_person_category_endpoint_changePersonCategory_put
     ValidationError:
       properties:
         loc:
@@ -66,6 +65,19 @@ components:
       - msg
       - type
       title: ValidationError
+    Body_change_person_category_endpoint_changePersonCategory_put:
+      properties:
+        personId:
+          type: string
+          title: Personid
+        newCategory:
+          type: string
+          title: Newcategory
+      type: object
+      required:
+      - personId
+      - newCategory
+      title: Body_change_person_category_endpoint_changePersonCategory_put
     HTTPValidationError:
       properties:
         detail:

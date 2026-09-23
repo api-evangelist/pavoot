@@ -8,7 +8,40 @@ paths:
   /getRecipientProjects:
     get:
       summary: Get Recipient Projects Endpoint
-      description: "Retrieves all projects associated with a specific recipient.\n\nQuery Parameters:\n    recipientId (str): The ID of the recipient (required)\n\nReturns:\n    JSON response containing:\n        - projects: List of projects with their metadata\n        Each project contains:\n            - id\n            - title\n            - start_date\n            - end_date\n            - status\n\nErrors:\n    - 400 if recipientId is missing\n    - 404 if recipient is not found\n    - 500 if database access fails"
+      description: 'Retrieves all projects associated with a specific recipient.
+
+
+        Query Parameters:
+
+        recipientId (str): The ID of the recipient (required)
+
+
+        Returns:
+
+        JSON response containing:
+
+        - projects: List of projects with their metadata
+
+        Each project contains:
+
+        - id
+
+        - title
+
+        - start_date
+
+        - end_date
+
+        - status
+
+
+        Errors:
+
+        - 400 if recipientId is missing
+
+        - 404 if recipient is not found
+
+        - 500 if database access fails'
       operationId: get_recipient_projects_endpoint_getRecipientProjects_get
       responses:
         '200':

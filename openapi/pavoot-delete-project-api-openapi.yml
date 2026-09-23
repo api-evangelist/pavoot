@@ -1,24 +1,45 @@
 openapi: 3.2.0
 info:
-  title: Fast Generate Thumbnail API
+  title: Fast Delete Project API
   version: 0.1.0
 tags:
-- name: GenerateThumbnail
+- name: Delete Project
 paths:
-  /generateThumbnail/{image_id}:
-    post:
-      summary: Generate Thumbnail Endpoint
-      description: 'Generates a thumbnail for the given image if it doesn''t exist, uploads it to S3,
+  /deleteProject:
+    delete:
+      summary: Delete Project Endpoint
+      description: 'Deletes a project and all associated data including images, folders, persons, and associations.
 
-        and marks has_thumbnail = TRUE in the DB. Returns the presigned thumbnail URL.'
-      operationId: generate_thumbnail_endpoint_generateThumbnail__image_id__post
+
+        Query Parameters:
+
+        projectId (int): The ID of the project to delete (required)
+
+
+        Returns:
+
+        JSON response with:
+
+        - message: Success message
+
+        - project_id: The deleted project ID
+
+
+        Errors:
+
+        - 400 if projectId is missing
+
+        - 404 if project is not found
+
+        - 500 if deletion fails'
+      operationId: delete_project_endpoint_deleteProject_delete
       parameters:
-      - name: image_id
-        in: path
+      - name: projectId
+        in: query
         required: true
         schema:
-          type: string
-          title: Image Id
+          type: integer
+          title: Projectid
       responses:
         '200':
           description: Successful Response
@@ -32,7 +53,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       tags:
-      - GenerateThumbnail
+      - Delete Project
 components:
   schemas:
     ValidationError:

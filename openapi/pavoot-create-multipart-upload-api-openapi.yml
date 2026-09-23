@@ -3,7 +3,7 @@ info:
   title: Fast Create Multipart Upload API
   version: 0.1.0
 tags:
-- name: CreateMultipartUpload
+- name: Create Multipart Upload
 paths:
   /createMultipartUpload:
     post:
@@ -33,9 +33,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       tags:
-      - CreateMultipartUpload
+      - Create Multipart Upload
 components:
   schemas:
+    MultipartFileInfo:
+      properties:
+        contentType:
+          type: string
+          title: Contenttype
+        size:
+          type: integer
+          title: Size
+      type: object
+      required:
+      - contentType
+      - size
+      title: MultipartFileInfo
     ValidationError:
       properties:
         loc:
@@ -66,19 +79,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    MultipartFileInfo:
-      properties:
-        contentType:
-          type: string
-          title: Contenttype
-        size:
-          type: integer
-          title: Size
-      type: object
-      required:
-      - contentType
-      - size
-      title: MultipartFileInfo
     CreateMultipartUploadRequest:
       properties:
         files:

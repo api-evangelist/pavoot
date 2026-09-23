@@ -8,7 +8,19 @@ paths:
   /sendAttendeeEmails:
     post:
       summary: Send Attendee Emails Endpoint
-      description: "Send emails to attendees with their share link.\n- Attendee must have status in approved / approved-none / approved-Pavoot\n  (or status sent/auto-sent when forceResend=true).\n- For persons with 0 images, zero_images_phrase must be provided.\n- On success: sets status to 'sent'.\n- On per-recipient failure: sets status to 'email-failed' and records last_email_error;\n  continues to next recipient (returns partial success)."
+      description: 'Send emails to attendees with their share link.
+
+        - Attendee must have status in approved / approved-none / approved-Pavoot
+
+        (or status sent/auto-sent when forceResend=true).
+
+        - For persons with 0 images, zero_images_phrase must be provided.
+
+        - On success: sets status to ''sent''.
+
+        - On per-recipient failure: sets status to ''email-failed'' and records last_email_error;
+
+        continues to next recipient (returns partial success).'
       operationId: send_attendee_emails_endpoint_sendAttendeeEmails_post
       requestBody:
         content:
@@ -32,36 +44,6 @@ paths:
       - SendAttendeeEmails
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     SendAttendeeEmailsRequest:
       properties:
         projectId:
@@ -96,3 +78,33 @@ components:
       - projectId
       - personIds
       title: SendAttendeeEmailsRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

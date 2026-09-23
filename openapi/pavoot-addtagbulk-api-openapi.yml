@@ -8,7 +8,22 @@ paths:
   /addTagBulk:
     post:
       summary: Add Tag Bulk Endpoint
-      description: "Adds the same tag to multiple images.\n\nBody:\n{\n  \"imageIds\": [1, 2, 3],\n  \"tag\": \"VIP\",\n  \"category\": \"highlights\",\n  \"projectId\": 42\n}"
+      description: 'Adds the same tag to multiple images.
+
+
+        Body:
+
+        {
+
+        "imageIds": [1, 2, 3],
+
+        "tag": "VIP",
+
+        "category": "highlights",
+
+        "projectId": 42
+
+        }'
       operationId: add_tag_bulk_endpoint_addTagBulk_post
       responses:
         '200':

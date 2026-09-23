@@ -1,0 +1,64 @@
+openapi: 3.2.0
+info:
+  title: Fast Get Projects API
+  version: 0.1.0
+tags:
+- name: Get Projects
+paths:
+  /getProjects:
+    get:
+      summary: Get Projects Endpoint
+      description: 'Retrieves all projects associated with a specific event organizer, recipient, or photographer.
+
+
+        Query Parameters:
+
+        eventOrganizerId (str): The ID of the event organizer (optional)
+
+        recipientId (str): The ID of the recipient (optional)
+
+        photographerId (str): The ID of the photographer (optional)
+
+
+        Notes:
+
+        - Exactly one of the ID parameters must be provided (not zero, not multiple)
+
+
+        Returns:
+
+        JSON response containing:
+
+        - projects: List of projects with their metadata
+
+        Each project contains:
+
+        - id
+
+        - title
+
+        - start_date
+
+        - end_date
+
+        - status
+
+
+        Errors:
+
+        - 400 if none of the ID parameters is provided
+
+        - 400 if more than one ID parameter is provided
+
+        - 404 if the specified entity is not found
+
+        - 500 if database access fails'
+      operationId: get_projects_endpoint_getProjects_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Get Projects

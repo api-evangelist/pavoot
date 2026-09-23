@@ -8,7 +8,17 @@ paths:
   /addRecipients:
     post:
       summary: Add Recipients Endpoint
-      description: "API endpoint for adding recipients to a project.\n\nValidates request JSON, extracts the project ID and recipients data,\nthen calls the add_recipients function to process them.\n\nReturns:\n    Flask response: JSON response with success message or error details"
+      description: 'API endpoint for adding recipients to a project.
+
+
+        Validates request JSON, extracts the project ID and recipients data,
+
+        then calls the add_recipients function to process them.
+
+
+        Returns:
+
+        Flask response: JSON response with success message or error details'
       operationId: add_recipients_endpoint_addRecipients_post
       requestBody:
         content:

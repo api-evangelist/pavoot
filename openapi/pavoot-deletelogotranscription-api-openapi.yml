@@ -31,6 +31,19 @@ paths:
       - DeleteLogoTranscription
 components:
   schemas:
+    Body_delete_logo_transcription_endpoint_deleteLogoTranscription_delete:
+      properties:
+        logoId:
+          type: string
+          title: Logoid
+        transcription:
+          type: string
+          title: Transcription
+      type: object
+      required:
+      - logoId
+      - transcription
+      title: Body_delete_logo_transcription_endpoint_deleteLogoTranscription_delete
     ValidationError:
       properties:
         loc:
@@ -61,16 +74,3 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    Body_delete_logo_transcription_endpoint_deleteLogoTranscription_delete:
-      properties:
-        logoId:
-          type: string
-          title: Logoid
-        transcription:
-          type: string
-          title: Transcription
-      type: object
-      required:
-      - logoId
-      - transcription
-      title: Body_delete_logo_transcription_endpoint_deleteLogoTranscription_delete

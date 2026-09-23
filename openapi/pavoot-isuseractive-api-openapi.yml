@@ -8,7 +8,19 @@ paths:
   /isUserActive:
     get:
       summary: Is User Active Endpoint
-      description: "Checks if a user is active (not expired).\n\nArgs:\n    user_id: The user's ID\n    role: The user's role ('event_organizer', 'photographer', or 'recipient')\n    \nReturns:\n    JSON response with 'is_active' boolean"
+      description: 'Checks if a user is active (not expired).
+
+
+        Args:
+
+        user_id: The user''s ID
+
+        role: The user''s role (''event_organizer'', ''photographer'', or ''recipient'')
+
+
+        Returns:
+
+        JSON response with ''is_active'' boolean'
       operationId: is_user_active_endpoint_isUserActive_get
       parameters:
       - name: user_id

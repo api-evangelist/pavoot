@@ -8,7 +8,27 @@ paths:
   /invitePhotographer:
     post:
       summary: Invite Photographer Endpoint
-      description: "Invites a photographer by generating a password, saving them to the database, and sending an email.\n\nExpects:\n    - JSON with:\n        - 'name': photographer's name\n        - 'email': photographer's email\n        - 'description': photographer's description\n        - 'projectId': ID of the project to associate with\n\nReturns:\n    - Success message with clerk_user_id if successful\n    - Error if required fields are missing or other issues occur"
+      description: 'Invites a photographer by generating a password, saving them to the database, and sending an email.
+
+
+        Expects:
+
+        - JSON with:
+
+        - ''name'': photographer''s name
+
+        - ''email'': photographer''s email
+
+        - ''description'': photographer''s description
+
+        - ''projectId'': ID of the project to associate with
+
+
+        Returns:
+
+        - Success message with clerk_user_id if successful
+
+        - Error if required fields are missing or other issues occur'
       operationId: invite_photographer_endpoint_invitePhotographer_post
       requestBody:
         content:

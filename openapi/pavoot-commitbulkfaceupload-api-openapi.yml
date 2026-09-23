@@ -8,7 +8,13 @@ paths:
   /commitBulkFaceUpload:
     post:
       summary: Commit Bulk Face Upload Endpoint
-      description: "Commit the reviewed bulk upload. Body:\n  { projectId, category, actions: [ { faceImageId, name, action, personId? } ] }\nwhere action is \"update\" | \"new\" | \"skip\". Runs them with limited concurrency,\nthen updates folders and schedules one face-match scan."
+      description: 'Commit the reviewed bulk upload. Body:
+
+        { projectId, category, actions: [ { faceImageId, name, action, personId? } ] }
+
+        where action is "update" | "new" | "skip". Runs them with limited concurrency,
+
+        then updates folders and schedules one face-match scan.'
       operationId: commit_bulk_face_upload_endpoint_commitBulkFaceUpload_post
       requestBody:
         content:

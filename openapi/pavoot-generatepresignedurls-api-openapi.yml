@@ -8,7 +8,36 @@ paths:
   /generatePresignedUrls:
     post:
       summary: Generate Presigned Urls Endpoint
-      description: "Generates presigned URLs for uploading files to S3.\n\nRequest Body:\n    files (list): List of file information with contentType (required)\n    projectId (int): The ID of the project (required)\n    folderName (str): Optional folder name for organization\n    photographerId (str): Optional ID of the photographer\n    \nReturns:\n    JSON response with:\n        - urls: List of objects containing file id, key, presigned URL, and contentType\n        \nErrors:\n    - 401 if user is not authenticated\n    - 403 if user lacks permission\n    - 400 if required parameters are missing\n    - 500 if S3 service access fails"
+      description: 'Generates presigned URLs for uploading files to S3.
+
+
+        Request Body:
+
+        files (list): List of file information with contentType (required)
+
+        projectId (int): The ID of the project (required)
+
+        folderName (str): Optional folder name for organization
+
+        photographerId (str): Optional ID of the photographer
+
+
+        Returns:
+
+        JSON response with:
+
+        - urls: List of objects containing file id, key, presigned URL, and contentType
+
+
+        Errors:
+
+        - 401 if user is not authenticated
+
+        - 403 if user lacks permission
+
+        - 400 if required parameters are missing
+
+        - 500 if S3 service access fails'
       operationId: generate_presigned_urls_endpoint_generatePresignedUrls_post
       requestBody:
         content:
@@ -53,15 +82,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     FileInfo:
       properties:
         extension:
@@ -105,3 +125,12 @@ components:
       - files
       - projectId
       title: GeneratePresignedUrlsRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

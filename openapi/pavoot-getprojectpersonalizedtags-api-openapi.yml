@@ -8,7 +8,28 @@ paths:
   /getProjectPersonalizedTags:
     get:
       summary: Get Project Personalized Tags Endpoint
-      description: "Retrieves the personalized tags for a specific project.\n\nParameters:\n    projectId (int): The ID of the project to get tags for\n\nReturns:\n    JSON response with:\n        - project: Project details including id, title, and personalized_tags dictionary\n\nErrors:\n    - 400 if projectId is missing\n    - 404 if project is not found\n    - 500 if database access fails"
+      description: 'Retrieves the personalized tags for a specific project.
+
+
+        Parameters:
+
+        projectId (int): The ID of the project to get tags for
+
+
+        Returns:
+
+        JSON response with:
+
+        - project: Project details including id, title, and personalized_tags dictionary
+
+
+        Errors:
+
+        - 400 if projectId is missing
+
+        - 404 if project is not found
+
+        - 500 if database access fails'
       operationId: get_project_personalized_tags_endpoint_getProjectPersonalizedTags_get
       parameters:
       - name: projectId

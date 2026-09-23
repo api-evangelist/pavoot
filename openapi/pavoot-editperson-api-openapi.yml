@@ -8,7 +8,27 @@ paths:
   /editPerson:
     post:
       summary: Edit Person Endpoint
-      description: "Endpoint for editing a person's information in the face recognition system.\n\nArgs:\n    personId: The person's unique ID\n    name: The person's name (optional)\n    category: Category/type of person (optional)\n    position: The person's position/role (optional)\n    link: Link associated with the person (optional)\n    faceImageId: New face image ID to update the face (optional)\n\nReturns:\n    JSON response with success status and updated person details"
+      description: 'Endpoint for editing a person''s information in the face recognition system.
+
+
+        Args:
+
+        personId: The person''s unique ID
+
+        name: The person''s name (optional)
+
+        category: Category/type of person (optional)
+
+        position: The person''s position/role (optional)
+
+        link: Link associated with the person (optional)
+
+        faceImageId: New face image ID to update the face (optional)
+
+
+        Returns:
+
+        JSON response with success status and updated person details'
       operationId: edit_person_endpoint_editPerson_post
       requestBody:
         content:

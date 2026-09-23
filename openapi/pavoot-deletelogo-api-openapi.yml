@@ -8,7 +8,30 @@ paths:
   /deleteLogo:
     delete:
       summary: Delete Logo Endpoint
-      description: "Delete brands, and the brand tags on their photos.\n\nBody, either shape:\n    [logoId, ...]                                     -> legacy, means scope=\"all\"\n    {\"logoIds\": [...], \"scope\": \"all\"|\"project\",\n     \"projectId\": <int, required when scope=\"project\">}\n\nscope=\"project\" removes the brand from that ONE project: the tags on its photos, that\nproject's folder, and the project from the brand's membership. The brand survives elsewhere.\nscope=\"all\" removes the brand outright, everywhere.\n\nDeleting the tags is deliberate and unrecoverable — see delete_brand_scoped. The client is\nexpected to have shown brand_deletion_impact() first, which is what /brandDeletionImpact is\nfor; this endpoint does not assume it and simply does what it is told."
+      description: 'Delete brands, and the brand tags on their photos.
+
+
+        Body, either shape:
+
+        [logoId, ...] -> legacy, means scope="all"
+
+        {"logoIds": [...], "scope": "all"|"project",
+
+        "projectId": }
+
+
+        scope="project" removes the brand from that ONE project: the tags on its photos, that
+
+        project''s folder, and the project from the brand''s membership. The brand survives elsewhere.
+
+        scope="all" removes the brand outright, everywhere.
+
+
+        Deleting the tags is deliberate and unrecoverable — see delete_brand_scoped. The client is
+
+        expected to have shown brand_deletion_impact() first, which is what /brandDeletionImpact is
+
+        for; this endpoint does not assume it and simply does what it is told.'
       operationId: delete_logo_endpoint_deleteLogo_delete
       requestBody:
         content:

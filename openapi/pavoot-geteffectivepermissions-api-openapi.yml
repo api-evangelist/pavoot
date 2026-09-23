@@ -8,7 +8,21 @@ paths:
   /getEffectivePermissions:
     get:
       summary: Get Effective Permissions Endpoint
-      description: "Returns effective task-based permissions for a user within a project.\n\nFor normal users:\n- Start from role defaults for (project, role)\n- Apply per-user overrides if present\n\nNotes:\n    - If user_id/role are omitted, they default to the authenticated user.\n    - Non-super-admins can only request their own permissions."
+      description: 'Returns effective task-based permissions for a user within a project.
+
+
+        For normal users:
+
+        - Start from role defaults for (project, role)
+
+        - Apply per-user overrides if present
+
+
+        Notes:
+
+        - If user_id/role are omitted, they default to the authenticated user.
+
+        - Non-super-admins can only request their own permissions.'
       operationId: get_effective_permissions_endpoint_getEffectivePermissions_get
       parameters:
       - name: projectId

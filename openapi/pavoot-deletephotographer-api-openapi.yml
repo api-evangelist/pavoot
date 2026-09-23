@@ -8,7 +8,23 @@ paths:
   /deletePhotographer:
     post:
       summary: Delete Photographer Endpoint
-      description: "Removes a photographer's association with a specific project.\n\nExpects:\n    - JSON with:\n        - 'photographerId': unique identifier of the photographer\n        - 'projectId': ID of the project to remove from\n\nReturns:\n    - Success message if photographer was found and removed from project\n    - Error if photographer not found or other issues occur"
+      description: 'Removes a photographer''s association with a specific project.
+
+
+        Expects:
+
+        - JSON with:
+
+        - ''photographerId'': unique identifier of the photographer
+
+        - ''projectId'': ID of the project to remove from
+
+
+        Returns:
+
+        - Success message if photographer was found and removed from project
+
+        - Error if photographer not found or other issues occur'
       operationId: delete_photographer_endpoint_deletePhotographer_post
       requestBody:
         content:

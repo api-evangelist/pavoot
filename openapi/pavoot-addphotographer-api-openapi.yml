@@ -8,7 +8,31 @@ paths:
   /addPhotographer:
     post:
       summary: Add Photographer Endpoint
-      description: "Adds a photographer to a project WITHOUT creating a login account or sending\nan email. Email is optional and can be filled in later (via editPhotographer)\nor when the photographer is invited (via invitePhotographer).\n\nExpects:\n    - JSON with:\n        - 'name': photographer's name (required)\n        - 'email': photographer's email (optional)\n        - 'description': photographer's description (optional)\n        - 'projectId': ID of the project to associate with (required)\n\nReturns:\n    - Success message with the new photographer id if successful\n    - Error if required fields are missing or other issues occur"
+      description: 'Adds a photographer to a project WITHOUT creating a login account or sending
+
+        an email. Email is optional and can be filled in later (via editPhotographer)
+
+        or when the photographer is invited (via invitePhotographer).
+
+
+        Expects:
+
+        - JSON with:
+
+        - ''name'': photographer''s name (required)
+
+        - ''email'': photographer''s email (optional)
+
+        - ''description'': photographer''s description (optional)
+
+        - ''projectId'': ID of the project to associate with (required)
+
+
+        Returns:
+
+        - Success message with the new photographer id if successful
+
+        - Error if required fields are missing or other issues occur'
       operationId: add_photographer_endpoint_addPhotographer_post
       requestBody:
         content:

@@ -36,6 +36,21 @@ paths:
       - DeletePersons
 components:
   schemas:
+    DeletePersonsRequest:
+      properties:
+        personIds:
+          items:
+            type: string
+          type: array
+          title: Personids
+        cascadeAttendee:
+          type: boolean
+          title: Cascadeattendee
+          default: false
+      type: object
+      required:
+      - personIds
+      title: DeletePersonsRequest
     ValidationError:
       properties:
         loc:
@@ -66,18 +81,3 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    DeletePersonsRequest:
-      properties:
-        personIds:
-          items:
-            type: string
-          type: array
-          title: Personids
-        cascadeAttendee:
-          type: boolean
-          title: Cascadeattendee
-          default: false
-      type: object
-      required:
-      - personIds
-      title: DeletePersonsRequest

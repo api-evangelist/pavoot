@@ -8,7 +8,21 @@ paths:
   /revokePhotographerProjectAccess:
     post:
       summary: Revoke Photographer Project Access Endpoint
-      description: "Takes away a photographer's access to ONE project, keeping their row and image credit.\n\nExpects:\n    - JSON with 'photographerId' and 'projectId'\n\nCounterpart to /invitePhotographer, which is the only thing that grants a project.\n/deletePhotographer is NOT the counterpart: it drops the association row, which also\ndrops the photographer out of that project's list. Idempotent — revoking access nobody\nhas is a success with changed=false."
+      description: 'Takes away a photographer''s access to ONE project, keeping their row and image credit.
+
+
+        Expects:
+
+        - JSON with ''photographerId'' and ''projectId''
+
+
+        Counterpart to /invitePhotographer, which is the only thing that grants a project.
+
+        /deletePhotographer is NOT the counterpart: it drops the association row, which also
+
+        drops the photographer out of that project''s list. Idempotent — revoking access nobody
+
+        has is a success with changed=false.'
       operationId: revoke_photographer_project_access_endpoint_revokePhotographerProjectAccess_post
       requestBody:
         content:

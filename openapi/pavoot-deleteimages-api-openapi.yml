@@ -8,7 +8,27 @@ paths:
   /deleteImages:
     post:
       summary: Delete Images Endpoint
-      description: "Deletes multiple images from the system.\n- If images are NOT in trash: performs soft delete (moves to trash)\n- If images are already in trash: performs permanent delete (removes from S3 and DB)\n\nExpects:\n    - JSON with:\n        - 'imageIds': list of image IDs to delete\n        - 'projectId'\n\nReturns:\n    - Success message with counts of deleted images\n    - Error if imageIds is missing or invalid"
+      description: 'Deletes multiple images from the system.
+
+        - If images are NOT in trash: performs soft delete (moves to trash)
+
+        - If images are already in trash: performs permanent delete (removes from S3 and DB)
+
+
+        Expects:
+
+        - JSON with:
+
+        - ''imageIds'': list of image IDs to delete
+
+        - ''projectId''
+
+
+        Returns:
+
+        - Success message with counts of deleted images
+
+        - Error if imageIds is missing or invalid'
       operationId: delete_images_endpoint_deleteImages_post
       requestBody:
         content:
@@ -32,21 +52,6 @@ paths:
       - DeleteImages
 components:
   schemas:
-    DeleteImagesRequest:
-      properties:
-        projectId:
-          type: integer
-          title: Projectid
-        imageIds:
-          items:
-            type: string
-          type: array
-          title: Imageids
-      type: object
-      required:
-      - projectId
-      - imageIds
-      title: DeleteImagesRequest
     ValidationError:
       properties:
         loc:
@@ -68,6 +73,21 @@ components:
       - msg
       - type
       title: ValidationError
+    DeleteImagesRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+      type: object
+      required:
+      - projectId
+      - imageIds
+      title: DeleteImagesRequest
     HTTPValidationError:
       properties:
         detail:

@@ -8,7 +8,31 @@ paths:
   /editRecipient:
     post:
       summary: Edit Recipient Endpoint
-      description: "Updates a recipient's information in the database.\n\nExpects:\n    - JSON with:\n        - 'recipientId': unique identifier of the recipient (required)\n        - 'name': new name for the recipient (optional)\n        - 'primaryEmail': new primary email for the recipient (optional)\n        - 'description': new description for the recipient (optional)\n        - 'additionalEmails': list of additional emails (optional)\n        - 'projectId'\n\nReturns:\n    - Success message if recipient was found and updated\n    - Error if recipient not found or other issues occur"
+      description: 'Updates a recipient''s information in the database.
+
+
+        Expects:
+
+        - JSON with:
+
+        - ''recipientId'': unique identifier of the recipient (required)
+
+        - ''name'': new name for the recipient (optional)
+
+        - ''primaryEmail'': new primary email for the recipient (optional)
+
+        - ''description'': new description for the recipient (optional)
+
+        - ''additionalEmails'': list of additional emails (optional)
+
+        - ''projectId''
+
+
+        Returns:
+
+        - Success message if recipient was found and updated
+
+        - Error if recipient not found or other issues occur'
       operationId: edit_recipient_endpoint_editRecipient_post
       requestBody:
         content:

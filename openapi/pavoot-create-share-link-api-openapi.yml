@@ -3,7 +3,7 @@ info:
   title: Fast Create Share Link API
   version: 0.1.0
 tags:
-- name: CreateShareLink
+- name: Create Share Link
 paths:
   /createShareLink:
     post:
@@ -28,7 +28,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       tags:
-      - CreateShareLink
+      - Create Share Link
 components:
   schemas:
     ValidationError:

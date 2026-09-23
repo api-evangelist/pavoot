@@ -8,7 +8,23 @@ paths:
   /restoreImages:
     post:
       summary: Restore Images Endpoint
-      description: "Restores multiple images from trash (undeletes them).\n\nExpects:\n    - JSON with:\n        - 'imageIds': list of image IDs to restore\n        - 'projectId'\n\nReturns:\n    - Success message with counts of restored images\n    - Error if imageIds is missing or invalid"
+      description: 'Restores multiple images from trash (undeletes them).
+
+
+        Expects:
+
+        - JSON with:
+
+        - ''imageIds'': list of image IDs to restore
+
+        - ''projectId''
+
+
+        Returns:
+
+        - Success message with counts of restored images
+
+        - Error if imageIds is missing or invalid'
       operationId: restore_images_endpoint_restoreImages_post
       requestBody:
         content:

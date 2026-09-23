@@ -35,23 +35,6 @@ paths:
       - InsertFace
 components:
   schemas:
-    FaceOccurrenceCreate:
-      properties:
-        image_id:
-          type: string
-          title: Image Id
-        bbox:
-          $ref: '#/components/schemas/BBox'
-        person_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Person Id
-      type: object
-      required:
-      - image_id
-      - bbox
-      title: FaceOccurrenceCreate
     ValidationError:
       properties:
         loc:
@@ -73,6 +56,32 @@ components:
       - msg
       - type
       title: ValidationError
+    FaceOccurrenceCreate:
+      properties:
+        image_id:
+          type: string
+          title: Image Id
+        bbox:
+          $ref: '#/components/schemas/BBox'
+        person_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Person Id
+      type: object
+      required:
+      - image_id
+      - bbox
+      title: FaceOccurrenceCreate
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     BBox:
       properties:
         top:
@@ -94,12 +103,3 @@ components:
       - width
       - height
       title: BBox
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

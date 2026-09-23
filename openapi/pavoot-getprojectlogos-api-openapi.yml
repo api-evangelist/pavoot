@@ -8,7 +8,19 @@ paths:
   /getProjectLogos:
     get:
       summary: Get Project Logos Endpoint
-      description: "Endpoint for retrieving all logos for a project.\n\nArgs:\n    projectId: The project ID\n    excludeStartup: When true, rows with category \"startup\" are omitted.\n\nReturns:\n    JSON response with list of logos"
+      description: 'Endpoint for retrieving all logos for a project.
+
+
+        Args:
+
+        projectId: The project ID
+
+        excludeStartup: When true, rows with category "startup" are omitted.
+
+
+        Returns:
+
+        JSON response with list of logos'
       operationId: get_project_logos_endpoint_getProjectLogos_get
       parameters:
       - name: projectId

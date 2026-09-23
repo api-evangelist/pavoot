@@ -8,7 +8,17 @@ paths:
   /sendToRecipient:
     post:
       summary: Send To Recipient Endpoint
-      description: "API endpoint for sending emails to recipients.\n\nValidates user permissions, extracts request parameters, and calls\nthe send_to_recipient function with the necessary data.\n\nReturns:\n    Flask response: JSON response with success message or error details"
+      description: 'API endpoint for sending emails to recipients.
+
+
+        Validates user permissions, extracts request parameters, and calls
+
+        the send_to_recipient function with the necessary data.
+
+
+        Returns:
+
+        Flask response: JSON response with success message or error details'
       operationId: send_to_recipient_endpoint_sendToRecipient_post
       requestBody:
         content:

@@ -56,7 +56,26 @@ paths:
   /admin/permissions/role:
     patch:
       summary: Admin Patch Role Permissions Endpoint
-      description: "Super-admin endpoint.\nEdits role defaults (insert/delete) for a project, enforcing global locks.\n\nExpected body:\n{\n  \"role\": \"photographer\",\n  \"changes\": {\n    \"sharelinks.create\": true,\n    \"images.delete\": false\n  }\n}"
+      description: 'Super-admin endpoint.
+
+        Edits role defaults (insert/delete) for a project, enforcing global locks.
+
+
+        Expected body:
+
+        {
+
+        "role": "photographer",
+
+        "changes": {
+
+        "sharelinks.create": true,
+
+        "images.delete": false
+
+        }
+
+        }'
       operationId: admin_patch_role_permissions_endpoint_admin_permissions_role_patch
       parameters:
       - name: projectId
@@ -90,7 +109,28 @@ paths:
   /admin/permissions/user:
     patch:
       summary: Admin Patch User Permissions Endpoint
-      description: "Super-admin endpoint.\nEdits user-specific permissions (upsert) for a project, enforcing global locks.\n\nExpected body:\n{\n  \"role\": \"photographer\",\n  \"user_id\": \"user_target\",\n  \"changes\": {\n    \"sharelinks.create\": true,\n    \"images.delete\": false\n  }\n}"
+      description: 'Super-admin endpoint.
+
+        Edits user-specific permissions (upsert) for a project, enforcing global locks.
+
+
+        Expected body:
+
+        {
+
+        "role": "photographer",
+
+        "user_id": "user_target",
+
+        "changes": {
+
+        "sharelinks.create": true,
+
+        "images.delete": false
+
+        }
+
+        }'
       operationId: admin_patch_user_permissions_endpoint_admin_permissions_user_patch
       parameters:
       - name: projectId
@@ -351,7 +391,25 @@ paths:
   /admin/delete-photographer:
     delete:
       summary: Admin Delete Photographer Endpoint
-      description: "Delete a photographer completely.\nThis removes:\n- Entries from photographer_projects table\n- Entry from photographers table\n- Clerk user account\n\nNote: Only deletes photographers that are NOT event organizers.\nEvent organizers should be deleted via delete-organizer endpoint.\n\nQuery Parameters:\n    photographerId (str): The Clerk user ID of the photographer to delete (required)"
+      description: 'Delete a photographer completely.
+
+        This removes:
+
+        - Entries from photographer_projects table
+
+        - Entry from photographers table
+
+        - Clerk user account
+
+
+        Note: Only deletes photographers that are NOT event organizers.
+
+        Event organizers should be deleted via delete-organizer endpoint.
+
+
+        Query Parameters:
+
+        photographerId (str): The Clerk user ID of the photographer to delete (required)'
       operationId: admin_delete_photographer_endpoint_admin_delete_photographer_delete
       parameters:
       - name: photographerId
@@ -417,7 +475,27 @@ paths:
   /admin/delete-recipient:
     delete:
       summary: Admin Delete Recipient Endpoint
-      description: "Delete a recipient completely.\nThis removes:\n- Entries from recipient_projects table\n- Entry from recipients table\n- Clerk user account\n\nNote: Only deletes recipients that are NOT event organizers or photographers.\nEvent organizers should be deleted via delete-organizer endpoint.\nPhotographers should be deleted via delete-photographer endpoint.\n\nQuery Parameters:\n    recipientId (str): The Clerk user ID of the recipient to delete (required)"
+      description: 'Delete a recipient completely.
+
+        This removes:
+
+        - Entries from recipient_projects table
+
+        - Entry from recipients table
+
+        - Clerk user account
+
+
+        Note: Only deletes recipients that are NOT event organizers or photographers.
+
+        Event organizers should be deleted via delete-organizer endpoint.
+
+        Photographers should be deleted via delete-photographer endpoint.
+
+
+        Query Parameters:
+
+        recipientId (str): The Clerk user ID of the recipient to delete (required)'
       operationId: admin_delete_recipient_endpoint_admin_delete_recipient_delete
       parameters:
       - name: recipientId
@@ -526,7 +604,26 @@ paths:
   /admin/delete-organizer:
     delete:
       summary: Admin Delete Organizer Endpoint
-      description: "Delete an event organizer completely.\nThis removes:\n- Entries from event_organizer_projects table\n- Entries from photographer_projects table\n- Entry from organization_event_organizers table (if any)\n- Entry from event_organizers table\n- Entry from photographers table\n- Clerk user account\n\nQuery Parameters:\n    eventOrganizerId (str): The Clerk user ID of the event organizer to delete (required)"
+      description: 'Delete an event organizer completely.
+
+        This removes:
+
+        - Entries from event_organizer_projects table
+
+        - Entries from photographer_projects table
+
+        - Entry from organization_event_organizers table (if any)
+
+        - Entry from event_organizers table
+
+        - Entry from photographers table
+
+        - Clerk user account
+
+
+        Query Parameters:
+
+        eventOrganizerId (str): The Clerk user ID of the event organizer to delete (required)'
       operationId: admin_delete_organizer_endpoint_admin_delete_organizer_delete
       parameters:
       - name: eventOrganizerId
@@ -925,14 +1022,6 @@ paths:
       - Admin
 components:
   schemas:
-    CreateCollectionBody:
-      properties:
-        env:
-          type: string
-          title: Env
-          default: dev
-      type: object
-      title: CreateCollectionBody
     ValidationError:
       properties:
         loc:
@@ -954,6 +1043,14 @@ components:
       - msg
       - type
       title: ValidationError
+    CreateCollectionBody:
+      properties:
+        env:
+          type: string
+          title: Env
+          default: dev
+      type: object
+      title: CreateCollectionBody
     HTTPValidationError:
       properties:
         detail:

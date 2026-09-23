@@ -3,12 +3,37 @@ info:
   title: Fast Generate Download URL API
   version: 0.1.0
 tags:
-- name: GenerateDownloadUrl
+- name: Generate Download Url
 paths:
   /generateDownloadUrl:
     post:
       summary: Generate Download Url Endpoint
-      description: "Generates a presigned URL for downloading images. If only one image is requested,\nreturns a direct download URL for that image. If multiple images, creates a ZIP file.\n\nRequest Body:\n    imageIds: List of image IDs to include\n    projectId: Project ID for the images\n    \nReturns:\n    JSON response with:\n        - downloadUrl: The presigned URL\n        - filename: The filename for download\n        - isZip: Boolean indicating if it's a ZIP file or single image\n    \nErrors:\n    - 500 if download generation fails"
+      description: 'Generates a presigned URL for downloading images. If only one image is requested,
+
+        returns a direct download URL for that image. If multiple images, creates a ZIP file.
+
+
+        Request Body:
+
+        imageIds: List of image IDs to include
+
+        projectId: Project ID for the images
+
+
+        Returns:
+
+        JSON response with:
+
+        - downloadUrl: The presigned URL
+
+        - filename: The filename for download
+
+        - isZip: Boolean indicating if it''s a ZIP file or single image
+
+
+        Errors:
+
+        - 500 if download generation fails'
       operationId: generate_download_url_endpoint_generateDownloadUrl_post
       requestBody:
         content:
@@ -29,7 +54,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       tags:
-      - GenerateDownloadUrl
+      - Generate Download Url
 components:
   schemas:
     ValidationError:
@@ -53,15 +78,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ZipDownloadRequest:
       properties:
         imageIds:
@@ -83,3 +99,12 @@ components:
       - imageIds
       - projectId
       title: ZipDownloadRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

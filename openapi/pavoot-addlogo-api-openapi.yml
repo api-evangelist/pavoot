@@ -8,7 +8,29 @@ paths:
   /addLogo:
     post:
       summary: Add Logo Endpoint
-      description: "Endpoint for adding a new logo to a project.\n\nArgs:\n    name: Logo/brand name\n    projectId: Project ID\n    category: Category (speaker, sponsor, etc.)\n    logoImageId: S3 image ID for the logo\n    image: S3 image ID (same as logoImageId)\n    link: Optional link associated with the logo\n    contactEmail: Optional contact email for the brand\n\nReturns:\n    JSON response with success status and logo details"
+      description: 'Endpoint for adding a new logo to a project.
+
+
+        Args:
+
+        name: Logo/brand name
+
+        projectId: Project ID
+
+        category: Category (speaker, sponsor, etc.)
+
+        logoImageId: S3 image ID for the logo
+
+        image: S3 image ID (same as logoImageId)
+
+        link: Optional link associated with the logo
+
+        contactEmail: Optional contact email for the brand
+
+
+        Returns:
+
+        JSON response with success status and logo details'
       operationId: add_logo_endpoint_addLogo_post
       requestBody:
         content:
@@ -32,6 +54,36 @@ paths:
       - AddLogo
 components:
   schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     Body_add_logo_endpoint_addLogo_post:
       properties:
         name:
@@ -67,33 +119,3 @@ components:
       - logoImageId
       - image
       title: Body_add_logo_endpoint_addLogo_post
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

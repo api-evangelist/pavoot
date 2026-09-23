@@ -8,7 +8,34 @@ paths:
   /addImagesToFolder:
     post:
       summary: Add Image To Folder Endpoint
-      description: "Associates multiple images with a folder by adding the folder name as a tag.\n\nExpects:\n    - JSON with:\n        - 'imageIds': list of image IDs to add to the folder\n        - 'folderName': the name of the folder to add the images to\n        - 'projectId'\n\nProcess:\n    1. Gets the project ID for each image\n    2. Checks if the folder exists for each project\n    3. Adds the folder name as a tag for each image that doesn't already have it\n\nReturns:\n    - Success message with results for each image\n    - Detailed results including successful and failed operations"
+      description: 'Associates multiple images with a folder by adding the folder name as a tag.
+
+
+        Expects:
+
+        - JSON with:
+
+        - ''imageIds'': list of image IDs to add to the folder
+
+        - ''folderName'': the name of the folder to add the images to
+
+        - ''projectId''
+
+
+        Process:
+
+        1. Gets the project ID for each image
+
+        2. Checks if the folder exists for each project
+
+        3. Adds the folder name as a tag for each image that doesn''t already have it
+
+
+        Returns:
+
+        - Success message with results for each image
+
+        - Detailed results including successful and failed operations'
       operationId: add_image_to_folder_endpoint_addImagesToFolder_post
       requestBody:
         content:
@@ -32,6 +59,25 @@ paths:
       - AddImagesToFolder
 components:
   schemas:
+    ModifyFolderImagesRequest:
+      properties:
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+        folderName:
+          type: string
+          title: Foldername
+        projectId:
+          type: integer
+          title: Projectid
+      type: object
+      required:
+      - imageIds
+      - folderName
+      - projectId
+      title: ModifyFolderImagesRequest
     ValidationError:
       properties:
         loc:
@@ -62,22 +108,3 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ModifyFolderImagesRequest:
-      properties:
-        imageIds:
-          items:
-            type: string
-          type: array
-          title: Imageids
-        folderName:
-          type: string
-          title: Foldername
-        projectId:
-          type: integer
-          title: Projectid
-      type: object
-      required:
-      - imageIds
-      - folderName
-      - projectId
-      title: ModifyFolderImagesRequest

@@ -32,24 +32,6 @@ paths:
       - UpsertProjectAttendee
 components:
   schemas:
-    UpsertAttendeeRequest:
-      properties:
-        projectId:
-          type: integer
-          title: Projectid
-        personId:
-          type: string
-          title: Personid
-        email:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Email
-      type: object
-      required:
-      - projectId
-      - personId
-      title: UpsertAttendeeRequest
     ValidationError:
       properties:
         loc:
@@ -71,6 +53,24 @@ components:
       - msg
       - type
       title: ValidationError
+    UpsertAttendeeRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        personId:
+          type: string
+          title: Personid
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+      type: object
+      required:
+      - projectId
+      - personId
+      title: UpsertAttendeeRequest
     HTTPValidationError:
       properties:
         detail:

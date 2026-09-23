@@ -8,7 +8,19 @@ paths:
   /getUploadLinks:
     get:
       summary: Get Upload Links Endpoint
-      description: "Upload links for a project, scoped to what the caller is allowed to see.\n\nTwo capabilities (migration 028):\n  * settings.manage.uploadLinks -> every link in the project (the timetable / manager view)\n  * uploadLinks.viewAssigned    -> ONLY the links assigned to them, read-only\n\nBefore this, any project member got every link — so a photographer could see the whole\nshooting schedule and everyone else's tokens."
+      description: 'Upload links for a project, scoped to what the caller is allowed to see.
+
+
+        Two capabilities (migration 028):
+
+        * settings.manage.uploadLinks -> every link in the project (the timetable / manager view)
+
+        * uploadLinks.viewAssigned -> ONLY the links assigned to them, read-only
+
+
+        Before this, any project member got every link — so a photographer could see the whole
+
+        shooting schedule and everyone else''s tokens.'
       operationId: get_upload_links_endpoint_getUploadLinks_get
       parameters:
       - name: projectId

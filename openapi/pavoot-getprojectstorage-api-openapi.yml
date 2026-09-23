@@ -8,7 +8,18 @@ paths:
   /getProjectStorage:
     get:
       summary: Get Project Storage Endpoint
-      description: "Returns storage breakdown for a project: normal (non-deleted) and trash (deleted) images.\n\nReturns:\n    dict with:\n        - normalGb: storage used by non-deleted images\n        - trashGb: storage used by deleted images\n        - totalGb: total storage (normal + trash)"
+      description: 'Returns storage breakdown for a project: normal (non-deleted) and trash (deleted) images.
+
+
+        Returns:
+
+        dict with:
+
+        - normalGb: storage used by non-deleted images
+
+        - trashGb: storage used by deleted images
+
+        - totalGb: total storage (normal + trash)'
       operationId: get_project_storage_endpoint_getProjectStorage_get
       parameters:
       - name: projectId

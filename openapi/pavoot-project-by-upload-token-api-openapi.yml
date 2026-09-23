@@ -8,7 +8,16 @@ paths:
   /project-by-upload-token:
     get:
       summary: Get Project By Upload Token Endpoint
-      description: "Resolve a project from its upload token for the current user.\n\n- Only event organizers, photographers, admins, and super admins may use this.\n- Recipients are not allowed to resolve upload links.\n- Also checks that the user is actually associated with the project\n  (event_organizer_projects or photographer_projects) unless admin/super-admin."
+      description: 'Resolve a project from its upload token for the current user.
+
+
+        - Only event organizers, photographers, admins, and super admins may use this.
+
+        - Recipients are not allowed to resolve upload links.
+
+        - Also checks that the user is actually associated with the project
+
+        (event_organizer_projects or photographer_projects) unless admin/super-admin.'
       operationId: get_project_by_upload_token_endpoint_project_by_upload_token_get
       parameters:
       - name: token

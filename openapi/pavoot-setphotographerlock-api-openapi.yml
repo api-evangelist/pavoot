@@ -48,25 +48,6 @@ paths:
       - SetPhotographerLock
 components:
   schemas:
-    SetPhotographerLockRequest:
-      properties:
-        photographerId:
-          type: string
-          title: Photographerid
-        projectIds:
-          items:
-            type: integer
-          type: array
-          title: Projectids
-        locked:
-          type: boolean
-          title: Locked
-      type: object
-      required:
-      - photographerId
-      - projectIds
-      - locked
-      title: SetPhotographerLockRequest
     ValidationError:
       properties:
         loc:
@@ -97,3 +78,22 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    SetPhotographerLockRequest:
+      properties:
+        photographerId:
+          type: string
+          title: Photographerid
+        projectIds:
+          items:
+            type: integer
+          type: array
+          title: Projectids
+        locked:
+          type: boolean
+          title: Locked
+      type: object
+      required:
+      - photographerId
+      - projectIds
+      - locked
+      title: SetPhotographerLockRequest

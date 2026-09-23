@@ -11,13 +11,13 @@ paths:
       description: 'Assign or rename a face/person based on 4 explicit scenarios:
 
 
-        - single_new:       only this face → create new person
+        - single_new: only this face → create new person
 
-        - single_existing:  only this face → assign to existing person
+        - single_existing: only this face → assign to existing person
 
-        - all_new:          rename this entire person to a new name
+        - all_new: rename this entire person to a new name
 
-        - all_existing:     merge this entire person into an existing person'
+        - all_existing: merge this entire person into an existing person'
       operationId: assign_face_endpoint_assignFace_put
       requestBody:
         content:
@@ -41,6 +41,27 @@ paths:
       - AssignFace
 components:
   schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     AssignFaceRequest:
       properties:
         faceId:
@@ -68,27 +89,6 @@ components:
       - newName
       - renameMode
       title: AssignFaceRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     HTTPValidationError:
       properties:
         detail:

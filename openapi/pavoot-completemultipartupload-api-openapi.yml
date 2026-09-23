@@ -31,49 +31,6 @@ paths:
       - CompleteMultipartUpload
 components:
   schemas:
-    CompletedPart:
-      properties:
-        partNumber:
-          type: integer
-          title: Partnumber
-        etag:
-          type: string
-          title: Etag
-      type: object
-      required:
-      - partNumber
-      - etag
-      title: CompletedPart
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     CompleteMultipartUploadRequest:
       properties:
         projectId:
@@ -97,3 +54,46 @@ components:
       - uploadId
       - parts
       title: CompleteMultipartUploadRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CompletedPart:
+      properties:
+        partNumber:
+          type: integer
+          title: Partnumber
+        etag:
+          type: string
+          title: Etag
+      type: object
+      required:
+      - partNumber
+      - etag
+      title: CompletedPart
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

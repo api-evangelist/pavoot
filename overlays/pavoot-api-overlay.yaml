@@ -6,7 +6,7 @@ overlay: 1.0.0
 info:
   title: API Evangelist enhancements — Pavoot Application API
   version: 1.0.0
-  description: 'Overlay of API Evangelist enhancements over the Pavoot-published OpenAPI, harvested verbatim
+  x-description: 'Overlay of API Evangelist enhancements over the Pavoot-published OpenAPI, harvested verbatim
     from https://api.pavoot.com/openapi.json on 2026-08-13. It adds ONLY what was established by probing
     Pavoot''s own surfaces: the real API host, a meaningful product identity, the Clerk bearer scheme
     the live API demonstrably enforces, the error responses it demonstrably returns, and domain tags over

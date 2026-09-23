@@ -157,6 +157,26 @@ paths:
       - Photographers
 components:
   schemas:
+    MergePhotographersRequest:
+      properties:
+        targetId:
+          type: string
+          title: Targetid
+        sourceIds:
+          items:
+            type: string
+          type: array
+          title: Sourceids
+        keepEmail:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Keepemail
+      type: object
+      required:
+      - targetId
+      - sourceIds
+      title: MergePhotographersRequest
     ValidationError:
       properties:
         loc:
@@ -178,35 +198,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    MergePhotographersRequest:
-      properties:
-        targetId:
-          type: string
-          title: Targetid
-        sourceIds:
-          items:
-            type: string
-          type: array
-          title: Sourceids
-        keepEmail:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Keepemail
-      type: object
-      required:
-      - targetId
-      - sourceIds
-      title: MergePhotographersRequest
     PhotographerAccessRequest:
       properties:
         photographerId:
@@ -216,3 +207,12 @@ components:
       required:
       - photographerId
       title: PhotographerAccessRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

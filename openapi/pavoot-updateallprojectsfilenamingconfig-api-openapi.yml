@@ -8,7 +8,20 @@ paths:
   /updateAllProjectsFilenamingConfig:
     put:
       summary: Update All Projects Filenaming Config Endpoint
-      description: "Overwrites the filenaming configuration for MANY projects at once (the\n\"All Projects\" settings surface). For each project it writes the config and\nsynchronously re-titles that project's already-tagged images — so this can\ntake a while on large accounts. Per-project failures are collected, not fatal.\n\nRequest Body:\n    projectIds (int[]): projects to overwrite (required)\n    titleTemplate, filenameTemplate, copyrightMode, copyrightText (optional)"
+      description: 'Overwrites the filenaming configuration for MANY projects at once (the
+
+        "All Projects" settings surface). For each project it writes the config and
+
+        synchronously re-titles that project''s already-tagged images — so this can
+
+        take a while on large accounts. Per-project failures are collected, not fatal.
+
+
+        Request Body:
+
+        projectIds (int[]): projects to overwrite (required)
+
+        titleTemplate, filenameTemplate, copyrightMode, copyrightText (optional)'
       operationId: update_all_projects_filenaming_config_endpoint_updateAllProjectsFilenamingConfig_put
       responses:
         '200':

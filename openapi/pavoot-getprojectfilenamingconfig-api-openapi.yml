@@ -8,7 +8,19 @@ paths:
   /getProjectFilenamingConfig:
     get:
       summary: Get Project Filenaming Config Endpoint
-      description: "Retrieves the filenaming configuration for a specific project.\n\nParameters:\n    projectId (int): The ID of the project to get the filenaming config for\n\nReturns:\n    JSON response with:\n        - project: Project details including id, title, and filenaming_config"
+      description: 'Retrieves the filenaming configuration for a specific project.
+
+
+        Parameters:
+
+        projectId (int): The ID of the project to get the filenaming config for
+
+
+        Returns:
+
+        JSON response with:
+
+        - project: Project details including id, title, and filenaming_config'
       operationId: get_project_filenaming_config_endpoint_getProjectFilenamingConfig_get
       parameters:
       - name: projectId

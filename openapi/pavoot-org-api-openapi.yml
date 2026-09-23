@@ -46,7 +46,16 @@ paths:
       - Org
     post:
       summary: Org Branding Set Endpoint
-      description: "Set the org's share-link branding.\n\n- Upload ``file`` to replace the logo (old S3 object deleted best-effort).\n- Pass ``removeLogo=true`` to clear the logo.\n- ``logoLinkUrl`` (when the field is present) sets the click-through URL; an\n  empty value clears it. Omit the field entirely to leave it unchanged."
+      description: 'Set the org''s share-link branding.
+
+
+        - Upload ``file`` to replace the logo (old S3 object deleted best-effort).
+
+        - Pass ``removeLogo=true`` to clear the logo.
+
+        - ``logoLinkUrl`` (when the field is present) sets the click-through URL; an
+
+        empty value clears it. Omit the field entirely to leave it unchanged.'
       operationId: org_branding_set_endpoint_org_branding_post
       requestBody:
         content:
@@ -807,6 +816,27 @@ paths:
       - Org
 components:
   schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     Body_org_branding_set_endpoint_org_branding_post:
       properties:
         file:
@@ -832,27 +862,6 @@ components:
           title: Organizationid
       type: object
       title: Body_org_branding_set_endpoint_org_branding_post
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     HTTPValidationError:
       properties:
         detail:

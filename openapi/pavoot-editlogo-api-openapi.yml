@@ -8,7 +8,25 @@ paths:
   /editLogo:
     post:
       summary: Edit Logo Endpoint
-      description: "Endpoint for editing a logo's information.\n\nArgs:\n    personId: The logo ID (frontend uses personId)\n    name: New brand name (optional)\n    category: When sent, updates category (empty -> brand). Omit to leave unchanged.\n    link: When sent, updates link (empty clears). Omit to leave unchanged.\n    contactEmail: When sent, updates contact email (empty clears). Omit to leave unchanged.\n\nReturns:\n    JSON response with success status and updated logo details"
+      description: 'Endpoint for editing a logo''s information.
+
+
+        Args:
+
+        personId: The logo ID (frontend uses personId)
+
+        name: New brand name (optional)
+
+        category: When sent, updates category (empty -> brand). Omit to leave unchanged.
+
+        link: When sent, updates link (empty clears). Omit to leave unchanged.
+
+        contactEmail: When sent, updates contact email (empty clears). Omit to leave unchanged.
+
+
+        Returns:
+
+        JSON response with success status and updated logo details'
       operationId: edit_logo_endpoint_editLogo_post
       requestBody:
         content:
@@ -32,6 +50,35 @@ paths:
       - EditLogo
 components:
   schemas:
+    Body_edit_logo_endpoint_editLogo_post:
+      properties:
+        personId:
+          type: string
+          title: Personid
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+        link:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Link
+        contactEmail:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Contactemail
+      type: object
+      required:
+      - personId
+      title: Body_edit_logo_endpoint_editLogo_post
     ValidationError:
       properties:
         loc:
@@ -62,32 +109,3 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    Body_edit_logo_endpoint_editLogo_post:
-      properties:
-        personId:
-          type: string
-          title: Personid
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        category:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Category
-        link:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Link
-        contactEmail:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Contactemail
-      type: object
-      required:
-      - personId
-      title: Body_edit_logo_endpoint_editLogo_post

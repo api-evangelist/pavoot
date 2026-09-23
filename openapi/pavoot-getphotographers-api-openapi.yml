@@ -8,7 +8,42 @@ paths:
   /getPhotographers:
     get:
       summary: Get Photographers Endpoint
-      description: "Retrieves photographers for a single project, or the union across multiple\nprojects (the \"All Projects\" view).\n\nQuery Parameters (one of):\n    - projectId: A single project ID\n    - projectIds[]: Multiple project IDs. Photographers are merged by identity\n      (id) across projects, with totalImagesCount summed across them.\n\nReturns:\n    JSON response with list of photographers containing:\n    - id: unique identifier\n    - name: photographer's name\n    - email: photographer's email address\n    - description: additional information about the photographer\n    - isEventOrganizer: boolean indicating if photographer is also an event organizer\n    - totalImagesCount: total number of images uploaded by this photographer\n\nErrors:\n    - 400 if neither projectId nor projectIds[] is provided\n    - 500 if database access fails"
+      description: 'Retrieves photographers for a single project, or the union across multiple
+
+        projects (the "All Projects" view).
+
+
+        Query Parameters (one of):
+
+        - projectId: A single project ID
+
+        - projectIds[]: Multiple project IDs. Photographers are merged by identity
+
+        (id) across projects, with totalImagesCount summed across them.
+
+
+        Returns:
+
+        JSON response with list of photographers containing:
+
+        - id: unique identifier
+
+        - name: photographer''s name
+
+        - email: photographer''s email address
+
+        - description: additional information about the photographer
+
+        - isEventOrganizer: boolean indicating if photographer is also an event organizer
+
+        - totalImagesCount: total number of images uploaded by this photographer
+
+
+        Errors:
+
+        - 400 if neither projectId nor projectIds[] is provided
+
+        - 500 if database access fails'
       operationId: get_photographers_endpoint_getPhotographers_get
       parameters:
       - name: projectId
