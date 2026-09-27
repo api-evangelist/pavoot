@@ -59,25 +59,15 @@ paths:
       - AddImagesToFolder
 components:
   schemas:
-    ModifyFolderImagesRequest:
+    HTTPValidationError:
       properties:
-        imageIds:
+        detail:
           items:
-            type: string
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Imageids
-        folderName:
-          type: string
-          title: Foldername
-        projectId:
-          type: integer
-          title: Projectid
+          title: Detail
       type: object
-      required:
-      - imageIds
-      - folderName
-      - projectId
-      title: ModifyFolderImagesRequest
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -99,12 +89,22 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
+    ModifyFolderImagesRequest:
       properties:
-        detail:
+        imageIds:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            type: string
           type: array
-          title: Detail
+          title: Imageids
+        folderName:
+          type: string
+          title: Foldername
+        projectId:
+          type: integer
+          title: Projectid
       type: object
-      title: HTTPValidationError
+      required:
+      - imageIds
+      - folderName
+      - projectId
+      title: ModifyFolderImagesRequest

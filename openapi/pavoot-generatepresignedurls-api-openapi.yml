@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Fast Generate Presigned URLS API
+  title: Fast Generate Presigned URLs API
   version: 0.1.0
 tags:
 - name: GeneratePresignedUrls
@@ -61,6 +61,28 @@ paths:
       - GeneratePresignedUrls
 components:
   schemas:
+    FileInfo:
+      properties:
+        extension:
+          type: string
+          title: Extension
+        contentType:
+          type: string
+          title: Contenttype
+      type: object
+      required:
+      - extension
+      - contentType
+      title: FileInfo
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -82,19 +104,6 @@ components:
       - msg
       - type
       title: ValidationError
-    FileInfo:
-      properties:
-        extension:
-          type: string
-          title: Extension
-        contentType:
-          type: string
-          title: Contenttype
-      type: object
-      required:
-      - extension
-      - contentType
-      title: FileInfo
     GeneratePresignedUrlsRequest:
       properties:
         files:
@@ -125,12 +134,3 @@ components:
       - files
       - projectId
       title: GeneratePresignedUrlsRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

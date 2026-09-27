@@ -1043,14 +1043,6 @@ components:
       - msg
       - type
       title: ValidationError
-    CreateCollectionBody:
-      properties:
-        env:
-          type: string
-          title: Env
-          default: dev
-      type: object
-      title: CreateCollectionBody
     HTTPValidationError:
       properties:
         detail:
@@ -1060,3 +1052,11 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    CreateCollectionBody:
+      properties:
+        env:
+          type: string
+          title: Env
+          default: dev
+      type: object
+      title: CreateCollectionBody

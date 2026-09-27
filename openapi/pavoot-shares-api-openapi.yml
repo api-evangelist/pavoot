@@ -191,6 +191,63 @@ paths:
       - Shares
 components:
   schemas:
+    SharePreviewRequest:
+      properties:
+        projectId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Projectid
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+          default: []
+        personIds:
+          items:
+            type: string
+          type: array
+          title: Personids
+          default: []
+        folderNames:
+          items:
+            type: string
+          type: array
+          title: Foldernames
+          default: []
+      type: object
+      title: SharePreviewRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     CreateHybridShareRequest:
       properties:
         projectId:
@@ -266,27 +323,6 @@ components:
           title: Creatordisplay
       type: object
       title: CreateHybridShareRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     GenerateShareLinksRequest:
       properties:
         projectId:
@@ -377,39 +413,3 @@ components:
       required:
       - projectId
       title: GenerateShareLinksRequest
-    SharePreviewRequest:
-      properties:
-        projectId:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Projectid
-        imageIds:
-          items:
-            type: string
-          type: array
-          title: Imageids
-          default: []
-        personIds:
-          items:
-            type: string
-          type: array
-          title: Personids
-          default: []
-        folderNames:
-          items:
-            type: string
-          type: array
-          title: Foldernames
-          default: []
-      type: object
-      title: SharePreviewRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
