@@ -50,35 +50,6 @@ paths:
       - EditLogo
 components:
   schemas:
-    Body_edit_logo_endpoint_editLogo_post:
-      properties:
-        personId:
-          type: string
-          title: Personid
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        category:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Category
-        link:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Link
-        contactEmail:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Contactemail
-      type: object
-      required:
-      - personId
-      title: Body_edit_logo_endpoint_editLogo_post
     HTTPValidationError:
       properties:
         detail:
@@ -109,3 +80,32 @@ components:
       - msg
       - type
       title: ValidationError
+    Body_edit_logo_endpoint_editLogo_post:
+      properties:
+        personId:
+          type: string
+          title: Personid
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+        link:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Link
+        contactEmail:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Contactemail
+      type: object
+      required:
+      - personId
+      title: Body_edit_logo_endpoint_editLogo_post

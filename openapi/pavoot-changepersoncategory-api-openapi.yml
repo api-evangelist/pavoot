@@ -44,19 +44,6 @@ paths:
       - ChangePersonCategory
 components:
   schemas:
-    Body_change_person_category_endpoint_changePersonCategory_put:
-      properties:
-        personId:
-          type: string
-          title: Personid
-        newCategory:
-          type: string
-          title: Newcategory
-      type: object
-      required:
-      - personId
-      - newCategory
-      title: Body_change_person_category_endpoint_changePersonCategory_put
     HTTPValidationError:
       properties:
         detail:
@@ -87,3 +74,16 @@ components:
       - msg
       - type
       title: ValidationError
+    Body_change_person_category_endpoint_changePersonCategory_put:
+      properties:
+        personId:
+          type: string
+          title: Personid
+        newCategory:
+          type: string
+          title: Newcategory
+      type: object
+      required:
+      - personId
+      - newCategory
+      title: Body_change_person_category_endpoint_changePersonCategory_put

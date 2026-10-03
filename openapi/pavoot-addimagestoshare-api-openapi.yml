@@ -31,6 +31,30 @@ paths:
       - AddImagesToShare
 components:
   schemas:
+    AddImagesToShareRequest:
+      properties:
+        shareId:
+          type: string
+          title: Shareid
+        newImageIds:
+          items:
+            type: string
+          type: array
+          title: Newimageids
+      type: object
+      required:
+      - shareId
+      - newImageIds
+      title: AddImagesToShareRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -52,27 +76,3 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AddImagesToShareRequest:
-      properties:
-        shareId:
-          type: string
-          title: Shareid
-        newImageIds:
-          items:
-            type: string
-          type: array
-          title: Newimageids
-      type: object
-      required:
-      - shareId
-      - newImageIds
-      title: AddImagesToShareRequest

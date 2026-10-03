@@ -68,6 +68,25 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    ModifyFolderImagesRequest:
+      properties:
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+        folderName:
+          type: string
+          title: Foldername
+        projectId:
+          type: integer
+          title: Projectid
+      type: object
+      required:
+      - imageIds
+      - folderName
+      - projectId
+      title: ModifyFolderImagesRequest
     ValidationError:
       properties:
         loc:
@@ -89,22 +108,3 @@ components:
       - msg
       - type
       title: ValidationError
-    ModifyFolderImagesRequest:
-      properties:
-        imageIds:
-          items:
-            type: string
-          type: array
-          title: Imageids
-        folderName:
-          type: string
-          title: Foldername
-        projectId:
-          type: integer
-          title: Projectid
-      type: object
-      required:
-      - imageIds
-      - folderName
-      - projectId
-      title: ModifyFolderImagesRequest

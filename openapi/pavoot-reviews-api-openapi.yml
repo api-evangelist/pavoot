@@ -217,15 +217,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ReviewLifecycleRequest:
-      properties:
-        shareId:
-          type: string
-          title: Shareid
-      type: object
-      required:
-      - shareId
-      title: ReviewLifecycleRequest
     ValidationError:
       properties:
         loc:
@@ -247,6 +238,15 @@ components:
       - msg
       - type
       title: ValidationError
+    ReviewLifecycleRequest:
+      properties:
+        shareId:
+          type: string
+          title: Shareid
+      type: object
+      required:
+      - shareId
+      title: ReviewLifecycleRequest
     ClearReviewFlagsRequest:
       properties:
         flagIds:

@@ -52,6 +52,27 @@ components:
       - image_id
       - bbox
       title: FaceOccurrenceCreate
+    BBox:
+      properties:
+        top:
+          type: integer
+          title: Top
+        left:
+          type: integer
+          title: Left
+        width:
+          type: integer
+          title: Width
+        height:
+          type: integer
+          title: Height
+      type: object
+      required:
+      - top
+      - left
+      - width
+      - height
+      title: BBox
     HTTPValidationError:
       properties:
         detail:
@@ -82,24 +103,3 @@ components:
       - msg
       - type
       title: ValidationError
-    BBox:
-      properties:
-        top:
-          type: integer
-          title: Top
-        left:
-          type: integer
-          title: Left
-        width:
-          type: integer
-          title: Width
-        height:
-          type: integer
-          title: Height
-      type: object
-      required:
-      - top
-      - left
-      - width
-      - height
-      title: BBox

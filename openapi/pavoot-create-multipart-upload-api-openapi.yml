@@ -36,36 +36,19 @@ paths:
       - Create Multipart Upload
 components:
   schemas:
-    CreateMultipartUploadRequest:
+    MultipartFileInfo:
       properties:
-        files:
-          items:
-            $ref: '#/components/schemas/MultipartFileInfo'
-          type: array
-          title: Files
-        projectId:
+        contentType:
+          type: string
+          title: Contenttype
+        size:
           type: integer
-          title: Projectid
-        folderName:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Foldername
-        photographerId:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Photographerid
-        fileType:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Filetype
+          title: Size
       type: object
       required:
-      - files
-      - projectId
-      title: CreateMultipartUploadRequest
+      - contentType
+      - size
+      title: MultipartFileInfo
     HTTPValidationError:
       properties:
         detail:
@@ -96,16 +79,33 @@ components:
       - msg
       - type
       title: ValidationError
-    MultipartFileInfo:
+    CreateMultipartUploadRequest:
       properties:
-        contentType:
-          type: string
-          title: Contenttype
-        size:
+        files:
+          items:
+            $ref: '#/components/schemas/MultipartFileInfo'
+          type: array
+          title: Files
+        projectId:
           type: integer
-          title: Size
+          title: Projectid
+        folderName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Foldername
+        photographerId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Photographerid
+        fileType:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Filetype
       type: object
       required:
-      - contentType
-      - size
-      title: MultipartFileInfo
+      - files
+      - projectId
+      title: CreateMultipartUploadRequest

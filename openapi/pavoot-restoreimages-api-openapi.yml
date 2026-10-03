@@ -48,21 +48,6 @@ paths:
       - RestoreImages
 components:
   schemas:
-    RestoreImagesRequest:
-      properties:
-        projectId:
-          type: integer
-          title: Projectid
-        imageIds:
-          items:
-            type: string
-          type: array
-          title: Imageids
-      type: object
-      required:
-      - projectId
-      - imageIds
-      title: RestoreImagesRequest
     HTTPValidationError:
       properties:
         detail:
@@ -93,3 +78,18 @@ components:
       - msg
       - type
       title: ValidationError
+    RestoreImagesRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+      type: object
+      required:
+      - projectId
+      - imageIds
+      title: RestoreImagesRequest

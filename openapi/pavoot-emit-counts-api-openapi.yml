@@ -31,15 +31,6 @@ paths:
       - Emit Counts
 components:
   schemas:
-    CountsRequest:
-      properties:
-        projectId:
-          type: integer
-          title: Projectid
-      type: object
-      required:
-      - projectId
-      title: CountsRequest
     HTTPValidationError:
       properties:
         detail:
@@ -70,3 +61,12 @@ components:
       - msg
       - type
       title: ValidationError
+    CountsRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+      type: object
+      required:
+      - projectId
+      title: CountsRequest

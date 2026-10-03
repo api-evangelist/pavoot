@@ -157,15 +157,6 @@ paths:
       - Photographers
 components:
   schemas:
-    PhotographerAccessRequest:
-      properties:
-        photographerId:
-          type: string
-          title: Photographerid
-      type: object
-      required:
-      - photographerId
-      title: PhotographerAccessRequest
     HTTPValidationError:
       properties:
         detail:
@@ -216,3 +207,12 @@ components:
       - targetId
       - sourceIds
       title: MergePhotographersRequest
+    PhotographerAccessRequest:
+      properties:
+        photographerId:
+          type: string
+          title: Photographerid
+      type: object
+      required:
+      - photographerId
+      title: PhotographerAccessRequest

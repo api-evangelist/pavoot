@@ -34,19 +34,6 @@ paths:
       - Attendee Registration Presign Face
 components:
   schemas:
-    FileInfo:
-      properties:
-        extension:
-          type: string
-          title: Extension
-        contentType:
-          type: string
-          title: Contenttype
-      type: object
-      required:
-      - extension
-      - contentType
-      title: FileInfo
     HTTPValidationError:
       properties:
         detail:
@@ -93,3 +80,16 @@ components:
       - files
       title: AttendeeRegistrationPresignRequest
       description: Presign one face photo upload for attendee self-registration (same S3 layout as dashboard).
+    FileInfo:
+      properties:
+        extension:
+          type: string
+          title: Extension
+        contentType:
+          type: string
+          title: Contenttype
+      type: object
+      required:
+      - extension
+      - contentType
+      title: FileInfo

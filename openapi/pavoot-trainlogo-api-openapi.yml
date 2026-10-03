@@ -44,19 +44,6 @@ paths:
       - TrainLogo
 components:
   schemas:
-    Body_train_logo_endpoint_trainLogo_post:
-      properties:
-        logoId:
-          type: string
-          title: Logoid
-        projectId:
-          type: integer
-          title: Projectid
-      type: object
-      required:
-      - logoId
-      - projectId
-      title: Body_train_logo_endpoint_trainLogo_post
     HTTPValidationError:
       properties:
         detail:
@@ -87,3 +74,16 @@ components:
       - msg
       - type
       title: ValidationError
+    Body_train_logo_endpoint_trainLogo_post:
+      properties:
+        logoId:
+          type: string
+          title: Logoid
+        projectId:
+          type: integer
+          title: Projectid
+      type: object
+      required:
+      - logoId
+      - projectId
+      title: Body_train_logo_endpoint_trainLogo_post

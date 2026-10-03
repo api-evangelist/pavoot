@@ -31,23 +31,6 @@ paths:
       - AbortMultipartUpload
 components:
   schemas:
-    AbortMultipartUploadRequest:
-      properties:
-        projectId:
-          type: integer
-          title: Projectid
-        key:
-          type: string
-          title: Key
-        uploadId:
-          type: string
-          title: Uploadid
-      type: object
-      required:
-      - projectId
-      - key
-      - uploadId
-      title: AbortMultipartUploadRequest
     HTTPValidationError:
       properties:
         detail:
@@ -78,3 +61,20 @@ components:
       - msg
       - type
       title: ValidationError
+    AbortMultipartUploadRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        key:
+          type: string
+          title: Key
+        uploadId:
+          type: string
+          title: Uploadid
+      type: object
+      required:
+      - projectId
+      - key
+      - uploadId
+      title: AbortMultipartUploadRequest

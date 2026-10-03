@@ -816,31 +816,6 @@ paths:
       - Org
 components:
   schemas:
-    Body_org_branding_set_endpoint_org_branding_post:
-      properties:
-        file:
-          anyOf:
-          - type: string
-            format: binary
-          - type: 'null'
-          title: File
-        logoLinkUrl:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Logolinkurl
-        removeLogo:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Removelogo
-        organizationId:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Organizationid
-      type: object
-      title: Body_org_branding_set_endpoint_org_branding_post
     HTTPValidationError:
       properties:
         detail:
@@ -871,3 +846,28 @@ components:
       - msg
       - type
       title: ValidationError
+    Body_org_branding_set_endpoint_org_branding_post:
+      properties:
+        file:
+          anyOf:
+          - type: string
+            format: binary
+          - type: 'null'
+          title: File
+        logoLinkUrl:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logolinkurl
+        removeLogo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Removelogo
+        organizationId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Organizationid
+      type: object
+      title: Body_org_branding_set_endpoint_org_branding_post
