@@ -31,28 +31,6 @@ paths:
       - DeleteFolderWithContents
 components:
   schemas:
-    FolderRequest:
-      properties:
-        projectId:
-          type: integer
-          title: Projectid
-        folderName:
-          type: string
-          title: Foldername
-      type: object
-      required:
-      - projectId
-      - folderName
-      title: FolderRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -74,3 +52,25 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    FolderRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        folderName:
+          type: string
+          title: Foldername
+      type: object
+      required:
+      - projectId
+      - folderName
+      title: FolderRequest

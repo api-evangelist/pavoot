@@ -31,15 +31,19 @@ paths:
       - AddLogoTranscription
 components:
   schemas:
-    HTTPValidationError:
+    Body_add_logo_transcription_endpoint_addLogoTranscription_post:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        logoId:
+          type: string
+          title: Logoid
+        transcription:
+          type: string
+          title: Transcription
       type: object
-      title: HTTPValidationError
+      required:
+      - logoId
+      - transcription
+      title: Body_add_logo_transcription_endpoint_addLogoTranscription_post
     ValidationError:
       properties:
         loc:
@@ -61,16 +65,12 @@ components:
       - msg
       - type
       title: ValidationError
-    Body_add_logo_transcription_endpoint_addLogoTranscription_post:
+    HTTPValidationError:
       properties:
-        logoId:
-          type: string
-          title: Logoid
-        transcription:
-          type: string
-          title: Transcription
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - logoId
-      - transcription
-      title: Body_add_logo_transcription_endpoint_addLogoTranscription_post
+      title: HTTPValidationError

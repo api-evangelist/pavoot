@@ -208,15 +208,6 @@ paths:
       - Reviews
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -238,15 +229,15 @@ components:
       - msg
       - type
       title: ValidationError
-    ReviewLifecycleRequest:
+    HTTPValidationError:
       properties:
-        shareId:
-          type: string
-          title: Shareid
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - shareId
-      title: ReviewLifecycleRequest
+      title: HTTPValidationError
     ClearReviewFlagsRequest:
       properties:
         flagIds:
@@ -258,3 +249,12 @@ components:
       required:
       - flagIds
       title: ClearReviewFlagsRequest
+    ReviewLifecycleRequest:
+      properties:
+        shareId:
+          type: string
+          title: Shareid
+      type: object
+      required:
+      - shareId
+      title: ReviewLifecycleRequest

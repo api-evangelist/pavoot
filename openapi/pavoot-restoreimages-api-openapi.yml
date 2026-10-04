@@ -48,15 +48,21 @@ paths:
       - RestoreImages
 components:
   schemas:
-    HTTPValidationError:
+    RestoreImagesRequest:
       properties:
-        detail:
+        projectId:
+          type: integer
+          title: Projectid
+        imageIds:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            type: string
           type: array
-          title: Detail
+          title: Imageids
       type: object
-      title: HTTPValidationError
+      required:
+      - projectId
+      - imageIds
+      title: RestoreImagesRequest
     ValidationError:
       properties:
         loc:
@@ -78,18 +84,12 @@ components:
       - msg
       - type
       title: ValidationError
-    RestoreImagesRequest:
+    HTTPValidationError:
       properties:
-        projectId:
-          type: integer
-          title: Projectid
-        imageIds:
+        detail:
           items:
-            type: string
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Imageids
+          title: Detail
       type: object
-      required:
-      - projectId
-      - imageIds
-      title: RestoreImagesRequest
+      title: HTTPValidationError

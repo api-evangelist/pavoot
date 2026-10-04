@@ -31,28 +31,6 @@ paths:
       - DeleteLogoTranscription
 components:
   schemas:
-    Body_delete_logo_transcription_endpoint_deleteLogoTranscription_delete:
-      properties:
-        logoId:
-          type: string
-          title: Logoid
-        transcription:
-          type: string
-          title: Transcription
-      type: object
-      required:
-      - logoId
-      - transcription
-      title: Body_delete_logo_transcription_endpoint_deleteLogoTranscription_delete
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -74,3 +52,25 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Body_delete_logo_transcription_endpoint_deleteLogoTranscription_delete:
+      properties:
+        logoId:
+          type: string
+          title: Logoid
+        transcription:
+          type: string
+          title: Transcription
+      type: object
+      required:
+      - logoId
+      - transcription
+      title: Body_delete_logo_transcription_endpoint_deleteLogoTranscription_delete

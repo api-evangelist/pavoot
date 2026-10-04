@@ -61,6 +61,40 @@ paths:
       - GeneratePresignedUrls
 components:
   schemas:
+    FileInfo:
+      properties:
+        extension:
+          type: string
+          title: Extension
+        contentType:
+          type: string
+          title: Contenttype
+      type: object
+      required:
+      - extension
+      - contentType
+      title: FileInfo
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -100,37 +134,3 @@ components:
       - files
       - projectId
       title: GeneratePresignedUrlsRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    FileInfo:
-      properties:
-        extension:
-          type: string
-          title: Extension
-        contentType:
-          type: string
-          title: Contenttype
-      type: object
-      required:
-      - extension
-      - contentType
-      title: FileInfo

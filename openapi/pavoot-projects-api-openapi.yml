@@ -100,32 +100,6 @@ paths:
       - Projects
 components:
   schemas:
-    RetryTaggingRequest:
-      properties:
-        imageIds:
-          items:
-            type: string
-          type: array
-          title: Imageids
-        steps:
-          items:
-            type: string
-          type: array
-          title: Steps
-      type: object
-      required:
-      - imageIds
-      - steps
-      title: RetryTaggingRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -147,3 +121,29 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    RetryTaggingRequest:
+      properties:
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+        steps:
+          items:
+            type: string
+          type: array
+          title: Steps
+      type: object
+      required:
+      - imageIds
+      - steps
+      title: RetryTaggingRequest
