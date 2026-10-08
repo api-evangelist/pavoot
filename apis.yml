@@ -4761,6 +4761,10 @@ apis:
   - type: Conformance
     url: conformance/pavoot-conformance.yml
 common:
+- type: Plans
+  url: plans/pavoot-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/pavoot-rate-limits.yml
 - type: CapabilityMap
   url: capabilities/pavoot-capability-edges.yml
   name: Pavoot Business Capability Map
