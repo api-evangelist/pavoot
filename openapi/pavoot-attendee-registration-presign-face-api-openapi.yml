@@ -34,6 +34,15 @@ paths:
       - Attendee Registration Presign Face
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     FileInfo:
       properties:
         extension:
@@ -47,6 +56,22 @@ components:
       - extension
       - contentType
       title: FileInfo
+    AttendeeRegistrationPresignRequest:
+      properties:
+        token:
+          type: string
+          title: Token
+        files:
+          items:
+            $ref: '#/components/schemas/FileInfo'
+          type: array
+          title: Files
+      type: object
+      required:
+      - token
+      - files
+      title: AttendeeRegistrationPresignRequest
+      description: Presign one face photo upload for attendee self-registration (same S3 layout as dashboard).
     ValidationError:
       properties:
         loc:
@@ -68,28 +93,3 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AttendeeRegistrationPresignRequest:
-      properties:
-        token:
-          type: string
-          title: Token
-        files:
-          items:
-            $ref: '#/components/schemas/FileInfo'
-          type: array
-          title: Files
-      type: object
-      required:
-      - token
-      - files
-      title: AttendeeRegistrationPresignRequest
-      description: Presign one face photo upload for attendee self-registration (same S3 layout as dashboard).

@@ -36,6 +36,34 @@ paths:
       - UpdateImagesPhotographer
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UpdateImagesPhotographerRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+        photographerId:
+          type: string
+          title: Photographerid
+      type: object
+      required:
+      - projectId
+      - imageIds
+      - photographerId
+      title: UpdateImagesPhotographerRequest
     ValidationError:
       properties:
         loc:
@@ -57,31 +85,3 @@ components:
       - msg
       - type
       title: ValidationError
-    UpdateImagesPhotographerRequest:
-      properties:
-        projectId:
-          type: integer
-          title: Projectid
-        imageIds:
-          items:
-            type: string
-          type: array
-          title: Imageids
-        photographerId:
-          type: string
-          title: Photographerid
-      type: object
-      required:
-      - projectId
-      - imageIds
-      - photographerId
-      title: UpdateImagesPhotographerRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

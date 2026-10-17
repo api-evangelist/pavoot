@@ -32,6 +32,32 @@ paths:
       - Emit Tagging Step
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TaggingStepRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        imageId:
+          type: string
+          title: Imageid
+        step:
+          type: string
+          title: Step
+      type: object
+      required:
+      - projectId
+      - imageId
+      - step
+      title: TaggingStepRequest
     ValidationError:
       properties:
         loc:
@@ -53,29 +79,3 @@ components:
       - msg
       - type
       title: ValidationError
-    TaggingStepRequest:
-      properties:
-        projectId:
-          type: integer
-          title: Projectid
-        imageId:
-          type: string
-          title: Imageid
-        step:
-          type: string
-          title: Step
-      type: object
-      required:
-      - projectId
-      - imageId
-      - step
-      title: TaggingStepRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

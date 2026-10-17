@@ -52,6 +52,30 @@ paths:
       - DeleteImages
 components:
   schemas:
+    DeleteImagesRequest:
+      properties:
+        projectId:
+          type: integer
+          title: Projectid
+        imageIds:
+          items:
+            type: string
+          type: array
+          title: Imageids
+      type: object
+      required:
+      - projectId
+      - imageIds
+      title: DeleteImagesRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -73,27 +97,3 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    DeleteImagesRequest:
-      properties:
-        projectId:
-          type: integer
-          title: Projectid
-        imageIds:
-          items:
-            type: string
-          type: array
-          title: Imageids
-      type: object
-      required:
-      - projectId
-      - imageIds
-      title: DeleteImagesRequest

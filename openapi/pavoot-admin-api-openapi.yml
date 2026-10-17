@@ -1022,6 +1022,23 @@ paths:
       - Admin
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CreateCollectionBody:
+      properties:
+        env:
+          type: string
+          title: Env
+          default: dev
+      type: object
+      title: CreateCollectionBody
     ValidationError:
       properties:
         loc:
@@ -1043,20 +1060,3 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CreateCollectionBody:
-      properties:
-        env:
-          type: string
-          title: Env
-          default: dev
-      type: object
-      title: CreateCollectionBody
